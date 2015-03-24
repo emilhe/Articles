@@ -1,4 +1,4 @@
-\documentclass[a4paper, 12pt, sort&compress]{elsarticle}%5p for double column
+\documentclass[a4paper, 5p, sort&compress]{elsarticle}%5p for double column
 % 
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
@@ -12,7 +12,7 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{units}
-\usepackage{subfig}
+%\usepackage{subfig}
 %\usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{bbm}
@@ -34,11 +34,12 @@
 \usepackage[noabbrev]{cleveref}
 \usepackage[export]{adjustbox}[2011/08/13]
 \newcommand{\paren}[1]{\left(#1\right)}
-\newcommand{\chromowidth}{1.05 \columnwidth}
+\newcommand{\chromowidth}{1.00 \columnwidth}
 \graphicspath{{Figures/}}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage{placeins}
+\usepackage{subcaption}
 
 %\makeatletter
 %\def\ps@pprintTitle{%
@@ -57,7 +58,7 @@
 \title{Optimal heterogeneity of a highly renewable pan-European electricity system}
 
 \author[label1]{Emil H. Eriksen}
-%\ead{rar@imf.au.dk}
+\ead{emilhe@phys.au.dk}
 %\author[label2]{Benjamin Sairanen}
 \author[label2,label3]{Martin Greiner}
 \ead{greiner@eng.au.dk}
@@ -68,15 +69,15 @@
 
 \begin{abstract}
   The resource quality and the temporal production pattern of variable
-  renewable energy sources (VRES) varies significantly across
-  Europe. A homogeneous distribution of wind and solar capacities
-  makes inefficient use of the resources, resulting in high system
-  costs. A heterogeneous redistribution of renewable assets maximising
-  the overall capacity factor results in smaller investments in
-  renewable capacities, but higher costs of transmission. The cuckoo
-  search algorithm is used to find optimal distributions VRES capacities minimising backup, transmission and renewable
-  capacity costs simultaneously, resulting in lower costs of
-  electricity.
+  renewable energy sources varies significantly across Europe. A
+  homogeneous distribution of wind and solar capacities makes
+  inefficient use of the resources, resulting in high system costs. A
+  heterogeneous redistribution of renewable assets maximising the
+  overall capacity factor results in smaller investments in renewable
+  capacities, but higher costs of transmission. The cuckoo search
+  algorithm is used to find optimal distributions of production
+  capacities minimising backup, transmission and renewable capacity
+  costs simultaneously, resulting in lower costs of electricity.
 \end{abstract}
 
 \begin{keyword}
@@ -97,25 +98,46 @@ cuckoo search
 
 The ambitious renewable targets set by the European leaders\cite{eu2050} imply
 that the renewable penetration will increase significantly in the
-years to come. Due to the variable
-nature of the leading renewable technologies, wind and solar PV, the
-electricity system must include a backup system, if power outs are to
-be avoided. It is possible to reduce the backup needs by exchanging
-energy between the countries through a transmission
-network\cite{rolando2014,sarah}.
+years to come. 
 
-[CITE MORE PAPERS HERE]
+[TALK ABOUT ELECTRIFICATION HERE \cite{Williams12,ecf2050}]
 
-In a conventional energy system, the siting of production capacities is not
-a concern. No geographical areas are preferable, so the power plants
-are simply put where the demand is present. For renewable energy
-sources, the situation is more complicated. One of the main reasons is
-the geographical variation of the quality of the renewable
-resources. On average, a solar photovoltaic (PV) installation in
-Spain will be more productive than an equivalent installation in
-Ireland. On the other hand, a wind farm located in Ireland will be
-productive than an equivalent installation in Spain. The resource
-quality is quantified through the capacity factor $\nu$ defined as
+At present, the leading renewable technologies are wind, solar PV and
+hydro, of which only wind and solar PV have potential for large-scale
+expansion. For this reason, the analysis will consider only wind and
+solar PV explicitly. Since wind and solar PV are both variable
+renewable energy resources (VRES), backup generation is needed if
+power outages are to be avoided. Backup generation equals additional
+system cost and must thus be kept at a minimum.
+
+The backup requirements depends on the mismatch between load and VRES
+generation. Using the degrees of freedom associated with the choice of
+VRES layout, it is possible to shape the temporal pattern towards the
+load pattern so that the mismatch, and thus the backup requirements,
+is lowered. It is possible to reduce the VRES layout is reduced to a
+single parameter, the mixing parameter, by assuming a homogeneous mix
+between wind and solar PV across all countries, and that all countries
+install enough VRES capacities to cover their load on average. This
+approatch is demonstrated e.g. in \cite{Heide2010,Heide2011} where
+balancing and storage optimal mixes are found.
+
+Further reductions in backup requirements are possible by exchanging
+energy between the countries through a transmission network
+\cite{rolando2014,sarah}. Other relevant papers on the advantages and
+costs of grid extensions are \cite{Schaber, Schaber2}.
+
+% PUT IN 2050 report stuff here?
+
+In a conventional energy system, the siting of production capacities
+is not a concern. No geographical areas are preferable, so the power
+plants are simply put where the demand is present. For VRES, the
+situation is more complicated. The primary reason is the geographical
+variation of the VRES
+quality. %On average, a solar photovoltaic (PV) installation in
+% Spain will be more productive than an equivalent installation in
+% Ireland. On the other hand, a wind farm located in Ireland will be
+% productive than an equivalent installation in Spain.
+The resource quality is quantified through the capacity factor $\nu$ defined as
 
 \begin{equation}
   \label{eq:1}
@@ -127,7 +149,7 @@ production and 1 means maximum production at all times. Capacity
 factors for the European countries for onshore wind, offshore wind and
 solar PV are listed in \cref{tab:capacity-factors}. The capacity
 factors were calculated using the Renewable Energy Atlas\cite{REA}
-(REA). The layout of renewables was chosen as a homogeneous
+(REA). The VRES layout at country level was chosen as a homogeneous
 distribution across the 50\% best sites. For wind conversion, the
 power curve of the Vestas V90 3.0MW turbine was assumed. For solar
 conversion, the Scheuten P6-54 solar PV panel oriented south and tiled
@@ -140,17 +162,20 @@ applied.
 %PV when it is sunny. Backup is thus needed at windless
 %nights.
 
-[TEXT BELOW NOT CORRECT! FIX IT AND CITE MORE PAPERS]
+The secondary reason the geographical variation of the temporal
+production pattern of VRES. For Europe, this effect is particularly
+important for wind since Europe is large compared to the wind
+correlation length of $\approx$ 1000 km \cite{Widen2011}.
 
-The other main reason is the mismatch between the renewable energy
-production and the load. Analyses of the European weather patterns
-have shown that there is an optimal mix between wind and solar power
-generation which minimises the need for backup from conventional
-sources \cite{Heide2010,Heide2011}. These analyses assume a
-homogeneous spatial distribution of renewables throughout all
-countries. In this paper, we explore possible benefits of
-heterogeneous distributions of VRES capacities in a highly renewable
-pan-European electricity system.
+With these points in mind, allocating resources in proportion to the
+mean load of a country and an overall fixed mixing factor does not
+seem ideal. In this paper, the homogeneous assumption is
+lifted. Different approaches to cope with the resulting large number
+of degrees of freedom are considered ranging from heuristic layouts
+constructed from resource quality knowledge to layouts obtained
+through numerical optimization. The objective is to find heterogeneous
+layouts with properties superior to the homogeneous layouts, in
+particular a lower cost of electricity.
 
 %\textcolor{orange}{Two previous papers \cite{Rombauts11,Roques09} have applied
 %Optimal Portfolio Theory to explore heterogeneous distributions of
@@ -164,11 +189,23 @@ pan-European electricity system.
 %that the least cost scenario was that with a penetration of around
 %60\% renewables, consisting of around 70\% wind energy.}
 
+% MAYBE MOVE THIS TO SOMEWHERE ELSE?
+
+% The $\beta$ and $\nu_{max}$ layouts are derived directly from the capacity
+% factor. They do not take the temporal production pattern into
+% account. By choosing VRES with different temporal patterns, it is
+% possible to reduce the backup needs. For homogeneous layouts, the
+% dimensionality of the problem is two (one if $\gamma$ is fixed), and the
+% optimum is trivially found. In the heterogeneous case, the
+% dimensionality of the problem is 2N. For the 30-node network at hand
+% 2N = 60 and the optimization no longer trivial. The quest for optimal
+% layouts inside the 60 dimensional search space is the topic of
+% \cref{sec:cuckoo-search}.
+
+
 This paper is organised as follows: \Cref{sec:two} discusses the
 general modelling of the electricity system, the key metrics and the
-construction of heterogeneous layouts. Besides heuristic layouts,
-layouts obtained by optimization using the cuckoo search algorithm are
-considered. In \cref{sec:results} the performance of the different
+construction of heterogeneous layouts.  In \cref{sec:results} the performance of the different
 layouts and the resulting renewable penetrations for individual
 European countries are discussed. \Cref{sec:sensitivity-analysis}
 contains an analysis of the sensitivity of the results to reductions
@@ -332,11 +369,12 @@ coupled to the particular data set used. To decrease the coupling, the
 where $p_{n}(B_{n})$ is the time sampled distribution of backup power
 and $q_{n} = 0.99$. With this choice, the backup system will be able
 to cover the demand 99\% of the time. The remaining 1\% is assumed to
-be cover by unmodeled system components like storages or emergency
-[WHAT]. In accordance, the transmission capacity $\mathcal{K}^{T}$ is
-defined so that the demand is met 99\% of the time. Since transmission
-can be positive and negative, the larger of the absolute value of the
-0.5\% and the 99.5\% quantile is used rather than the 99\% quantile,
+be cover by unmodeled system components like storages or demand side
+management. In accordance, the transmission capacity $\mathcal{K}^{T}$
+is defined so that the demand is met 99\% of the time. Since
+transmission can be positive and negative, the larger of the absolute
+value of the 0.5\% and the 99.5\% quantile is used rather than the
+99\% quantile,
 
 % -------------------
 \begin{equation}
@@ -439,8 +477,12 @@ through $\nu$ is raised to an exponent $\beta$ as suggested by
 
 An equivalent expression for the solar only layout is obtained by the
 substitution $W \to S$. Examples for $\beta$ = 1 are shown in
-\cref{fig:beta1}. $\beta$ layouts for any value of $\alpha$ can be expressed as
-a linear combination of the wind and solar only layouts with
+\cref{fig:examples}. In the layout illustrations, each bar represents
+a country $n$. The height of the bar is $\gamma_{n}$ while the mix
+$\alpha_{n}$ between onshore wind (dark blue) and solar (yellow) is
+expressed through the bar colouring. $\beta$ layouts for any value of
+$\alpha$ can be expressed as a linear combination of the wind and solar
+only layouts with
 
 % For $\alpha = 1$, the beta layout vector
 % $\boldsymbol x _{\beta}(\alpha = 1)$ is defined by \cref{eq:8} and along with
@@ -461,15 +503,7 @@ and
 % The transformation of $\alpha$ in \cref{eq:9} decouples the assignment of
 % wind and solar PV. 
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width = \chromowidth, center]{beta=1wind}
-  \includegraphics[width = \chromowidth, center]{beta=1solar}
-  \caption{$\beta$ = 1 layouts with $\alpha = 1$ (top) and $\alpha = 0$ (bottom).}
-  \label{fig:beta1}
-\end{figure}
-
-For political reasons, it is not possible to realise arbitrarily
+For practical reasons, it is not possible to realise arbitrarily
 heterogeneous layouts. To constrain heterogeneity, the heterogeneity
 factor K is introduced by requiring
 
@@ -490,32 +524,38 @@ cases, the capacity factor is maximised by assigning $\gamma_{n}$ = K to
 the countries with the highest capacity factor for wind/solar PV and
 $\gamma_{n} = \frac{1}{\text{K}}$ to the remaining countries, except for a
 single in-between country. Examples for K = 2 are shown in
-\cref{fig:max2}. Similar to the $\beta$ layouts, $\nu_{max}$ layouts for
+\cref{fig:examples}. Similar to the $\beta$ layouts, $\nu_{max}$ layouts for
 arbitrary $\alpha$ values can be expressed as a linear combination of the
 wind and solar PV only layouts.
 
-\begin{figure}[h!]
+\begin{figure*}[h!]
   \centering
-  \includegraphics[width = \chromowidth, center]{k=2cfMaxWind}
-  \includegraphics[width = \chromowidth, center]{k=2cfMaxSolar}
-  \caption{$\nu_{max}$ layouts constrained by K = 2 with $\alpha = 1$ (top) and $\alpha = 0$ (bottom).}
-  \label{fig:max2}
-\end{figure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{beta=1}
+    \caption{Examples of $\beta$ layouts for $\beta = 1$.}
+    \label{fig:betaExamples}    
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{k=2cfMax}
+    \caption{Examples of $\nu_{max}$ layouts constrained by K = 2 .}
+    \label{fig:cfMaxExamples}    
+  \end{subfigure}
+  \caption{Examples of heuristic layouts. In each sub figure, two sets of bars
+    corresponding to the $\alpha = 1$ and the $\alpha = 0$ layouts respectively
+    are shown.}
+  \label{fig:examples}
+\end{figure*}
 
-% MAYBE MOVE THIS TO SOMEWHERE ELSE?
+\subsection{Optimized layouts}
+\label{sec:optimized-layouts}
 
-%The $\beta$ and $\nu_{max}$ layouts are derived directly from the capacity
-%factor. They do not take the temporal production pattern into
-%account. By choosing VRES with different temporal patterns, it is
-%possible to reduce the backup needs. For homogeneous layouts, the
-%dimensionality of the problem is two (one if $\gamma$ is fixed), and the
-%optimum is trivially found. In the heterogeneous case, the
-%dimensionality of the problem is 2N. For the 30-node network at hand
-%2N = 60 and the optimization no longer trivial. The quest for optimal
-%layouts inside the 60 dimensional search space is the topic of
-%\cref{sec:cuckoo-search}.
-
-
+The optimization objective is minimization of the LCOE with respect to
+the 60 variables
+$\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$.  A number of optimization
+algorithms were tested of which Cukoo Search (CS), described in
+\cref{sec:cuckoo-search}, was found to be the most successful. All
+optimized layouts have been obtained using the CS algorithm. They will
+be denoted CS layouts.
 
 \section{Results}
 \label{sec:results}
@@ -541,14 +581,14 @@ energy, backup capacity and transmission capacity is lowered by the
 introduction of a small solar component, the savings do not compensate
 the higher cost of production for solar PV compared to onshore wind.
 
-\begin{figure}[h!]
+\begin{figure*}[p]
   \centering
-  \includegraphics[width = 1 \columnwidth]{data}
+  \includegraphics[width = 2 \columnwidth]{data}
   \caption{Overview of the key variables, backup energy $E^{B}$,
     backup capacity $\mathcal{K}^{B}$ and transmission capacity
     $\mathcal{K}^{T}$ along with the associated LCOE.}
   \label{fig:overview}
-\end{figure}
+\end{figure*}
 
 The cost components for the optimal $\beta$, $\nu_{max}$ and CS layouts are
 shown in \cref{fig:cost}. From this figure it is clear that the VRES
@@ -567,59 +607,45 @@ decrease in transmission costs.
 \end{figure}
 
 The optimal $\beta$, $\nu_{max}$ and CS layouts are shown in
-\cref{fig:beta,fig:max,fig:optimized}. Note that for $K=1$, the
+\cref{fig:optLayouts}. Note that for $K=1$, the
 $\beta$ and the $\nu_{max}$ layouts are both equal to the homogeneous
-layout.  From \cref{fig:max,fig:optimized} we see that the $\nu_{max}$
+layout.  From \cref{fig:cfMaxOpt,fig:csOpt} we see that the $\nu_{max}$
 and the CS layouts are quite similar. These figures also explain why
 the CS algorithm is able to include a solar component at a competitive
 cost; unlike the $\beta$ and $\nu_{max}$ layout definitions, the CS algorithm
 has the freedom to assign solar only to countries with poor wind
 resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the CS
 algorithms reallocates some of the wind resources, e.g. from Latvia
-(LV) to Portugal (PT), to counteract power flows. See \cref{fig:links}
-for details on the power flows on the network.
+(LV) to Portugal (PT), to counteract power flows. %See \cref{fig:links}
+%for details on the power flows on the network.
 
-% TODO: ADD COMMENTS!!
-% The CS layouts are very similar to the $\nu_{max}$ layouts, but a
-% small solar component is introduced by shifting countries with a low
-% $\nu^{W}$ from wind to solar PV.
-
-%The general tendency for the optimized layouts is that wind capacities
-%are moved towards the North Sea countries (Denmark, Netherlands, Great
-%Britain, Ireland, Norway, etc.). It seems like a reasonable choice as
-%their wind resource are generally better than for the central and
-%southern countries. 
+The $\beta$ layouts are shown in (a) and the
+$\nu_{max}$ layouts in (b). In both cases, $\alpha = 1$ correspond to the
+cost optimal mix. The optimal $CS$ layouts are shown in (c).
 
 
-\begin{figure}
+\begin{figure*}[p]
   \centering
-  \includegraphics[width = \chromowidth, center]{k=1cfMax}
-  \includegraphics[width = \chromowidth, center]{k=2beta}
-  \includegraphics[width = \chromowidth, center]{k=3beta}
-  \caption{$\beta$ layouts constrained by K = 1 (top), 2 (middle) and
-    3 (bottom) with $\alpha = 1$ corresponding to the cost optimal mix. }
-  \label{fig:beta}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width = \chromowidth, center]{k=1cfMax}
-  \includegraphics[width = \chromowidth, center]{k=2cfMax}
-  \includegraphics[width = \chromowidth, center]{k=3cfMax}
-  \caption{$\nu_{max}$ layouts constrained by K = 1 (top), 2
-    (middle) and 3 (bottom) with $\alpha = 1$ corresponding to the cost optimal mix. }
-  \label{fig:max}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width = \chromowidth, center]{VE50cuckooK=1@TRANS10k}
-  \includegraphics[width = \chromowidth, center]{VE50cuckooK=2@TRANS10k}
-  \includegraphics[width = \chromowidth, center]{VE50cuckooK=3@TRANS10k}
-  \caption{CS layouts constrained by K = 1 (top), 2 (middle) and 3
-    (bottom). }
-  \label{fig:optimized}
-\end{figure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{betaLayouts}
+    \caption{Optimal $\beta$ layouts (optimal mix at $\alpha = 1$).}
+    \label{fig:betaOpt}    
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{cfMaxLayouts}
+    \caption{Optimal $\nu_{max}$ layouts (optimal mix at $\alpha = 1$).}
+    \label{fig:cfMaxOpt}    
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{csLayouts}
+    \caption{CS optimized layouts.}
+    \label{fig:csOpt}    
+  \end{subfigure}
+  \caption{Optimal layouts. In each sub figure, three sets of bars
+    corresponding to values of K = 1 (left), 2 (middle), and 3 (right)
+    are shown.}
+  \label{fig:optLayouts}
+\end{figure*}
 
 \section{Sensitivity analysis}
 \label{sec:sensitivity-analysis}
@@ -666,23 +692,32 @@ To illustrate how the CS solution changes when transmission is taken
 into account, the link usage for the two solutions for K = 2 is shown
 in \cref{fig:links}.
 
-\begin{figure}[h!]
+\begin{figure*}[p]
   \centering
-  \includegraphics[width = 0.8\columnwidth]{VE50cuckooK=2@defaultLINKS}
-  \includegraphics[width = 0.8\columnwidth]{/VE50cuckooK=2@TRANS10kLINKS}
-  \caption{Overview of link usage for the CS optimized layouts
-    excluding (top) and including (bottom) transmission costs for K =
-    2. AC links are shown in black while HVDC links are shown in
-    red. Link capacities are indicated relative to the highest flow
-    (74 GW between Great Britain and France on the top figure). As
-    transmission costs are included in the optimization, the layout is
-    altered in a way that tends to decrease the load on HVDC links. This
-    tendency can be attributed to the fact that the cost of HVDC links
-    is significantly higher than the cost of AC links. An exception is
-    Great Britain where $\nu^{W}$ is so high that the resulting low cost
-    of wind energy outweighs the cost of the HVDC connections.}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@defaultLINKS}
+    \caption{Link usage for the CS layout (transmission excluded)
+      constrained by K = 2.}
+    \label{fig:linksNoTrans}    
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@TRANS10kLINKS}
+    \caption{Link usage for the CS layout (transmission included)
+      constrained by K = 2.}
+    \label{fig:linksTrans}    
+  \end{subfigure}
+  \caption{Overview of link usage. AC links are shown in black while
+    HVDC links are shown in red. Link capacities are indicated
+    relative to the highest flow (74 GW between Great Britain and
+    France in \cref{fig:linksNoTrans}). As transmission costs are included in
+    the optimization, the layout is altered in a way that tends to
+    decrease the load on HVDC links. This tendency can be attributed
+    to the fact that the cost of HVDC links is significantly higher
+    than the cost of AC links. An exception is Great Britain where
+    $\nu^{W}$ is so high that the resulting low cost of wind energy
+    outweighs the cost of the HVDC connections.}
   \label{fig:links}
-\end{figure}
+\end{figure*}
 
 From \cref{fig:links} we see that in the CS layout obtained with
 transmission included, the resources have been reallocated in such a
@@ -690,8 +725,6 @@ way that the link usage is decreased. In particular, the load on HVDC
 links (shown in red) is lower. Since the cost of HVDC links is
 significantly higher than the cost of AC links, it makes perfect sense
 that the load on these links has been decreased the most.
-
-\FloatBarrier
 
 \subsection{Reduced solar cost}
 \label{sec:reduced-solar-cost}
@@ -706,16 +739,16 @@ LCOE as a function of $\alpha$ is shown, similar to the lower left of
 \cref{fig:overview}, when the solar cost is reduced by a factor of 2
 and 4 respectively.
 
-\begin{figure}[h!]
+\begin{figure*}[p]
   \centering
-  \includegraphics[width = \columnwidth]{solarAnalysis}
+  \includegraphics[width = 2\columnwidth]{solarAnalysis}
   \caption{LCOE for different scalings of the solar cost. Shown are
     cost reductions by a factor of 2 (left) and 4 (right). From the
     figure, it is clear that for solar PV to be cost competitive to
     onshore wind, the cost must drop by a factor of
     $\approx$ 2.}
   \label{fig:red-solar}
-\end{figure}
+\end{figure*}
 
 A reduction of the solar cost by a factor of 2 shifts the optimal mix
 from 1 to around 0.9 similar to the optimum for backup energy and
@@ -731,23 +764,29 @@ $\alpha$ values are listed in \cref{tab:solar-alpha}.
 \begin{table}[h!]
   \centering
   \caption{Alpha values for optimal layouts for different scalings of
-    the solar cost. Shown are cost reductions by a factor of 2 (left)
-    and 4 (right).}
+    the solar cost.}
   \label{tab:solar-alpha}
-  \begin{tabular}[h!]{l c c c}\toprule
-    & K = 1 & K = 2 & K = 3 \\ \midrule
-    $\beta$ & 0.87 & 0.93 & 0.93 \\ 
-    $\nu_{max}$ & 0.87 & 0.87 & 0.87 \\ 
-    CS & 0.82 & 0.92 & 0.93 \\ \bottomrule
-  \end{tabular}
-  \hspace{30pt}
+  \begin{subtable}{\columnwidth}
+    \centering
+    \caption{Cost reductions by a factor of 2.} 
+    \begin{tabular}[h!]{l c c c}\toprule
+      & K = 1 & K = 2 & K = 3 \\ \midrule
+      $\beta$ & 0.87 & 0.93 & 0.93 \\ 
+      $\nu_{max}$ & 0.87 & 0.87 & 0.87 \\ 
+      CS & 0.82 & 0.92 & 0.93 \\ \bottomrule
+    \end{tabular}
+    \vspace{10pt}
+  \end{subtable}
+  \begin{subtable}{\columnwidth}
+    \centering
+    \caption{Cost reductions by a factor of 4.} 
   \begin{tabular}[h!]{l c c c}\toprule
     & K = 1 & K = 2 & K = 3 \\ \midrule
     $\beta$ & 0.67 & 0.67 & 0.67 \\ 
     $\nu_{max}$ & 0.67 & 0.67 & 0.73 \\ 
     CS & 0.68 & 0.78 & 0.81 \\ \bottomrule
-
   \end{tabular}
+\end{subtable}
 \end{table}
 
 \subsection{Offshore wind}
@@ -762,28 +801,32 @@ will be affected by the introduction of an offshore component. The
 immediate expectation is a significant increase in the LCOE since the
 cost of offshore wind is more than 100\% higher compared to onshore
 wind due to foundation expenses along with increased maintenance
-costs. However, the capacity factors for offshore sites are generally
-significantly higher than for onshore sites as indicated by
+costs. On the other hand, capacity factors for offshore sites are
+generally significantly higher than for onshore sites as indicated by
 \cref{tab:capacity-factors}.
 
-An offshore component is introduced by splitting the wind component
-into an onshore and an offshore component,
+It would be possible to introduce offshore wind on equal footing with
+onshore wind and solar PV. However, since offshore wind is much more
+expensive, an optimized layout would pose a 0\% offshore component,
+which is not a very interesting nor surprising result. Instead, a
+fixed offshore component is introduced by splitting the wind component
+into an onshore $\gamma^{W}$ and an offshore $\tilde{\gamma}^{W}$ component,
 
 \begin{equation}
   \label{eq:11}
-  \gamma^{W} = \gamma^{\text{OnW}} + \gamma^{\text{OffW}}, 
+  \gamma^{W} \to \gamma^{W} + \tilde{\gamma}^{W}, 
 \end{equation}
 
-for countries with suitable offshore regions. Explicitly these are: Denmark,
-Germany, Great Britain, Ireland, the Netherlands, France, Belgium, Norway
-and Sweden. Other countries retain onshore wind only. For simplicity,
-the magnitude of the offshore component is assigned by requiring that
-the offshore wind power generation accounts for a fixed share of the
-total wind power generation,
+for countries with suitable offshore regions. Explicitly these are:
+Denmark, Germany, Great Britain, Ireland, the Netherlands, France,
+Belgium, Norway and Sweden. Other countries retain onshore wind
+only. The magnitude of the offshore component is assigned by requiring
+that the offshore wind power generation accounts for a fixed share of
+the total wind power generation,
 
 \begin{equation}
   \label{eq:12}
-  \text{offshore share = }\frac{\gamma^{\text{OffW}}}{\gamma}.
+  \text{offshore share = }\frac{\tilde{\gamma}^W}{\gamma^{W} + \tilde{\gamma}^W}.
 \end{equation}
 
 Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
@@ -810,17 +853,15 @@ becomes less favourable as illustrated by
 \cref{fig:cost-offshore}. The CS optimized layouts for an offshore
 share of 50\% are shown in \cref{fig:layout-offshore}.
 
-\begin{figure}[h!]
+\begin{figure*}[p]
   \centering
-  \includegraphics[width = \chromowidth, center]{k=1offshore50pct}
-  \includegraphics[width = \chromowidth, center]{k=2offshore50pct}
-  \includegraphics[width = \chromowidth, center]{k=3offshore50pct}
-  \caption{CS layouts constrained by K = 1 (top), 2 (middle) and 3
-    (bottom) for an offshore share of 50\% for Denmark, Germany, Great
+  \includegraphics[width = 2\columnwidth, center]{offshoreLayouts}
+  \caption{CS layouts constrained by K = 1 (left), 2 (middle) and 3
+    (right) for an offshore share of 50\% for Denmark, Germany, Great
     Britain, Ireland, Netherlands, France, Belgium, Norway and
     Sweden.}
   \label{fig:layout-offshore}
-\end{figure}
+\end{figure*}
 
 %*************************************************************************
 \section{Discussion and conclusions}
@@ -843,30 +884,30 @@ algorithm, such a layout was found to reduce the LCOE by an additional
 current network structure, the primary cost reduction is of a more
 general nature. It can be attributed to the general tendency for the
 heterogeneous layouts to move wind capacities towards the North Sea
-countries (Denmark, Netherlands, Great Britain, Ireland, Norway,
-etc.). Since the wind resource quality is better than for the central
-and southern countries, the reallocation results in lower costs.
+countries. Since the wind resource quality is better than for the
+central and southern countries, the reallocation results in lower
+costs.
 
 % A cost reduction of 7\% compared to the homogeneously might seem
 % minor, but since the cost of a ?? is on the ??? scale, 7\% is
 % actually a very significant cost reduction.
 
-The cost reduction is a strong argument for a heterogeneous
-layout. However, the realisation might be a political challenge. Since
-the optimal placing of resources was derived from a system
-perspective, a realisation would require full collaboration from all
-countries. Countries with low capacity factors would no longer be self
-sufficient, and they would be forced to invest in foreign
-capacities. Convincing countries to let go of the independence of
-their electricity system and to move capital abroad might require some
-political effort. On the other hand, locating sufficient sites for
-onshore wind in the North Sea countries might very well pose a
-challenge too.
+%The cost reduction is a strong argument for a heterogeneous
+%layout. However, the realisation might be a political challenge. Since
+%the optimal placing of resources was derived from a system
+%perspective, a realisation would require full collaboration from all
+%countries. Countries with low capacity factors would no longer be self
+%sufficient, and they would be forced to invest in foreign
+%capacities. Convincing countries to let go of the independence of
+%their electricity system and to move capital abroad might require some
+%political effort. On the other hand, locating sufficient sites for
+%onshore wind in the North Sea countries might very well pose a
+%challenge too.
 
-The cost optimal layouts considered in this paper are almost
-exclusively based on wind. The reason is that onshore wind is
+The cost optimal layouts considered in the main analysis are almost
+exclusively based on onshore wind. The reason is that onshore wind is
 significantly cheaper than solar, partly due to lower capital
-expenses, partly due to lower capacity factor. In was found that the
+expenses, partly due to lower capacity factor. It was found that the
 cost of solar must decrease by a factor of $\approx$ 2 for a
 significant solar component to become profitable. Besides lowering the
 capital expenses, the solar cost could also be lowered by increasing
@@ -876,13 +917,18 @@ to the fixed position installation assumed in
 \cref{tab:capacity-factors}. In addition, studies on increasing the
 energy conversion efficiency are still being conducted.
 
-While the main analysis considered onshore wind only, the effect of
-introducing an offshore component was discussed briefly. Foundation
-expenses and increased maintenance costs makes offshore wind more
-expensive than onshore wind. Some of the additional expenses are
-compensated by higher offshore capacity factors along with a more
-stable temporal production pattern. In addition, the opposition from
-residents is usually lower than for onshore wind.
+The main analysis considered onshore wind only, but the effect of
+introducing an offshore component was also discussed. Foundation
+expenses and increased maintenance costs makes offshore wind
+significantly more expensive than onshore wind. Some of the additional
+expenses are compensated by higher offshore capacity factors along
+with a more stable temporal production pattern, but at the end of the
+day, offshore wind is still more expensive than onshore wind. However,
+there are other incentives for offshore wind. The opposition from
+residents is usually lower than for onshore wind, and the potential
+for expansion larger. The number of suitable onshore sites are final,
+and when they are exhausted, offshore wind might be the best
+alternative.
 
 In conclusion, it was found that a heterogeneous layout with wind
 resources shifted towards the North Sea countries decreases the LCOE
@@ -931,7 +977,7 @@ various types of storage.
 % nu is defined by country-wide avetage, thats why spainis os bad,
 % ahigher reoltuon might show interesting results
 
-\color{black}
+\FloatBarrier
 
 % *************************************************
 \section*{Bibliography}
@@ -940,6 +986,7 @@ various types of storage.
 \bibliographystyle{unsrt}%model3-num-names}
 \bibliography{references}
 
+\clearpage
 \appendix
 
 \subsection{Cuckoo search}
@@ -968,11 +1015,13 @@ The optimization objective is global minimization of the LCOE as a
 function of $\boldsymbol x$. The LCOE is a complicated function of the
 layout $\boldsymbol x$ for which derivative information is not
 available. With 30 countries, the dimensionality of the problem is 60,
-and the search space thus large. Efficient global optimization within
-a large search space is a problem which has been successfully
-addressed by a number of Nature inspired meta heuristic algorithms. By
-imitating the best features in nature, these algorithms achieve a
-unique balance between intensification (search around the current best
+and the search space thus large.
+
+Efficient global optimization within a large search space is a problem
+which has been successfully addressed by a number of Nature inspired
+meta heuristic algorithms. By imitating the best features in nature,
+these algorithms achieve a unique balance between intensification
+(search around the current best
 solution\footnote{In this section, the terms \textit{layout} and
   \textit{solution} are used interchangeably.})
 and diversification (exploration of the search space). Typical
@@ -1006,16 +1055,15 @@ a common structure:
 
 Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
 are generated by Lévy flights. A Lévy flight is a random walk with the
-Markov property. The step size is drawn from the heavy-tailed Lévy
-distribution\footnote{The original author and
-  others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
-  ($\beta = 0$). However, it was found that the algorithmic performance,
-  at least for the problem at hand, was increased significantly by
-  changing to an asymmetric distribution.}
-with scale parameter $c = 1$ and location parameter $\mu = 0$, a special
-case of the Lévy $\alpha$-stable distribution with stability parameter
-$\alpha = 1/2$ and skewness parameter $\beta = 1$. The large tail causes
-occasional jumps ensuring efficient diversification. The Lévy
+Markov property. The step size is drawn from a Lévy
+$\alpha$-stable distribution%\footnote{The original author and
+  %others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
+  %($\beta = 0$). However, it was found that the algorithmic performance,
+  %at least for the problem at hand, was increased significantly by
+  %changing to an asymmetric distribution.}
+with scale parameter $c = 1$, location parameter $\mu = 0$, stability
+parameter $\alpha = 1/2$ and skewness parameter $\beta = 1$. The large tail
+causes occasional jumps ensuring efficient diversification. The Lévy
 distribution was generated using a general method for generation of
 Lévy $\alpha$-stable distributions\cite{Weron1994}.
 
@@ -1043,7 +1091,7 @@ Lévy $\alpha$-stable distributions\cite{Weron1994}.
 % occasional jumps and thus ensures efficient exploration of the
 % solution space.
 
-\begin{algorithm}[h!]
+\begin{algorithm*}[t]
   \caption{Pseudo code for the cuckoo search implementation. The
     \textit{Evaluate} function evaluates egg costs. By passing an
     array of eggs to the \textit{Evaluate} function, rather than
@@ -1088,7 +1136,7 @@ Lévy $\alpha$-stable distributions\cite{Weron1994}.
     \State \Return \textit{bestNest}
     \EndFunction
   \end{algorithmic}
-\end{algorithm}
+\end{algorithm*}
 
 % The only major
 % difference is fixation of the scaling parameter $\alpha$ which was found to
