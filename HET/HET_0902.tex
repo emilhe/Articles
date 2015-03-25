@@ -96,11 +96,11 @@ cuckoo search
 \label{sec:one}
 %*************************************************************************
 
-The ambitious renewable targets set by the European leaders\cite{eu2050} imply
-that the renewable penetration will increase significantly in the
-years to come. 
-
-[TALK ABOUT ELECTRIFICATION HERE \cite{Williams12,ecf2050}]
+The ambitious renewable targets set by the European
+leaders \cite{eu2050} imply that the renewable penetration will
+increase significantly in the years to come. Electrification of
+transportation and other sectors will play a major role in the
+transition \cite{Williams12,ecf2050}.
 
 At present, the leading renewable technologies are wind, solar PV and
 hydro, of which only wind and solar PV have potential for large-scale
@@ -110,16 +110,16 @@ renewable energy resources (VRES), backup generation is needed if
 power outages are to be avoided. Backup generation equals additional
 system cost and must thus be kept at a minimum.
 
-The backup requirements depends on the mismatch between load and VRES
+The backup requirements depend on the mismatch between load and VRES
 generation. Using the degrees of freedom associated with the choice of
-VRES layout, it is possible to shape the temporal pattern towards the
-load pattern so that the mismatch, and thus the backup requirements,
-is lowered. It is possible to reduce the VRES layout is reduced to a
-single parameter, the mixing parameter, by assuming a homogeneous mix
-between wind and solar PV across all countries, and that all countries
-install enough VRES capacities to cover their load on average. This
-approatch is demonstrated e.g. in \cite{Heide2010,Heide2011} where
-balancing and storage optimal mixes are found.
+VRES assignments, it is possible to shape the temporal pattern towards
+the load pattern so that the mismatch, and thus the backup
+requirements, is lowered. Assuming a homogeneous mix between wind and
+solar across all countries, and that all countries install enough VRES
+capacities to cover their load on average, only a single degree of
+freedom remains. This approach is demonstrated e.g. in
+\cite{Heide2010,Heide2011} where balancing and storage optimal
+wind/solar mixes are found.
 
 Further reductions in backup requirements are possible by exchanging
 energy between the countries through a transmission network
@@ -148,7 +148,7 @@ The capacity factor is a number between 0 and 1, where 0 means no
 production and 1 means maximum production at all times. Capacity
 factors for the European countries for onshore wind, offshore wind and
 solar PV are listed in \cref{tab:capacity-factors}. The capacity
-factors were calculated using the Renewable Energy Atlas\cite{REA}
+factors were calculated using the Renewable Energy Atlas \cite{REA}
 (REA). The VRES layout at country level was chosen as a homogeneous
 distribution across the 50\% best sites. For wind conversion, the
 power curve of the Vestas V90 3.0MW turbine was assumed. For solar
@@ -162,20 +162,23 @@ applied.
 %PV when it is sunny. Backup is thus needed at windless
 %nights.
 
-The secondary reason the geographical variation of the temporal
-production pattern of VRES. For Europe, this effect is particularly
-important for wind since Europe is large compared to the wind
-correlation length of $\approx$ 1000 km \cite{Widen2011}.
+The second reason is the geographical variation of the temporal
+production pattern of each VRES. This effect is particularly important
+for wind since Europe is large compared to the wind correlation length
+of $\approx$ 1000 km \cite{Widen2011}. Allocating resources taking
+this effect into account, it is possible to smooth out the aggregated
+temporal pattern, or even shape it towards the temporal pattern of the
+load as done by \cite{Heide2010,Heide2011} with the wind/solar mix.
 
-With these points in mind, allocating resources in proportion to the
-mean load of a country and an overall fixed mixing factor does not
-seem ideal. In this paper, the homogeneous assumption is
-lifted. Different approaches to cope with the resulting large number
-of degrees of freedom are considered ranging from heuristic layouts
-constructed from resource quality knowledge to layouts obtained
-through numerical optimization. The objective is to find heterogeneous
-layouts with properties superior to the homogeneous layouts, in
-particular a lower cost of electricity.
+With these points in mind, allocating resources proportional to the
+mean load of a country in accordance with a homogeneous wind/solar
+mixing factor does not seem ideal. In this paper, the homogeneous
+assumption is lifted. Different approaches to cope with the resulting
+large number of degrees of freedom are considered ranging from
+heuristic layouts constructed from resource quality knowledge to
+layouts obtained through numerical optimization. The objective is to
+find heterogeneous layouts with properties superior to the homogeneous
+layouts, in particular a lower cost of electricity.
 
 %\textcolor{orange}{Two previous papers \cite{Rombauts11,Roques09} have applied
 %Optimal Portfolio Theory to explore heterogeneous distributions of
@@ -568,8 +571,9 @@ different data sets used for wind and solar PV. For transmission
 capacity, the minimum is around $\alpha = 0.4$, indicating a high share of
 solar PV. While the wind correlation length is around $\approx$ 1000
 km \cite{Widen2011} and thus smaller than Europe, the occurrence of
-sun light is highly correlated for the European countries
-\cite{Timo}. Therefore, a high wind share causes more power to flow
+sun light is highly correlated for the European countries.
+%\cite{Timo}. 
+Therefore, a high wind share causes more power to flow
 between the countries.
 
 The main variable of interest, the LCOE, shows a very clear
@@ -907,15 +911,15 @@ costs.
 The cost optimal layouts considered in the main analysis are almost
 exclusively based on onshore wind. The reason is that onshore wind is
 significantly cheaper than solar, partly due to lower capital
-expenses, partly due to lower capacity factor. It was found that the
+expenses, partly due to higher capacity factor. It was found that the
 cost of solar must decrease by a factor of $\approx$ 2 for a
 significant solar component to become profitable. Besides lowering the
 capital expenses, the solar cost could also be lowered by increasing
 the capacity factor. Based on data from \cite{REA}, the capacity factor can
 be increased by $\approx$ 40\% by applying dual axis tracking compared
 to the fixed position installation assumed in
-\cref{tab:capacity-factors}. In addition, studies on increasing the
-energy conversion efficiency are still being conducted.
+\cref{tab:capacity-factors}. %In addition, studies on increasing the
+%energy conversion efficiency are still being conducted.
 
 The main analysis considered onshore wind only, but the effect of
 introducing an offshore component was also discussed. Foundation
@@ -1029,17 +1033,17 @@ examples are genetic algorithms \cite{Goldberg1989} and particle swarm
 optimization \cite{Kennedy95}. In this paper, a recent addition
 \cite{YangDeb} to the family, cuckoo search (CS), has been applied.
 
-Cuckoo birds practice an aggressive breeding behaviour where the female
-cuckoos lay their eggs in the nests of other birds. If the host bird
-discovers the alien egg, the egg is thrown away, or the nest is
-abandoned. To avoid this fate, some cuckoo species have specialized in
-mimicking the visual appearance of the egg of the host species
-\cite{Payne2005}. In the CS algorithm, the cuckoo eggs represent
-solutions. The nest is simply a container holding one or
-more eggs. For simplicity, each nest will hold only one egg. The
-actual implementation differs slightly across the
-literature\cite{YangDeb,Walton,Tuba}, but most implementations follow
-a common structure:
+%Cuckoo birds practice an aggressive breeding behaviour where the female
+%cuckoos lay their eggs in the nests of other birds. If the host bird
+%discovers the alien egg, the egg is thrown away, or the nest is
+%abandoned. To avoid this fate, some cuckoo species have specialized in
+%mimicking the visual appearance of the egg of the host species
+%cite{Payne2005}. 
+In the CS algorithm, the cuckoo eggs represent solutions. The nest is
+simply a container holding one or more eggs. For simplicity, each nest
+will hold only one egg. The actual implementation differs slightly
+across the literature\cite{YangDeb,Walton,Tuba}, but most
+implementations follow a common structure:
 
 \begin{enumerate}
 \item Initially, each of the $X$
@@ -1053,8 +1057,8 @@ a common structure:
   criteria is fulfilled.
 \end{enumerate}
 
-Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
-are generated by Lévy flights. A Lévy flight is a random walk with the
+%Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
+New eggs are generated by Lévy flights. A Lévy flight is a random walk with the
 Markov property. The step size is drawn from a Lévy
 $\alpha$-stable distribution%\footnote{The original author and
   %others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
@@ -1142,17 +1146,18 @@ Lévy $\alpha$-stable distributions\cite{Weron1994}.
 % difference is fixation of the scaling parameter $\alpha$ which was found to
 % improve performance significantly.
 
-In the CS implementation used in this paper, the eggs are split into
-bad eggs (the to-be-abandoned $p$ fraction) and good eggs (the
-remaining $1-p$ fraction). The bad eggs are replaced immediately by
-new ones generated by Lévy flights starting from the old eggs. New
-trails eggs are generated by Lévy flights starting from the good
-eggs. Each trail egg is dropped into a random nest, and the receiving
-nest rejects the worse of the two eggs. A value of $p$ around $0.75$
-gave the best performance. Mimicking of the host egg, approximated by
-the current best egg $\boldsymbol x_{best}$, is modelled by biasing
-the Lévy flight towards $\boldsymbol x_{best}$. In practice, the step
-size is scaled by a factor of
+In the CS implementation used in this paper, the nests are split into
+\textit{bad nests} (the to-be-abandoned $p$ fraction) and
+\textit{good nests} (the remaining $1-p$ fraction). The eggs in the
+bad nests are replaced immediately by new ones generated by Lévy
+flights starting from the old eggs. New trail eggs are generated by
+Lévy flights starting from the eggs in the good nests. Each trail egg
+is dropped into a random nest, and the receiving nest rejects the
+worse of the two eggs. A value of $p$ around $0.75$ gave the best
+performance. Mimicking of the host egg, approximated by the current
+best egg $\boldsymbol x_{best}$, is modelled by biasing the Lévy
+flight towards $\boldsymbol x_{best}$. In practice, the step size is
+scaled by a factor of
 $\paren{\boldsymbol x_{best}- \boldsymbol x_{i}}$. The Lévy flight
 thus takes the form
 
@@ -1166,9 +1171,9 @@ problems (the current included), a value $A \approx 1$ is appropriate. It is
 possible that a solution generated by Lévy flight is outside the
 search space defined by \cref{eq:k-factor} and the implicit constraint
 $0 \leq \alpha_{n} \leq 1$. In this case, any invalid value is shifted to
-the nearest boundary value: A value of $\alpha_{n} = 1.1$ is changed to
-$\alpha_{n} = 1.0$ while a value of $\gamma_{n} = \frac{1}{K+2}$ is changed to
-$\gamma_{n} = \frac{1}{K}$.
+the nearest boundary value. %: A value of $\alpha_{n} = 1.1$ is changed to
+%$\alpha_{n} = 1.0$ while a value of $\gamma_{n} = \frac{1}{K+2}$ is changed to
+%$\gamma_{n} = \frac{1}{K}$.
 
 % The interpolation was performed as a simple linear interpolation
 % between two solutions $\boldsymbol x_{i}$ and $\boldsymbol x_{j}$
@@ -1192,10 +1197,9 @@ scaling of the $\gamma$ values such that
   \sum_{n} \gamma_{n} \langle L_{n} \rangle = \langle L_{EU} \rangle
 \end{equation}
 
-is fulfilled. The renormalization might cause a violation of
-\cref{eq:k-factor}. In this case, the solution is rejected and a
-new one generated. This procedure is repeated until a valid solution
-is found.
+is fulfilled. If the renormalized solution violates
+\cref{eq:k-factor}, it is rejected and a new one generated. This
+procedure is repeated until a valid solution is found.
 
 The termination criteria was chosen as a fixed number of
 iterations. In each iteration, $X$ function evaluations are performed,
@@ -1207,9 +1211,9 @@ the full 32 year data set.
 
 Starting from a completely random population, it was found that around
 50,000 function evaluations were required to reach a stable
-solution\footnote{Non-biased optimizations and parameter tuning were
-  performed excluding transmission costs to decrease computation time,
-  see \cref{sec:incl-transm-optim} for details.}.
+solution%\footnote{Non-biased optimizations and parameter tuning were
+  %performed excluding transmission costs to decrease computation time,
+  %see \cref{sec:incl-transm-optim} for details.}.
 It is possible to decrease the required number of function evaluations
 by planting a best-guess solution in the initial population. The
 drawback of this approach is the biasing of the search. Other,
