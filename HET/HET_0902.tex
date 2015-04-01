@@ -74,18 +74,18 @@
   inefficient use of the resources, resulting in high system costs. A
   heterogeneous redistribution of renewable assets maximising the
   overall capacity factor results in smaller investments in renewable
-  capacities, but higher costs of transmission. The cuckoo search
-  algorithm is used to find optimal distributions of production
-  capacities minimising backup, transmission and renewable capacity
-  costs simultaneously, resulting in lower costs of electricity.
+  capacities, but higher costs of transmission. An adaptive gradient
+  descent algorithm is used to find optimal distributions of
+  production capacities minimising backup, transmission and renewable
+  capacity costs simultaneously, resulting in lower costs of
+  electricity.
 \end{abstract}
 
 \begin{keyword}
 renewable energy system \sep 
 levelised cost of electricity \sep
 wind power generation \sep
-solar power generation \sep
-cuckoo search 
+solar power generation 
 \end{keyword}
 
 \end{frontmatter}
@@ -555,10 +555,10 @@ wind and solar PV only layouts.
 The optimization objective is minimization of the LCOE with respect to
 the 60 variables
 $\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$.  A number of optimization
-algorithms were tested of which Cukoo Search (CS), described in
-\cref{sec:cuckoo-search}, was found to be the most successful. All
-optimized layouts have been obtained using the CS algorithm. They will
-be denoted CS layouts.
+algorithms were tested of which adaptive gradient
+descent(AGD),%described in \cref{sec:cuckoo-search},
+was found to most effective. All optimized layouts have been obtained
+using an AGD algorithm. They will be denoted AGD layouts.
 
 \section{Results}
 \label{sec:results}
@@ -594,39 +594,38 @@ the higher cost of production for solar PV compared to onshore wind.
   \label{fig:overview}
 \end{figure*}
 
-The cost components for the optimal $\beta$, $\nu_{max}$ and CS layouts are
+The cost components for the optimal $\beta$, $\nu_{max}$ and AGD layouts are
 shown in \cref{fig:cost}. From this figure it is clear that the VRES
 cost is dominating, which explains the wind monopole for the $\beta$ and
-$\nu_{max}$ layouts. The CS layouts include a small solar component,
-decreasing with increasing K values. The CS layouts are noticeably
+$\nu_{max}$ layouts. The AGD layouts include a small solar component,
+decreasing with increasing K values. The AGD layouts are noticeably
 cheaper than both the $\beta$ and the $\nu_{max}$ layouts, primarily due a
 decrease in transmission costs.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costVE50}
-  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and CS layouts
+  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and AGD layouts
     for K = 1 (left), 2 (middle) and 3 (right).}
   \label{fig:cost}
 \end{figure}
 
-The optimal $\beta$, $\nu_{max}$ and CS layouts are shown in
-\cref{fig:optLayouts}. Note that for $K=1$, the
-$\beta$ and the $\nu_{max}$ layouts are both equal to the homogeneous
-layout.  From \cref{fig:cfMaxOpt,fig:csOpt} we see that the $\nu_{max}$
-and the CS layouts are quite similar. These figures also explain why
-the CS algorithm is able to include a solar component at a competitive
-cost; unlike the $\beta$ and $\nu_{max}$ layout definitions, the CS algorithm
-has the freedom to assign solar only to countries with poor wind
-resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the CS
+The optimal $\beta$, $\nu_{max}$ and AGD layouts are shown in
+\cref{fig:optLayouts}. Note that for $K=1$, the $\beta$ and the
+$\nu_{max}$ layouts are both equal to the homogeneous layout. From
+\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the AGD
+layouts are quite similar. These figures also explain why the AGD
+algorithm is able to include a solar component at a competitive cost;
+unlike the $\beta$ and $\nu_{max}$ layout definitions, the AGD algorithm has
+the freedom to assign solar only to countries with poor wind
+resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the AGD
 algorithms reallocates some of the wind resources, e.g. from Latvia
-(LV) to Portugal (PT), to counteract power flows. %See \cref{fig:links}
-%for details on the power flows on the network.
+(LV) to Portugal (PT), to counteract power flows as, see
+\cref{fig:links}.
 
-The $\beta$ layouts are shown in (a) and the
-$\nu_{max}$ layouts in (b). In both cases, $\alpha = 1$ correspond to the
-cost optimal mix. The optimal $CS$ layouts are shown in (c).
-
+%The $\beta$ layouts are shown in \cref{fig:betaOpt} and the $\nu_{max}$ layouts in \cref{fig:cfMaxOpt}. In
+%both cases, $\alpha = 1$ correspond to the cost optimal mix. The optimal
+%$AGD$ layouts are shown in \cref{fig:agdOpt}.
 
 \begin{figure*}[p]
   \centering
@@ -642,8 +641,8 @@ cost optimal mix. The optimal $CS$ layouts are shown in (c).
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
     \includegraphics[width = \chromowidth, center]{csLayouts}
-    \caption{CS optimized layouts.}
-    \label{fig:csOpt}    
+    \caption{AGD optimized layouts.}
+    \label{fig:agdOpt}    
   \end{subfigure}
   \caption{Optimal layouts. In each sub figure, three sets of bars
     corresponding to values of K = 1 (left), 2 (middle), and 3 (right)
@@ -651,90 +650,115 @@ cost optimal mix. The optimal $CS$ layouts are shown in (c).
   \label{fig:optLayouts}
 \end{figure*}
 
+ \begin{figure*}[p]
+   \centering
+   \begin{subfigure}{2\columnwidth}
+     \includegraphics[width = 0.75 \columnwidth, center]{cfMaxK=3LINKS}
+     \caption{Link usage for the $\nu_{max}$ layout constrained by K = 3.}
+     \label{fig:linksCfMax}    
+   \end{subfigure}
+   \begin{subfigure}{2\columnwidth}
+     \includegraphics[width = 0.75 \columnwidth, center]{seqK=3localizedLINKS}
+     \caption{Link usage for the AGD layout constrained by K = 3.}
+     \label{fig:linksTransAgd}    
+   \end{subfigure}
+   \caption{Overview of link usage. AC links are shown in black while
+     HVDC links are shown in red. Link capacities are indicated
+     relative to the highest flow (110 GW between Great Britain and
+     France in \cref{fig:linksCfMax}). In the AGD layout, resources
+     are allocated in a way that tends to decrease the load on
+     especially the HVDC links. This tendency can be attributed to the
+     fact that the cost of HVDC links is significantly higher than the
+     cost of AC links. An exception is Great Britain where $\nu^{W}$ is
+     so high that the resulting low cost of wind energy outweighs the
+     cost of the HVDC connections.}
+   \label{fig:links}
+ \end{figure*}
+
 \section{Sensitivity analysis}
 \label{sec:sensitivity-analysis}
 
-\subsection{Excluding transmission in the optimization}
-\label{sec:incl-transm-optim}
-
-While the main findings include only three optimized layouts, for K =
-1, 2 and 3, numerous optimizations must be performed to allow
-convergence analysis, parameter tuning, and sensitivity analysis. In
-this case, each optimization taking more than a day is impractical. 
-
-As mentioned in \cref{sec:cuckoo-search}, the computation time can be
-decreased by analysing only a subset of the 32 years of data. However,
-going below one year is not ideal as this choice would imply
-neglecting important seasonal fluctuations. Numerically, the most
-costly operation in the analysis is the quadratic optimization problem,
-\cref{eq:step1}, which is solved in each iteration to determine the
-flows. This step is not needed to determine backup properties. By
-skipping the step, it is possible to speed up the optimization by more
-than a factor of 50. Layouts obtained by optimization excluding
-transmission are shown in \cref{fig:cost-no-transmission}.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width = \columnwidth]{costTransVE50}
-  \caption{Cost details for the optimal layouts for K = 1 (left), 2
-    (middle) and 3 (right) for $\beta$, $\nu_{max}$ and CS (transmission excluded).}
-  \label{fig:cost-no-transmission}
-\end{figure}
-
-It is clear that the optimization succeeds in decreasing the cost of
-all, but the transmission component. However, for K = 2 and K = 3, the
-associated increase in transmission cost is so large that the CS
-layouts end up being more expensive than the $\nu_{max}$ layouts at
-$\alpha = 1$. The difference between the CS layouts with transmission
-included/excluded is noticeable, but the CS solution obtained without
-transmission is still fairly good. For convergence analysis, parameter
-tuning, and sensitivity analysis, optimizations have been performed
-excluding transmission costs. This includes all CS solutions presented
-in this section.
-
-To illustrate how the CS solution changes when transmission is taken
-into account, the link usage for the two solutions for K = 2 is shown
-in \cref{fig:links}.
-
-\begin{figure*}[p]
-  \centering
-  \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@defaultLINKS}
-    \caption{Link usage for the CS layout (transmission excluded)
-      constrained by K = 2.}
-    \label{fig:linksNoTrans}    
-  \end{subfigure}
-  \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@TRANS10kLINKS}
-    \caption{Link usage for the CS layout (transmission included)
-      constrained by K = 2.}
-    \label{fig:linksTrans}    
-  \end{subfigure}
-  \caption{Overview of link usage. AC links are shown in black while
-    HVDC links are shown in red. Link capacities are indicated
-    relative to the highest flow (74 GW between Great Britain and
-    France in \cref{fig:linksNoTrans}). As transmission costs are included in
-    the optimization, the layout is altered in a way that tends to
-    decrease the load on HVDC links. This tendency can be attributed
-    to the fact that the cost of HVDC links is significantly higher
-    than the cost of AC links. An exception is Great Britain where
-    $\nu^{W}$ is so high that the resulting low cost of wind energy
-    outweighs the cost of the HVDC connections.}
-  \label{fig:links}
-\end{figure*}
-
-From \cref{fig:links} we see that in the CS layout obtained with
-transmission included, the resources have been reallocated in such a
-way that the link usage is decreased. In particular, the load on HVDC
-links (shown in red) is lower. Since the cost of HVDC links is
-significantly higher than the cost of AC links, it makes perfect sense
-that the load on these links has been decreased the most.
+%\subsection{Excluding transmission in the optimization}
+%\label{sec:incl-transm-optim}
+%
+%While the main findings include only three optimized layouts, for K =
+%1, 2 and 3, numerous optimizations must be performed to allow
+%convergence analysis, parameter tuning, and sensitivity analysis. In
+%this case, each optimization taking more than a day is impractical. 
+%
+%As mentioned in \cref{sec:cuckoo-search}, the computation time can be
+%decreased by analysing only a subset of the 32 years of data. However,
+%going below one year is not ideal as this choice would imply
+%neglecting important seasonal fluctuations. Numerically, the most
+%costly operation in the analysis is the quadratic optimization problem,
+%\cref{eq:step1}, which is solved in each iteration to determine the
+%flows. This step is not needed to determine backup properties. By
+%skipping the step, it is possible to speed up the optimization by more
+%than a factor of 50. Layouts obtained by optimization excluding
+%transmission are shown in \cref{fig:cost-no-transmission}.
+%
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width = \columnwidth]{costTransVE50}
+%  \caption{Cost details for the optimal layouts for K = 1 (left), 2
+%    (middle) and 3 (right) for $\beta$, $\nu_{max}$ and CS (transmission excluded).}
+%  \label{fig:cost-no-transmission}
+%\end{figure}
+%
+%It is clear that the optimization succeeds in decreasing the cost of
+%all, but the transmission component. However, for K = 2 and K = 3, the
+%associated increase in transmission cost is so large that the CS
+%layouts end up being more expensive than the $\nu_{max}$ layouts at
+%$\alpha = 1$. The difference between the CS layouts with transmission
+%included/excluded is noticeable, but the CS solution obtained without
+%transmission is still fairly good. For convergence analysis, parameter
+%tuning, and sensitivity analysis, optimizations have been performed
+%excluding transmission costs. This includes all CS solutions presented
+%in this section.
+%
+%To illustrate how the CS solution changes when transmission is taken
+%into account, the link usage for the two solutions for K = 2 is shown
+%in \cref{fig:links}.
+%
+%\begin{figure*}[p]
+%  \centering
+%  \begin{subfigure}{2\columnwidth}
+%    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@defaultLINKS}
+%    \caption{Link usage for the CS layout (transmission excluded)
+%      constrained by K = 2.}
+%    \label{fig:linksNoTrans}    
+%  \end{subfigure}
+%  \begin{subfigure}{2\columnwidth}
+%    \includegraphics[width = 0.75 \columnwidth, center]{VE50cuckooK=2@TRANS10kLINKS}
+%    \caption{Link usage for the CS layout (transmission included)
+%      constrained by K = 2.}
+%    \label{fig:linksTrans}    
+%  \end{subfigure}
+%  \caption{Overview of link usage. AC links are shown in black while
+%    HVDC links are shown in red. Link capacities are indicated
+%    relative to the highest flow (74 GW between Great Britain and
+%    France in \cref{fig:linksNoTrans}). As transmission costs are included in
+%    the optimization, the layout is altered in a way that tends to
+%    decrease the load on HVDC links. This tendency can be attributed
+%    to the fact that the cost of HVDC links is significantly higher
+%    than the cost of AC links. An exception is Great Britain where
+%    $\nu^{W}$ is so high that the resulting low cost of wind energy
+%    outweighs the cost of the HVDC connections.}
+%  \label{fig:links}
+%\end{figure*}
+%
+%From \cref{fig:links} we see that in the CS layout obtained with
+%transmission included, the resources have been reallocated in such a
+%way that the link usage is decreased. In particular, the load on HVDC
+%links (shown in red) is lower. Since the cost of HVDC links is
+%significantly higher than the cost of AC links, it makes perfect sense
+%that the load on these links has been decreased the most.
 
 \subsection{Reduced solar cost}
 \label{sec:reduced-solar-cost}
 
 For the $\beta$ as well as the $\nu_{max}$ layouts, the optimal
-$\alpha$ values are 1. Even for the CS layouts, only a minor solar
+$\alpha$ values are 1. Even for the AGD layouts, only a minor solar
 component is present. As mentioned previously, this tendency is a
 consequence of the higher cost of energy production for solar PV
 compared to onshore wind. In this section, the sensitivity of the
@@ -839,7 +863,7 @@ Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costOffshoreVE50}
-  \caption{Cost details for the CS optimal layouts for K = 1 (left),
+  \caption{Cost details for the AGD optimal layouts for K = 1 (left),
     2 (middle) and 3 (right) for offshore shares of 0\%, 25\% and 50\%.}
   \label{fig:cost-offshore}
 \end{figure}
@@ -854,15 +878,15 @@ time steps the onshore production is low while the offshore production
 is high. The introduction of an offshore component thus tends to
 smooth out the wind production time series. As a side effect, solar
 becomes less favourable as illustrated by
-\cref{fig:cost-offshore}. The CS optimized layouts for an offshore
+\cref{fig:cost-offshore}. The AGD optimized layouts for an offshore
 share of 50\% are shown in \cref{fig:layout-offshore}.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth, center]{offshoreLayouts}
-  \caption{CS layouts constrained by K = 1 (left), 2 (middle) and 3
+  \caption{AGD layouts constrained by K = 1 (left), 2 (middle) and 3
     (right) for an offshore share of 50\% for Denmark, Germany, Great
-    Britain, Ireland, Netherlands, France, Belgium, Norway and
+    Britain, Ireland, the Netherlands, France, Belgium, Norway and
     Sweden.}
   \label{fig:layout-offshore}
 \end{figure*}
@@ -882,15 +906,15 @@ country installs VRES capacities covering a minimum of 50\% and
 maximum of 200\% of their mean load, the LCOE can be lowered by almost
 5\% by choosing the heuristic $\nu_{max}$ layout which maximises the
 overall capacity factor. Further reduction of the cost can be achieved
-by reducing backup and/or transmission costs. Using the cuckoo search
-algorithm, such a layout was found to reduce the LCOE by an additional
-2\%. While the additional cost reduction of 2\% relies heavily on the
-current network structure, the primary cost reduction is of a more
-general nature. It can be attributed to the general tendency for the
-heterogeneous layouts to move wind capacities towards the North Sea
-countries. Since the wind resource quality is better than for the
-central and southern countries, the reallocation results in lower
-costs.
+by reducing backup and/or transmission costs. Using the adaptive
+gradient descent algorithm, such a layout was found to reduce the LCOE
+by an additional 2\%. While the additional cost reduction of 2\%
+relies heavily on the current network structure, the primary cost
+reduction is of a more general nature. It can be attributed to the
+general tendency for the heterogeneous layouts to move wind capacities
+towards the North Sea countries. Since the wind resource quality is
+better than for the central and southern countries, the reallocation
+results in lower costs.
 
 % A cost reduction of 7\% compared to the homogeneously might seem
 % minor, but since the cost of a ?? is on the ??? scale, 7\% is
@@ -981,7 +1005,7 @@ various types of storage.
 % nu is defined by country-wide avetage, thats why spainis os bad,
 % ahigher reoltuon might show interesting results
 
-\FloatBarrier
+%\FloatBarrier
 
 % *************************************************
 \section*{Bibliography}
@@ -990,253 +1014,253 @@ various types of storage.
 \bibliographystyle{unsrt}%model3-num-names}
 \bibliography{references}
 
-\clearpage
-\appendix
+% \clearpage
+% \appendix
 
-\subsection{Cuckoo search}
-\label{sec:cuckoo-search}
+% %\subsection{Cuckoo search}
+% %\label{sec:cuckoo-search}
+% %
+% % A European VRES layout is determined by the vectors
+% % $\boldsymbol \gamma$ and $\boldsymbol \alpha$, each with dimensionality
+% % $n$ equal to the number of nodes. For notational convenience, a
+% % complete solution vector $\boldsymbol x$ is constructed as
+% % $x_{1} = \gamma_{1}, ..., x_{n} = \gamma_{n}, x_{n+1} = \alpha_{1}, ...,
+% % x_{2n} = \alpha_{n}$.
+% % The entries of the solution vector must fulfil the constraints
 
-% A European VRES layout is determined by the vectors
-% $\boldsymbol \gamma$ and $\boldsymbol \alpha$, each with dimensionality
-% $n$ equal to the number of nodes. For notational convenience, a
-% complete solution vector $\boldsymbol x$ is constructed as
-% $x_{1} = \gamma_{1}, ..., x_{n} = \gamma_{n}, x_{n+1} = \alpha_{1}, ...,
-% x_{2n} = \alpha_{n}$.
-% The entries of the solution vector must fulfil the constraints
+% % \begin{align}
+% %   \frac{1}{K} &\leq \gamma_{i} \leq K, \label{eq:kLimits}  \\
+% %   0 &\leq \alpha_{i} \leq 1, \label{eq:aLimits} \\
+% %   \sum_{i} \gamma_{i} \langle L_{i} \rangle &= \langle L_{EU} \rangle
+% %   . \label{eq:yLimits}
+% % \end{align}
 
-% \begin{align}
-%   \frac{1}{K} &\leq \gamma_{i} \leq K, \label{eq:kLimits}  \\
-%   0 &\leq \alpha_{i} \leq 1, \label{eq:aLimits} \\
-%   \sum_{i} \gamma_{i} \langle L_{i} \rangle &= \langle L_{EU} \rangle
-%   . \label{eq:yLimits}
-% \end{align}
+% For notational convenience, a complete layout vector $\boldsymbol x$
+% is constructed as
+% $x_{1} = \gamma_{1}, ..., x_{N} =\gamma_{N}, x_{N+1} = \alpha_{1}, ...,
+% x_{2N} = \alpha_{N}$.
+% The optimization objective is global minimization of the LCOE as a
+% function of $\boldsymbol x$. The LCOE is a complicated function of the
+% layout $\boldsymbol x$ for which derivative information is not
+% available. With 30 countries, the dimensionality of the problem is 60,
+% and the search space thus large.
 
-For notational convenience, a complete layout vector $\boldsymbol x$
-is constructed as
-$x_{1} = \gamma_{1}, ..., x_{N} =\gamma_{N}, x_{N+1} = \alpha_{1}, ...,
-x_{2N} = \alpha_{N}$.
-The optimization objective is global minimization of the LCOE as a
-function of $\boldsymbol x$. The LCOE is a complicated function of the
-layout $\boldsymbol x$ for which derivative information is not
-available. With 30 countries, the dimensionality of the problem is 60,
-and the search space thus large.
+% Efficient global optimization within a large search space is a problem
+% which has been successfully addressed by a number of Nature inspired
+% meta heuristic algorithms. By imitating the best features in nature,
+% these algorithms achieve a unique balance between intensification
+% (search around the current best
+% solution\footnote{In this section, the terms \textit{layout} and
+%   \textit{solution} are used interchangeably.})
+% and diversification (exploration of the search space). Typical
+% examples are genetic algorithms \cite{Goldberg1989} and particle swarm
+% optimization \cite{Kennedy95}. In this paper, a recent addition
+% \cite{YangDeb} to the family, cuckoo search (CS), has been applied.
 
-Efficient global optimization within a large search space is a problem
-which has been successfully addressed by a number of Nature inspired
-meta heuristic algorithms. By imitating the best features in nature,
-these algorithms achieve a unique balance between intensification
-(search around the current best
-solution\footnote{In this section, the terms \textit{layout} and
-  \textit{solution} are used interchangeably.})
-and diversification (exploration of the search space). Typical
-examples are genetic algorithms \cite{Goldberg1989} and particle swarm
-optimization \cite{Kennedy95}. In this paper, a recent addition
-\cite{YangDeb} to the family, cuckoo search (CS), has been applied.
+% %Cuckoo birds practice an aggressive breeding behaviour where the female
+% %cuckoos lay their eggs in the nests of other birds. If the host bird
+% %discovers the alien egg, the egg is thrown away, or the nest is
+% %abandoned. To avoid this fate, some cuckoo species have specialized in
+% %mimicking the visual appearance of the egg of the host species
+% %cite{Payne2005}. 
+% In the CS algorithm, the cuckoo eggs represent solutions. The nest is
+% simply a container holding one or more eggs. For simplicity, each nest
+% will hold only one egg. The actual implementation differs slightly
+% across the literature\cite{YangDeb,Walton,Tuba}, but most
+% implementations follow a common structure:
 
-%Cuckoo birds practice an aggressive breeding behaviour where the female
-%cuckoos lay their eggs in the nests of other birds. If the host bird
-%discovers the alien egg, the egg is thrown away, or the nest is
-%abandoned. To avoid this fate, some cuckoo species have specialized in
-%mimicking the visual appearance of the egg of the host species
-%cite{Payne2005}. 
-In the CS algorithm, the cuckoo eggs represent solutions. The nest is
-simply a container holding one or more eggs. For simplicity, each nest
-will hold only one egg. The actual implementation differs slightly
-across the literature\cite{YangDeb,Walton,Tuba}, but most
-implementations follow a common structure:
+% \begin{enumerate}
+% \item Initially, each of the $X$
+%   nests are populated by an egg selected randomly from within the
+%   solution space.
+% \item A fraction $p$ of the eggs are discovered by the host bird and
+%   abandoned.
+% \item New eggs are generated and dropped into the nests. The receiving
+%   nest rejects the worse of the two eggs.
+% \item Step 2 and 3 are repeated until a user defined termination
+%   criteria is fulfilled.
+% \end{enumerate}
 
-\begin{enumerate}
-\item Initially, each of the $X$
-  nests are populated by an egg selected randomly from within the
-  solution space.
-\item A fraction $p$ of the eggs are discovered by the host bird and
-  abandoned.
-\item New eggs are generated and dropped into the nests. The receiving
-  nest rejects the worse of the two eggs.
-\item Step 2 and 3 are repeated until a user defined termination
-  criteria is fulfilled.
-\end{enumerate}
+% %Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
+% New eggs are generated by Lévy flights. A Lévy flight is a random walk with the
+% Markov property. The step size is drawn from a Lévy
+% $\alpha$-stable distribution%\footnote{The original author and
+%   %others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
+%   %($\beta = 0$). However, it was found that the algorithmic performance,
+%   %at least for the problem at hand, was increased significantly by
+%   %changing to an asymmetric distribution.}
+% with scale parameter $c = 1$, location parameter $\mu = 0$, stability
+% parameter $\alpha = 1/2$ and skewness parameter $\beta = 1$. The large tail
+% causes occasional jumps ensuring efficient diversification. The Lévy
+% distribution was generated using a general method for generation of
+% Lévy $\alpha$-stable distributions\cite{Weron1994}.
 
-%Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
-New eggs are generated by Lévy flights. A Lévy flight is a random walk with the
-Markov property. The step size is drawn from a Lévy
-$\alpha$-stable distribution%\footnote{The original author and
-  %others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
-  %($\beta = 0$). However, it was found that the algorithmic performance,
-  %at least for the problem at hand, was increased significantly by
-  %changing to an asymmetric distribution.}
-with scale parameter $c = 1$, location parameter $\mu = 0$, stability
-parameter $\alpha = 1/2$ and skewness parameter $\beta = 1$. The large tail
-causes occasional jumps ensuring efficient diversification. The Lévy
-distribution was generated using a general method for generation of
-Lévy $\alpha$-stable distributions\cite{Weron1994}.
+% % The Lévy flight was simulated using Mantegna's
+% % algorithm\cite{Mantegna}.
 
-% The Lévy flight was simulated using Mantegna's
-% algorithm\cite{Mantegna}.
+% % In a Lévy flight, the
+% % following state $\boldsymbol x (t+1)$ depends only on the current
+% % state $\boldsymbol x(t)$,
 
-% In a Lévy flight, the
-% following state $\boldsymbol x (t+1)$ depends only on the current
-% state $\boldsymbol x(t)$,
+% % \begin{equation}
+% %   \boldsymbol x (t+1) = \boldsymbol x(t) + \alpha \mbox{Lévy}(\lambda)
+% % \end{equation}
 
-% \begin{equation}
-%   \boldsymbol x (t+1) = \boldsymbol x(t) + \alpha \mbox{Lévy}(\lambda)
-% \end{equation}
+% % where $\alpha$ is a problem dependent scaling parameter. A Lévy flight is a
+% % random walk with the step size drawn from the heavy-tailed Lévy
+% % distribution
 
-% where $\alpha$ is a problem dependent scaling parameter. A Lévy flight is a
-% random walk with the step size drawn from the heavy-tailed Lévy
-% distribution
+% % \begin{equation}
+% %   \label{eq:3}
+% %   \mbox{Lévy}(\lambda) \sim u = t^{-\lambda}, \mbox{ } (1 < \lambda \leq 3) 
+% % \end{equation}
 
-% \begin{equation}
-%   \label{eq:3}
-%   \mbox{Lévy}(\lambda) \sim u = t^{-\lambda}, \mbox{ } (1 < \lambda \leq 3) 
-% \end{equation}
+% % which has infinite variance and infinite mean. The large tails causes
+% % occasional jumps and thus ensures efficient exploration of the
+% % solution space.
 
-% which has infinite variance and infinite mean. The large tails causes
-% occasional jumps and thus ensures efficient exploration of the
-% solution space.
+% \begin{algorithm*}[t]
+%   \caption{Pseudo code for the cuckoo search implementation. The
+%     \textit{Evaluate} function evaluates egg costs. By passing an
+%     array of eggs to the \textit{Evaluate} function, rather than
+%     evaluation the eggs one by one, parallel evaluation is
+%     possible. The \textit{Sort} function sorts the eggs by cost in
+%     ascending order.}
+%   \label{csAlgo}
+%   \begin{algorithmic}
+%     \Function{CuckooSearch}{}
+%     \State \textit{nests} $\gets$ $X$ eggs selected randomly from within the
+%     solution space
+%     \State Evaluate(\textit{nests})
+%     \State Sort(\textit{nests})
+%     \State \textit{bestNest} $\gets$ \textit{nests[0]}
+%     \State \textit{generation} $\gets$ 0
+%     \While{termination criteria not fulfilled}
+%     \For{index \textit{i} of bad nests} 
+%     \State \textit{nests[i]}$\gets$ levy flight starting from \textit{nests[i]}
+%     \EndFor
+%     \For{index \textit{i} of good nests} 
+%     \State \textit{trailEggs[i]}$\gets$ levy flight starting from \textit{nests[i]}
+%     % \State \textit{j} $\gets$ index of a random good nest
+%     % \If{\textit{i} == \textit{j}}
+%     % \State \textit{trailEggs[i]} $\gets$ levy flight starting from \textit{nests[i]} 
+%     % \Else   
+%     % \State \textit{trailEggs[i]} $\gets$ interpolation between
+%     % \textit{nests[i]} and \textit{nests[j]}  
+%     % \EndIf
+%     \EndFor
+%     \State Evaluate(\textit{nests})
+%     \State Evaluate(\textit{trailEggs})
+%     \For{index \textit{i} of trailEggs} 
+%     \State \textit{j} $\gets$ index of a random nest
+%     \If {cost of \textit{nest[j]} $>$ cost of \textit{trailEggs[i]}}
+%     \State \textit{nest[j]} $\gets$ \textit{trailEggs[i]}
+%     \EndIf
+%     \EndFor
+%     \State Sort(\textit{nests})
+%     \State \textit{bestNest} $\gets$ \textit{nests[0]}
+%     \State \textit{generation} $\gets$ \textit{generation} + 1
+%     \EndWhile
+%     \State \Return \textit{bestNest}
+%     \EndFunction
+%   \end{algorithmic}
+% \end{algorithm*}
 
-\begin{algorithm*}[t]
-  \caption{Pseudo code for the cuckoo search implementation. The
-    \textit{Evaluate} function evaluates egg costs. By passing an
-    array of eggs to the \textit{Evaluate} function, rather than
-    evaluation the eggs one by one, parallel evaluation is
-    possible. The \textit{Sort} function sorts the eggs by cost in
-    ascending order.}
-  \label{csAlgo}
-  \begin{algorithmic}
-    \Function{CuckooSearch}{}
-    \State \textit{nests} $\gets$ $X$ eggs selected randomly from within the
-    solution space
-    \State Evaluate(\textit{nests})
-    \State Sort(\textit{nests})
-    \State \textit{bestNest} $\gets$ \textit{nests[0]}
-    \State \textit{generation} $\gets$ 0
-    \While{termination criteria not fulfilled}
-    \For{index \textit{i} of bad nests} 
-    \State \textit{nests[i]}$\gets$ levy flight starting from \textit{nests[i]}
-    \EndFor
-    \For{index \textit{i} of good nests} 
-    \State \textit{trailEggs[i]}$\gets$ levy flight starting from \textit{nests[i]}
-    % \State \textit{j} $\gets$ index of a random good nest
-    % \If{\textit{i} == \textit{j}}
-    % \State \textit{trailEggs[i]} $\gets$ levy flight starting from \textit{nests[i]} 
-    % \Else   
-    % \State \textit{trailEggs[i]} $\gets$ interpolation between
-    % \textit{nests[i]} and \textit{nests[j]}  
-    % \EndIf
-    \EndFor
-    \State Evaluate(\textit{nests})
-    \State Evaluate(\textit{trailEggs})
-    \For{index \textit{i} of trailEggs} 
-    \State \textit{j} $\gets$ index of a random nest
-    \If {cost of \textit{nest[j]} $>$ cost of \textit{trailEggs[i]}}
-    \State \textit{nest[j]} $\gets$ \textit{trailEggs[i]}
-    \EndIf
-    \EndFor
-    \State Sort(\textit{nests})
-    \State \textit{bestNest} $\gets$ \textit{nests[0]}
-    \State \textit{generation} $\gets$ \textit{generation} + 1
-    \EndWhile
-    \State \Return \textit{bestNest}
-    \EndFunction
-  \end{algorithmic}
-\end{algorithm*}
+% % The only major
+% % difference is fixation of the scaling parameter $\alpha$ which was found to
+% % improve performance significantly.
 
-% The only major
-% difference is fixation of the scaling parameter $\alpha$ which was found to
-% improve performance significantly.
+% In the CS implementation used in this paper, the nests are split into
+% \textit{bad nests} (the to-be-abandoned $p$ fraction) and
+% \textit{good nests} (the remaining $1-p$ fraction). The eggs in the
+% bad nests are replaced immediately by new ones generated by Lévy
+% flights starting from the old eggs. New trail eggs are generated by
+% Lévy flights starting from the eggs in the good nests. Each trail egg
+% is dropped into a random nest, and the receiving nest rejects the
+% worse of the two eggs. A value of $p$ around $0.75$ gave the best
+% performance. Mimicking of the host egg, approximated by the current
+% best egg $\boldsymbol x_{best}$, is modelled by biasing the Lévy
+% flight towards $\boldsymbol x_{best}$. In practice, the step size is
+% scaled by a factor of
+% $\paren{\boldsymbol x_{best}- \boldsymbol x_{i}}$. The Lévy flight
+% thus takes the form
 
-In the CS implementation used in this paper, the nests are split into
-\textit{bad nests} (the to-be-abandoned $p$ fraction) and
-\textit{good nests} (the remaining $1-p$ fraction). The eggs in the
-bad nests are replaced immediately by new ones generated by Lévy
-flights starting from the old eggs. New trail eggs are generated by
-Lévy flights starting from the eggs in the good nests. Each trail egg
-is dropped into a random nest, and the receiving nest rejects the
-worse of the two eggs. A value of $p$ around $0.75$ gave the best
-performance. Mimicking of the host egg, approximated by the current
-best egg $\boldsymbol x_{best}$, is modelled by biasing the Lévy
-flight towards $\boldsymbol x_{best}$. In practice, the step size is
-scaled by a factor of
-$\paren{\boldsymbol x_{best}- \boldsymbol x_{i}}$. The Lévy flight
-thus takes the form
-
-\begin{equation}
-  \label{eq:1}
-  \boldsymbol x \to \boldsymbol x + A \paren{\boldsymbol x_{best}- \boldsymbol x} \mbox{Lévy}(z) 
-\end{equation}
-
-where $A$ denotes a problem specific scaling parameter. For most
-problems (the current included), a value $A \approx 1$ is appropriate. It is
-possible that a solution generated by Lévy flight is outside the
-search space defined by \cref{eq:k-factor} and the implicit constraint
-$0 \leq \alpha_{n} \leq 1$. In this case, any invalid value is shifted to
-the nearest boundary value. %: A value of $\alpha_{n} = 1.1$ is changed to
-%$\alpha_{n} = 1.0$ while a value of $\gamma_{n} = \frac{1}{K+2}$ is changed to
-%$\gamma_{n} = \frac{1}{K}$.
-
-% The interpolation was performed as a simple linear interpolation
-% between two solutions $\boldsymbol x_{i}$ and $\boldsymbol x_{j}$
-% 
 % \begin{equation}
 %   \label{eq:1}
-%   \boldsymbol (\boldsymbol x_{i},\boldsymbol x_{j}) \to \boldsymbol x_{i} +
-%   B \paren{\boldsymbol x_{j}- \boldsymbol x_{i}} 
+%   \boldsymbol x \to \boldsymbol x + A \paren{\boldsymbol x_{best}- \boldsymbol x} \mbox{Lévy}(z) 
 % \end{equation}
-% 
-% where $\boldsymbol x_{i}$ denotes the better of the two solutions. In
-% accordance with \cite{Walton}, $B$ was fixed at the golden ratio. The
-% interpolated solution is thus closer to the better of the two
-% solutions. 
 
-When a solution is generated, the solution is renormalized by a linear
-scaling of the $\gamma$ values such that
+% where $A$ denotes a problem specific scaling parameter. For most
+% problems (the current included), a value $A \approx 1$ is appropriate. It is
+% possible that a solution generated by Lévy flight is outside the
+% search space defined by \cref{eq:k-factor} and the implicit constraint
+% $0 \leq \alpha_{n} \leq 1$. In this case, any invalid value is shifted to
+% the nearest boundary value. %: A value of $\alpha_{n} = 1.1$ is changed to
+% %$\alpha_{n} = 1.0$ while a value of $\gamma_{n} = \frac{1}{K+2}$ is changed to
+% %$\gamma_{n} = \frac{1}{K}$.
 
-\begin{equation}
-  \label{eq:10}
-  \sum_{n} \gamma_{n} \langle L_{n} \rangle = \langle L_{EU} \rangle
-\end{equation}
+% % The interpolation was performed as a simple linear interpolation
+% % between two solutions $\boldsymbol x_{i}$ and $\boldsymbol x_{j}$
+% % 
+% % \begin{equation}
+% %   \label{eq:1}
+% %   \boldsymbol (\boldsymbol x_{i},\boldsymbol x_{j}) \to \boldsymbol x_{i} +
+% %   B \paren{\boldsymbol x_{j}- \boldsymbol x_{i}} 
+% % \end{equation}
+% % 
+% % where $\boldsymbol x_{i}$ denotes the better of the two solutions. In
+% % accordance with \cite{Walton}, $B$ was fixed at the golden ratio. The
+% % interpolated solution is thus closer to the better of the two
+% % solutions. 
 
-is fulfilled. If the renormalized solution violates
-\cref{eq:k-factor}, it is rejected and a new one generated. This
-procedure is repeated until a valid solution is found.
+% When a solution is generated, the solution is renormalized by a linear
+% scaling of the $\gamma$ values such that
 
-The termination criteria was chosen as a fixed number of
-iterations. In each iteration, $X$ function evaluations are performed,
-each requiring a loop through the 32 year dataset solving a quadratic
-optimization problem at each time step. Therefore, a single function
-evaluation takes around 15 minutes on a standard laptop anno 2015. To
-decrease computation time, a single model year was used rather than
-the full 32 year data set.
+% \begin{equation}
+%   \label{eq:10}
+%   \sum_{n} \gamma_{n} \langle L_{n} \rangle = \langle L_{EU} \rangle
+% \end{equation}
 
-Starting from a completely random population, it was found that around
-50,000 function evaluations were required to reach a stable
-solution%\footnote{Non-biased optimizations and parameter tuning were
-  %performed excluding transmission costs to decrease computation time,
-  %see \cref{sec:incl-transm-optim} for details.}.
-It is possible to decrease the required number of function evaluations
-by planting a best-guess solution in the initial population. The
-drawback of this approach is the biasing of the search. Other,
-potentially better, solutions are less likely to be found due to the
-initial biasing. Starting from random populations, the stable points
-obtained for K = 1, 2, 3 were all found to be very similar to the
-$\nu_{max}$ solutions. This indicates that the $\nu_{max}$ solution is
-probably close to the global optimum. Therefore, the final
-optimizations have been performed biased by the $\nu_{max}$ solution
-effectively decreasing the number of required function evaluations by
-almost an order of magnitude. With these approximations, the
-computation time is decreased from $\approx$ 1.5 years to less than
-two days.
+% is fulfilled. If the renormalized solution violates
+% \cref{eq:k-factor}, it is rejected and a new one generated. This
+% procedure is repeated until a valid solution is found.
 
-For the problem at hand, the performance of the CS algorithm turned
-out to be relatively insensitive to changes in $A$, $p$ and
-$X$. Values of $A$ between 1 and 50 resulted in similar performance,
-while larger values of $A$ caused a drop in performance, probably due
-to the average step size becoming too large. Likewise, values of $p$
-between 0.65 and 0.85 resulted in similar performance, while values
-outside this interval caused drops in performance. For $X$, the best
-performance was observed around a value of 50. Values below 25 and
-above 100 caused the algorithm to get stuck in local minima.
+% The termination criteria was chosen as a fixed number of
+% iterations. In each iteration, $X$ function evaluations are performed,
+% each requiring a loop through the 32 year dataset solving a quadratic
+% optimization problem at each time step. Therefore, a single function
+% evaluation takes around 15 minutes on a standard laptop anno 2015. To
+% decrease computation time, a single model year was used rather than
+% the full 32 year data set.
+
+% Starting from a completely random population, it was found that around
+% 50,000 function evaluations were required to reach a stable
+% solution%\footnote{Non-biased optimizations and parameter tuning were
+%   %performed excluding transmission costs to decrease computation time,
+%   %see \cref{sec:incl-transm-optim} for details.}.
+% It is possible to decrease the required number of function evaluations
+% by planting a best-guess solution in the initial population. The
+% drawback of this approach is the biasing of the search. Other,
+% potentially better, solutions are less likely to be found due to the
+% initial biasing. Starting from random populations, the stable points
+% obtained for K = 1, 2, 3 were all found to be very similar to the
+% $\nu_{max}$ solutions. This indicates that the $\nu_{max}$ solution is
+% probably close to the global optimum. Therefore, the final
+% optimizations have been performed biased by the $\nu_{max}$ solution
+% effectively decreasing the number of required function evaluations by
+% almost an order of magnitude. With these approximations, the
+% computation time is decreased from $\approx$ 1.5 years to less than
+% two days.
+
+% For the problem at hand, the performance of the CS algorithm turned
+% out to be relatively insensitive to changes in $A$, $p$ and
+% $X$. Values of $A$ between 1 and 50 resulted in similar performance,
+% while larger values of $A$ caused a drop in performance, probably due
+% to the average step size becoming too large. Likewise, values of $p$
+% between 0.65 and 0.85 resulted in similar performance, while values
+% outside this interval caused drops in performance. For $X$, the best
+% performance was observed around a value of 50. Values below 25 and
+% above 100 caused the algorithm to get stuck in local minima.
 
 % In building a layout where locations with high capacity factors were
 % preferred to locations with low ones, one could have expected a
