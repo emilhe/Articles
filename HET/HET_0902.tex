@@ -69,16 +69,15 @@
 
 \begin{abstract}
   The resource quality and the temporal production pattern of variable
-  renewable energy sources varies significantly across Europe. A
+  renewable energy sources vary significantly across Europe. A
   homogeneous distribution of wind and solar capacities makes
   inefficient use of the resources, resulting in high system costs. A
-  heterogeneous redistribution of renewable assets maximising the
+  heterogeneous distribution of renewable assets maximising the
   overall capacity factor results in smaller investments in renewable
-  capacities, but higher costs of transmission. An adaptive gradient
-  descent algorithm is used to find optimal distributions of
-  production capacities minimising backup, transmission and renewable
-  capacity costs simultaneously, resulting in lower costs of
-  electricity.
+  capacities, but higher costs of transmission. A gradient descent
+  routine is used to find optimal distributions of production
+  capacities minimising backup, transmission and renewable capacity
+  costs simultaneously, resulting in lower costs of electricity.
 \end{abstract}
 
 \begin{keyword}
@@ -96,28 +95,28 @@ solar power generation
 \label{sec:one}
 %*************************************************************************
 
-The ambitious renewable targets set by the European
-leaders \cite{eu2050} imply that the renewable penetration will
-increase significantly in the years to come. Electrification of
-transportation and other sectors will play a major role in the
-transition \cite{Williams12,ecf2050}.
-
-At present, the leading renewable technologies are wind, solar PV and
-hydro, of which only wind and solar PV have potential for large-scale
-expansion. For this reason, the analysis will consider only wind and
-solar PV explicitly. Since wind and solar PV are both variable
-renewable energy resources (VRES), backup generation is needed if
-power outages are to be avoided. Backup generation equals additional
-system cost and must thus be kept at a minimum.
+The ambitious renewable targets set by the European leaders
+\cite{eu2050} imply that the renewable penetration will increase
+significantly in the years to come. Electrification of transportation
+and other sectors will play a major role in the transition
+\cite{Williams12,ecf2050}. At present, the leading renewable
+technologies are wind, solar PV and hydro, of which only wind and
+solar PV have potential for large-scale expansion. For this reason,
+only wind and solar PV are modelled explicitly. Since wind and
+solar PV are both variable renewable energy resources (VRES), backup
+generation is needed if power outages are to be avoided. Backup
+generation equals additional system cost and must thus be kept at a
+minimum.
 
 The backup requirements depend on the mismatch between load and VRES
 generation. Using the degrees of freedom associated with the choice of
-VRES assignments, it is possible to shape the temporal pattern towards
-the load pattern so that the mismatch, and thus the backup
-requirements, is lowered. Assuming a homogeneous mix between wind and
-solar across all countries, and that all countries install enough VRES
-capacities to cover their load on average, only a single degree of
-freedom remains. This approach is demonstrated e.g. in
+VRES assignments, it is possible to smooth out the aggregated temporal
+production pattern or even shape it shape it towards the load
+pattern. As a result, the mismatch (and thus the backup requirements)
+is lowered.  To decrease the dimensionality of the problem, the
+renewable assets are often assigned proportional to the mean load of a
+country in accordance with a homogeneous wind/solar mixing
+factor. This approach is demonstrated in
 \cite{Heide2010,Heide2011} where balancing and storage optimal
 wind/solar mixes are found.
 
@@ -163,22 +162,23 @@ applied.
 %nights.
 
 The second reason is the geographical variation of the temporal
-production pattern of each VRES. This effect is particularly important
-for wind since Europe is large compared to the wind correlation length
-of $\approx$ 1000 km \cite{Widen2011}. Allocating resources taking
-this effect into account, it is possible to smooth out the aggregated
-temporal pattern, or even shape it towards the temporal pattern of the
-load as done by \cite{Heide2010,Heide2011} with the wind/solar mix.
+production pattern for a given VRES type. This effect is particularly
+important for wind since Europe is large compared to the wind
+correlation length of $\approx$ 1000 km \cite{Widen2011}. Similar to
+the optimal wind/solar mixes found in \cite{Heide2010,Heide2011},
+optimal layouts of each VRES in terms of e.g. balancing can be
+derived.
 
 With these points in mind, allocating resources proportional to the
 mean load of a country in accordance with a homogeneous wind/solar
-mixing factor does not seem ideal. In this paper, the homogeneous
-assumption is lifted. Different approaches to cope with the resulting
-large number of degrees of freedom are considered ranging from
-heuristic layouts constructed from resource quality knowledge to
-layouts obtained through numerical optimization. The objective is to
-find heterogeneous layouts with properties superior to the homogeneous
-layouts, in particular a lower cost of electricity.
+mixing factor does not seem ideal. In this paper, the effect of
+lifting this homogeneous assumption is explored. Different approaches
+to cope with the resulting large number of degrees of freedom are
+considered ranging from heuristic layouts constructed from resource
+quality knowledge to layouts obtained through numerical
+optimization. The objective is to find heterogeneous layouts with
+properties superior to the homogeneous layouts, in particular a lower
+cost of electricity.
 
 %\textcolor{orange}{Two previous papers \cite{Rombauts11,Roques09} have applied
 %Optimal Portfolio Theory to explore heterogeneous distributions of
@@ -205,16 +205,15 @@ layouts, in particular a lower cost of electricity.
 % layouts inside the 60 dimensional search space is the topic of
 % \cref{sec:cuckoo-search}.
 
-
 This paper is organised as follows: \Cref{sec:two} discusses the
 general modelling of the electricity system, the key metrics and the
-construction of heterogeneous layouts.  In \cref{sec:results} the performance of the different
-layouts and the resulting renewable penetrations for individual
-European countries are discussed. \Cref{sec:sensitivity-analysis}
-contains an analysis of the sensitivity of the results to reductions
-in solar costs and to expansions in offshore wind capacities. We
-conclude the paper with a discussion on the results and an outlook on
-future research.
+construction of heterogeneous layouts. In \cref{sec:results} the
+performance of the different layouts and the resulting renewable
+penetrations for individual European countries are
+discussed. \Cref{sec:sensitivity-analysis} contains an analysis of the
+sensitivity of the results to reductions in solar costs and to
+expansions in offshore wind capacities. We conclude the paper with a
+discussion on the results and an outlook on future research.
 
 %*************************************************************************
 \section{Methods}
@@ -226,7 +225,7 @@ The European electricity network is modelled using a 30-node model
 where each node represents a country. The nodal load is determined
 from historical data, while wind and solar production data are
 calculated using a combination of weather data and physical
-models\cite{REA}. Initially, wind is assumed to be onshore only. For
+models \cite{REA}. Initially, wind is assumed to be onshore only. For
 each node $n$ the generation from VRES,
 
 % -------------------
@@ -275,8 +274,8 @@ $G^{B}_{n}(t)$ is needed.
 \end{align}
 % -------------------
 
-Summing the two terms, we get the nodal balancing
-$B_{n}(t) = C_{n}(t) + G^{B}_{n}(t)$.  It is possible to lower the
+Together the two terms form the nodal balancing
+$B_{n}(t) = C_{n}(t) - G^{B}_{n}(t)$.  It is possible to lower the
 balancing needs by transmission. Nodes with excess production export
 energy $E_{n}(t)$, allowing nodes with an energy deficit to import
 energy $I_{n}(t)$ to (partly) cover their energy deficit. The nodal
@@ -301,27 +300,27 @@ generation,
 \begin{equation}
   \label{eq:step1}
   \begin{aligned}
-    \text{Step 1: \hspace{15pt}}& \underset{\mathbf{P}}{\text{min}}
-    & & \sum_{n} G_{n}^{B} = G^{B}_{min} \\
+    \text{Step 1: \hspace{15pt}}& \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
+    & & \sum_{n} G_{n}^{B} \equiv G^{B}_{min} \\
     & \text{s.t.}
-    & & f_{l}^{-} \leq f_{l} \leq f_{l}^{+}
+    & & F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
   \end{aligned}
 \end{equation}
 % -------------------
 
-where $f_{l}^{\pm}$ denote any flow constraints on the network.  The
-minimal backup energy can be realized by a number of injection
-patterns. The degeneracy is removed by choosing the injection pattern
-that minimizes the sum of squared flows,
+where $F_{l}$ is the flow in link $l$ and $F_{l}^{\pm}$ denote any
+flow constraints.  The minimal backup energy can be realized by a
+number of injection patterns. The degeneracy is removed by choosing
+the injection pattern that minimizes the sum of squared flows,
 
 % -------------------
 \begin{equation}
   \begin{aligned}
     \label{eq:step2}
-    \text{Step 2: \hspace{15pt}} & \underset{\mathbf{P}}{\text{min}}
-    & & \sum_{l} f_{l}^{2} \\
+    \text{Step 2: \hspace{15pt}} & \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
+    & & \sum_{l} F_{l}^{2} \\
     & \text{s.t.}
-    & & f_{l}^{-} \leq f_{l} \leq f_{l}^{+} \\
+    & & F_{l}^{-} \leq F_{l} \leq F_{l}^{+} \\
     & \text{s.t.}
     & & \sum_{n} G_{n}^{B} = G^{B}_{min} .
   \end{aligned}
@@ -331,7 +330,7 @@ that minimizes the sum of squared flows,
 The purpose of the second minimization step is twofold. First, it
 ensures that the nodes exchange energy in the most localized
 way. Secondly, it guarantees that the solution resembles a physical
-flow\cite{Magnus}. %\footnote{This is only strictly true for unconstained
+flow \cite{Magnus}. %\footnote{This is only strictly true for unconstained
   %flow. However, even when flow constraints are present, the minimal
   %flow solution represents a fairly good approximation\cite{Magnus}.}.
 
@@ -343,10 +342,10 @@ capacities, $\mathcal{K^{W}}$ and $\mathcal{K^S}$, costs for the
 backup system and the transmission network are included. The backup
 system cost is split into two components, the cost of backup capacity
 $\mathcal{K}^{B}$ (including maintance) and the cost of backup energy
-$E^{B}$. The backup capacity cost covers expenses related to keeping
-the power plants online while the backup energy cost accounts for the
-actual fuel cost. Expressed in units of the average yearly load, the
-backup energy is given by
+$E^{B}$. The backup capacity cost covers expenses related to
+construction and to keeping the power plants online while the backup
+energy cost accounts for actual fuel costs. Expressed in units of
+the average yearly load, the backup energy is given by
 
 % -------------------
 \begin{equation}
@@ -400,7 +399,7 @@ and
 % -------------------
 \begin{equation}
   \label{eq:4}
-  x = \int_{-\infty}^{Q_{x}} p_{n}(f_{l}) dF_{l} .
+  x = \int_{-\infty}^{Q_{x}} p_{n}(F_{l}) dF_{l} .
 \end{equation}
 % -------------------
 
@@ -415,7 +414,7 @@ increases \cite{Fraunhofer}.
 
 From the VRES penetration, the mixing factor and the mean load, the
 effective production of each node can be calculated. Dividing by the
-associated capacity factor, one arrives at the capacity. Except for
+associated capacity factor, the capacity is obtained. Except for
 transmission capacity, the present value of each element can be
 calculated directly as
 
@@ -456,7 +455,8 @@ investment \cite{Short1995},
         t}}{\paren{1+r}^{t}}} .
 \end{equation}
 
-See \cite{Sensitivity} for more details on the cost calculation.
+A life time of 30 year was assumed for all elements. See
+\cite{Sensitivity} for more details on the cost calculation.
 
 \subsection{Heuristic layouts}
 \label{sec:heuristic-layouts}
@@ -466,26 +466,25 @@ assign the resources homogeneously (relative to the mean load of the
 node) so that $\gamma_{n} = \gamma$ (and $\alpha_{n} = \alpha$). However this assignment
 might not be ideal since the capacity factors vary significantly
 between the nodes. Having this point in mind, an intuitive way to
-proceed would be to assign resources proportional to the resource
-quality. To generalise the idea, the resource quality expressed
-through $\nu$ is raised to an exponent $\beta$ as suggested by
-\cite{Rolando}. For a wind only layout, the $\gamma$ values are given by
+proceed would be to assign resources proportional to $\nu$. To
+generalise the idea, $\nu$ is raised to an exponent $\beta$ as suggested by
+\cite{Rolando}. For a wind only layout, the nodal $\gamma$ values are given by
 
 \begin{equation}
   \label{eq:8}
-  \gamma_{n}^{W} = \paren{\nu^{W}_{n}}^{\beta} \frac{\langle L_{EU}
+  \gamma_{n}^{W} = \gamma \paren{\nu^{W}_{n}}^{\beta} \frac{\langle L_{EU}
     \rangle}{\sum_{m} \langle L_{m}
-    \rangle \paren{\nu^{W}_{m}}^{\beta}}.
+    \rangle \paren{\nu^{W}_{m}}^{\beta}}
 \end{equation}
 
-An equivalent expression for the solar only layout is obtained by the
-substitution $W \to S$. Examples for $\beta$ = 1 are shown in
-\cref{fig:examples}. In the layout illustrations, each bar represents
-a country $n$. The height of the bar is $\gamma_{n}$ while the mix
-$\alpha_{n}$ between onshore wind (dark blue) and solar (yellow) is
-expressed through the bar colouring. $\beta$ layouts for any value of
-$\alpha$ can be expressed as a linear combination of the wind and solar
-only layouts with
+where $\gamma$ is the overall penetration assumed to be 1. An equivalent
+expression for the solar only layout is obtained by the substitution
+$W \to S$. Examples for $\beta$ = 1 are shown in \cref{fig:examples}. In
+the layout illustrations, each bar represents a country $n$. The
+height of the bar is $\gamma_{n}$ while the mix $\alpha_{n}$ between onshore
+wind (dark blue) and solar (yellow) is expressed through the bar
+colouring. $\beta$ layouts for any value of $\alpha$ can be constructed as a
+linear combination of the wind and solar only layouts with
 
 % For $\alpha = 1$, the beta layout vector
 % $\boldsymbol x _{\beta}(\alpha = 1)$ is defined by \cref{eq:8} and along with
@@ -515,9 +514,8 @@ factor K is introduced by requiring
   \frac{1}{\text{K}} \leq \gamma_{n} \leq \text{K} .
 \end{equation}
 
-With this definition, K = 1 corresponds to a homogeneous layout (in
-terms of $\gamma$) while K = $\infty$ represents unconstrained
-heterogeneity.
+With this definition, K = 1 corresponds to a homogeneous layout while
+K = $\infty$ represents unconstrained heterogeneity.
 
 Although the capacity factor of a $\beta$ layout is higher than the
 capacity factor of the homogeneous layout (for $\beta$ $>$ 0), it is
@@ -528,7 +526,7 @@ the countries with the highest capacity factor for wind/solar PV and
 $\gamma_{n} = \frac{1}{\text{K}}$ to the remaining countries, except for a
 single in-between country. Examples for K = 2 are shown in
 \cref{fig:examples}. Similar to the $\beta$ layouts, $\nu_{max}$ layouts for
-arbitrary $\alpha$ values can be expressed as a linear combination of the
+arbitrary $\alpha$ values can be constructed as linear combinations of the
 wind and solar PV only layouts.
 
 \begin{figure*}[h!]
@@ -555,10 +553,10 @@ wind and solar PV only layouts.
 The optimization objective is minimization of the LCOE with respect to
 the 60 variables
 $\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$.  A number of optimization
-algorithms were tested of which adaptive gradient
-descent(AGD),%described in \cref{sec:cuckoo-search},
-was found to most effective. All optimized layouts have been obtained
-using an AGD algorithm. They will be denoted AGD layouts.
+algorithms were tested of which gradient descent
+(GD) %described in \cref{sec:cuckoo-search},
+was found to be most effective. All optimized layouts have been obtained
+using an GD routine. These layouts will be denoted GD layouts.
 
 \section{Results}
 \label{sec:results}
@@ -577,55 +575,57 @@ Therefore, a high wind share causes more power to flow
 between the countries.
 
 The main variable of interest, the LCOE, shows a very clear
-tendency. The more wind, the lower the cost. The tendency is a consequence
-of the significantly higher cost of energy production for solar PV
-compared to onshore wind. The CapEx is 50\% higher and the capacity
-factor, on average, around 40\% lower. Even though the cost of backup
-energy, backup capacity and transmission capacity is lowered by the
+tendency. The more wind, the lower the cost. The tendency is a
+consequence of the significantly higher LCOE for solar PV compared to
+onshore wind. The CapEx is 50\% higher and the capacity factor, on
+average, around 40\% lower. Even though the cost of backup energy,
+backup capacity and transmission capacity is lowered by the
 introduction of a small solar component, the savings do not compensate
-the higher cost of production for solar PV compared to onshore wind.
+the higher LCOE for solar PV compared to onshore wind.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2 \columnwidth]{data}
-  \caption{Overview of the key variables, backup energy $E^{B}$,
-    backup capacity $\mathcal{K}^{B}$ and transmission capacity
-    $\mathcal{K}^{T}$ along with the associated LCOE.}
+  \caption{Overview of the key variables and the associated LCOE as a
+    function of $\alpha$ for the $\beta$ (solid line) and $\nu_{max}$ (dotted
+    line) layouts. The GD layouts are plotted as dots. Heterogeneity
+    factors of K = 1 (blue), K = 2 (yellow) and K = 3 (green) are
+    shown.}
   \label{fig:overview}
 \end{figure*}
 
-The cost components for the optimal $\beta$, $\nu_{max}$ and AGD layouts are
+The cost components for the optimal $\beta$, $\nu_{max}$ and GD layouts are
 shown in \cref{fig:cost}. From this figure it is clear that the VRES
 cost is dominating, which explains the wind monopole for the $\beta$ and
-$\nu_{max}$ layouts. The AGD layouts include a small solar component,
-decreasing with increasing K values. The AGD layouts are noticeably
+$\nu_{max}$ layouts. The GD layouts include a small solar component,
+decreasing with increasing K values. The GD layouts are noticeably
 cheaper than both the $\beta$ and the $\nu_{max}$ layouts, primarily due a
 decrease in transmission costs.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costVE50}
-  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and AGD layouts
+  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and GD layouts
     for K = 1 (left), 2 (middle) and 3 (right).}
   \label{fig:cost}
 \end{figure}
 
-The optimal $\beta$, $\nu_{max}$ and AGD layouts are shown in
+The optimal $\beta$, $\nu_{max}$ and GD layouts are shown in
 \cref{fig:optLayouts}. Note that for $K=1$, the $\beta$ and the
 $\nu_{max}$ layouts are both equal to the homogeneous layout. From
-\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the AGD
-layouts are quite similar. These figures also explain why the AGD
-algorithm is able to include a solar component at a competitive cost;
-unlike the $\beta$ and $\nu_{max}$ layout definitions, the AGD algorithm has
+\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the GD
+layouts are quite similar. These figures also explain why the GD
+routine is able to include a solar component at a competitive cost;
+unlike the $\beta$ and $\nu_{max}$ layout definitions, the GD routine has
 the freedom to assign solar only to countries with poor wind
-resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the AGD
-algorithms reallocates some of the wind resources, e.g. from Latvia
-(LV) to Portugal (PT), to counteract power flows as, see
-\cref{fig:links}.
+resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the GD
+routine reallocates some of the wind resources%, e.g. from Latvia (LV)
+%to Portugal (PT), 
+to counteract power flows, see \cref{fig:links}.
 
 %The $\beta$ layouts are shown in \cref{fig:betaOpt} and the $\nu_{max}$ layouts in \cref{fig:cfMaxOpt}. In
 %both cases, $\alpha = 1$ correspond to the cost optimal mix. The optimal
-%$AGD$ layouts are shown in \cref{fig:agdOpt}.
+%$GD$ layouts are shown in \cref{fig:agdOpt}.
 
 \begin{figure*}[p]
   \centering
@@ -641,7 +641,7 @@ algorithms reallocates some of the wind resources, e.g. from Latvia
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
     \includegraphics[width = \chromowidth, center]{csLayouts}
-    \caption{AGD optimized layouts.}
+    \caption{GD optimized layouts.}
     \label{fig:agdOpt}    
   \end{subfigure}
   \caption{Optimal layouts. In each sub figure, three sets of bars
@@ -659,13 +659,13 @@ algorithms reallocates some of the wind resources, e.g. from Latvia
    \end{subfigure}
    \begin{subfigure}{2\columnwidth}
      \includegraphics[width = 0.75 \columnwidth, center]{seqK=3localizedLINKS}
-     \caption{Link usage for the AGD layout constrained by K = 3.}
+     \caption{Link usage for the GD layout constrained by K = 3.}
      \label{fig:linksTransAgd}    
    \end{subfigure}
    \caption{Overview of link usage. AC links are shown in black while
      HVDC links are shown in red. Link capacities are indicated
      relative to the highest flow (110 GW between Great Britain and
-     France in \cref{fig:linksCfMax}). In the AGD layout, resources
+     France in \cref{fig:linksCfMax}). In the GD layout, resources
      are allocated in a way that tends to decrease the load on
      especially the HVDC links. This tendency can be attributed to the
      fact that the cost of HVDC links is significantly higher than the
@@ -758,36 +758,34 @@ algorithms reallocates some of the wind resources, e.g. from Latvia
 \label{sec:reduced-solar-cost}
 
 For the $\beta$ as well as the $\nu_{max}$ layouts, the optimal
-$\alpha$ values are 1. Even for the AGD layouts, only a minor solar
+$\alpha$ values are 1. Even for the GD layouts, only a minor solar
 component is present. As mentioned previously, this tendency is a
-consequence of the higher cost of energy production for solar PV
-compared to onshore wind. In this section, the sensitivity of the
-optimum to the the solar cost is explored. In \cref{fig:red-solar}, the
-LCOE as a function of $\alpha$ is shown, similar to the lower left of
-\cref{fig:overview}, when the solar cost is reduced by a factor of 2
-and 4 respectively.
+consequence of the higher LCOE for solar PV compared to onshore
+wind. In this section, the sensitivity of the optimum to the the solar
+cost is explored. In \cref{fig:red-solar}, the LCOE as a function of
+$\alpha$ is shown (similar to the lower left of \cref{fig:overview}) when
+the solar cost is reduced by factors of 2 and 4 respectively.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth]{solarAnalysis}
   \caption{LCOE for different scalings of the solar cost. Shown are
     cost reductions by a factor of 2 (left) and 4 (right). From the
-    figure, it is clear that for solar PV to be cost competitive to
-    onshore wind, the cost must drop by a factor of
-    $\approx$ 2.}
+    figure, it is clear that for solar PV to become cost competitive
+    to onshore wind, the cost must drop by a factor of $\approx$ 2.}
   \label{fig:red-solar}
 \end{figure*}
 
 A reduction of the solar cost by a factor of 2 shifts the optimal mix
 from 1 to around 0.9 similar to the optimum for backup energy and
-backup capacity. The shift indicates that the energy production cost
-for solar PV is becoming competitive to onshore wind. At a cost
-reduction of a factor of 4, the optimal mix is shifted further to
-around 0.7, indicating that the energy production cost for solar PV is
-now lower than for onshore wind. The favouring of wind even when the
-production cost of solar PV is lower is a consequence of the strong
-diurnal pattern leading to high backup requirements. The exact
-$\alpha$ values are listed in \cref{tab:solar-alpha}.
+backup capacity. The shift indicates that the LCOE for solar PV is
+becoming competitive to onshore wind. At a cost reduction of a factor
+of 4, the optimal mix is shifted further to around 0.7, indicating
+that the LCOE for solar PV is now lower than for onshore wind. The
+favouring of wind even when the LCOE of solar PV is lower is a
+consequence of the strong diurnal pattern of solar PV leading to high
+backup requirements. The exact $\alpha$ values are listed in
+\cref{tab:solar-alpha}.
 
 \begin{table}[h!]
   \centering
@@ -799,9 +797,9 @@ $\alpha$ values are listed in \cref{tab:solar-alpha}.
     \caption{Cost reductions by a factor of 2.} 
     \begin{tabular}[h!]{l c c c}\toprule
       & K = 1 & K = 2 & K = 3 \\ \midrule
-      $\beta$ & 0.87 & 0.93 & 0.93 \\ 
+      $\beta$ & 0.87 & 0.87 & 0.93 \\ 
       $\nu_{max}$ & 0.87 & 0.87 & 0.87 \\ 
-      CS & 0.82 & 0.92 & 0.93 \\ \bottomrule
+      GD & 0.80 & 0.87 & 0.90 \\ \bottomrule
     \end{tabular}
     \vspace{10pt}
   \end{subtable}
@@ -812,7 +810,7 @@ $\alpha$ values are listed in \cref{tab:solar-alpha}.
     & K = 1 & K = 2 & K = 3 \\ \midrule
     $\beta$ & 0.67 & 0.67 & 0.67 \\ 
     $\nu_{max}$ & 0.67 & 0.67 & 0.73 \\ 
-    CS & 0.68 & 0.78 & 0.81 \\ \bottomrule
+    GD & 0.69 & 0.75 & 0.78 \\ \bottomrule
   \end{tabular}
 \end{subtable}
 \end{table}
@@ -820,7 +818,7 @@ $\alpha$ values are listed in \cref{tab:solar-alpha}.
 \subsection{Offshore wind}
 \label{sec:offshore-wind}
 
-In the previous discussion, wind was assumed to be onshore only. By
+In the main discussion, wind was assumed to be onshore only. By
 January 2014, the total European onshore wind capacity was 120.8GW,
 while the offshore capacity was 8.0GW \cite{EWEA}. While these numbers
 confirm the onshore-only assumption to be reasonable at present, the
@@ -836,9 +834,9 @@ generally significantly higher than for onshore sites as indicated by
 It would be possible to introduce offshore wind on equal footing with
 onshore wind and solar PV. However, since offshore wind is much more
 expensive, an optimized layout would pose a 0\% offshore component,
-which is not a very interesting nor surprising result. Instead, a
-fixed offshore component is introduced by splitting the wind component
-into an onshore $\gamma^{W}$ and an offshore $\tilde{\gamma}^{W}$ component,
+which is not an interesting nor surprising result. Instead, a fixed
+offshore component is introduced by splitting the wind component into
+an onshore $\gamma^{W}$ and an offshore $\tilde{\gamma}^{W}$ component,
 
 \begin{equation}
   \label{eq:11}
@@ -848,7 +846,7 @@ into an onshore $\gamma^{W}$ and an offshore $\tilde{\gamma}^{W}$ component,
 for countries with suitable offshore regions. Explicitly these are:
 Denmark, Germany, Great Britain, Ireland, the Netherlands, France,
 Belgium, Norway and Sweden. Other countries retain onshore wind
-only. The magnitude of the offshore component is assigned by requiring
+only. The magnitude of the offshore component is defined by requiring
 that the offshore wind power generation accounts for a fixed share of
 the total wind power generation,
 
@@ -863,7 +861,7 @@ Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costOffshoreVE50}
-  \caption{Cost details for the AGD optimal layouts for K = 1 (left),
+  \caption{Cost details for the GD optimal layouts for K = 1 (left),
     2 (middle) and 3 (right) for offshore shares of 0\%, 25\% and 50\%.}
   \label{fig:cost-offshore}
 \end{figure}
@@ -876,15 +874,16 @@ slightly. The decrease is a consequence of the difference in the
 temporal production pattern from onshore to offshore wind. In some
 time steps the onshore production is low while the offshore production
 is high. The introduction of an offshore component thus tends to
-smooth out the wind production time series. As a side effect, solar
-becomes less favourable as illustrated by
-\cref{fig:cost-offshore}. The AGD optimized layouts for an offshore
-share of 50\% are shown in \cref{fig:layout-offshore}.
+smooth out the wind production time series. %As a side effect, opposite
+%of what one might have expected, solar becomes less favourable as
+%illustrated by \cref{fig:cost-offshore}. 
+The GD optimized layouts for
+an offshore share of 50\% are shown in \cref{fig:layout-offshore}.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth, center]{offshoreLayouts}
-  \caption{AGD layouts constrained by K = 1 (left), 2 (middle) and 3
+  \caption{GD layouts constrained by K = 1 (left), 2 (middle) and 3
     (right) for an offshore share of 50\% for Denmark, Germany, Great
     Britain, Ireland, the Netherlands, France, Belgium, Norway and
     Sweden.}
@@ -896,25 +895,25 @@ share of 50\% are shown in \cref{fig:layout-offshore}.
 \label{sec:four}
 %*************************************************************************
 
-The dependence on the layout of VRES of a number of key parameters
-along with the resulting LCOE has been investigated. It was found that
-the backup and transmission costs are significant, but main costs are
-associated with the VRES capacities. The VRES capacity costs can be
-lowered by allocating more resources to countries with high capacity
-factors. At a heterogeneity factor of $K = 2$, meaning that each
-country installs VRES capacities covering a minimum of 50\% and
+The dependence on the countrywise layout of VRES of a number of key
+parameters along with the resulting LCOE has been investigated. It was
+found that the backup and transmission costs are significant, but the main
+costs are associated with the VRES capacities. The VRES capacity costs
+can be lowered by allocating more resources to countries with high
+capacity factors. At a heterogeneity factor of $K = 2$, meaning that
+each country installs VRES capacities covering a minimum of 50\% and
 maximum of 200\% of their mean load, the LCOE can be lowered by almost
 5\% by choosing the heuristic $\nu_{max}$ layout which maximises the
 overall capacity factor. Further reduction of the cost can be achieved
-by reducing backup and/or transmission costs. Using the adaptive
-gradient descent algorithm, such a layout was found to reduce the LCOE
-by an additional 2\%. While the additional cost reduction of 2\%
-relies heavily on the current network structure, the primary cost
-reduction is of a more general nature. It can be attributed to the
-general tendency for the heterogeneous layouts to move wind capacities
-towards the North Sea countries. Since the wind resource quality is
-better than for the central and southern countries, the reallocation
-results in lower costs.
+by reducing backup and/or transmission costs. Using a gradient descent
+routine, a such layout was found to reduce the LCOE by an additional
+2\%. While the additional cost reduction of 2\% relies heavily on the
+current network structure, the primary cost reduction is of a more
+general nature. It can be attributed to the general tendency for the
+heterogeneous layouts to shift wind capacities towards the North Sea
+countries. Since the wind resource quality is better than for the
+central and southern countries, the reallocation results in lower
+costs.
 
 % A cost reduction of 7\% compared to the homogeneously might seem
 % minor, but since the cost of a ?? is on the ??? scale, 7\% is
@@ -942,8 +941,8 @@ capital expenses, the solar cost could also be lowered by increasing
 the capacity factor. Based on data from \cite{REA}, the capacity factor can
 be increased by $\approx$ 40\% by applying dual axis tracking compared
 to the fixed position installation assumed in
-\cref{tab:capacity-factors}. %In addition, studies on increasing the
-%energy conversion efficiency are still being conducted.
+\cref{tab:capacity-factors}. In addition, studies on increasing the
+energy conversion efficiency are still being conducted.
 
 The main analysis considered onshore wind only, but the effect of
 introducing an offshore component was also discussed. Foundation
@@ -955,7 +954,7 @@ day, offshore wind is still more expensive than onshore wind. However,
 there are other incentives for offshore wind. The opposition from
 residents is usually lower than for onshore wind, and the potential
 for expansion larger. The number of suitable onshore sites are final,
-and when they are exhausted, offshore wind might be the best
+and when they are exhausted, offshore wind might pose the best
 alternative.
 
 In conclusion, it was found that a heterogeneous layout with wind
