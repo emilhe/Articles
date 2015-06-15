@@ -301,7 +301,9 @@ generation,
   \label{eq:step1}
   \begin{aligned}
     \text{Step 1: \hspace{15pt}}& \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
-    & & \sum_{n} G_{n}^{B} \equiv G^{B}_{min} \\
+    & & \sum_{n} \frac{\paren{G_{n}^{B}}^{2}}{L_{n}} \\
+    & \text{s.t.}
+    & & \sum_{n} P_{n} = 0 \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
     & \text{s.t.}
     & & F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
   \end{aligned}
@@ -309,28 +311,33 @@ generation,
 % -------------------
 
 where $F_{l}$ is the flow in link $l$ and $F_{l}^{\pm}$ denote any
-flow constraints.  The minimal backup energy can be realized by a
-number of injection patterns. The degeneracy is removed by choosing
-the injection pattern that minimizes the sum of squared flows,
+flow constraints. While \cref{eq:step1} fixes \textbf{P}, the problem
+remains degenerate in \textbf{F}. As an example, if \textbf{F'} is a
+solution, any solution \textbf{F''} obtained by adding a circular flow
+to \textbf{F'} will also be a solution. The degeneracy is removed by a
+second optimization step. To ensure that \textbf{F} resembles a
+physical flow, the objective is chosen as minimization of the sum of
+squared flows \cite{Magnus}.
 
 % -------------------
 \begin{equation}
   \begin{aligned}
     \label{eq:step2}
-    \text{Step 2: \hspace{15pt}} & \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
+    \text{Step 2: \hspace{15pt}} & \underset{\mathbf{F}}{\text{min}}
     & & \sum_{l} F_{l}^{2} \\
+    & \text{s.t.}
+    & & \sum_{n} P_{n} = 0 \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
     & \text{s.t.}
     & & F_{l}^{-} \leq F_{l} \leq F_{l}^{+} \\
     & \text{s.t.}
-    & & \sum_{n} G_{n}^{B} = G^{B}_{min} .
+    & & G_{n}^{B} = G_{n}^{B}_{*} ,
   \end{aligned}
 \end{equation}
 % -------------------
 
-The purpose of the second minimization step is twofold. First, it
-ensures that the nodes exchange energy in the most localized
-way. Secondly, it guarantees that the solution resembles a physical
-flow \cite{Magnus}. %\footnote{This is only strictly true for unconstained
+where $G_{n}^{B}_{*}$ denote the values found in step 1.
+
+%\footnote{This is only strictly true for unconstained
   %flow. However, even when flow constraints are present, the minimal
   %flow solution represents a fairly good approximation\cite{Magnus}.}.
 
@@ -361,46 +368,45 @@ event. However with this definition, the results will be highly
 coupled to the particular data set used. To decrease the coupling, the
 99\% quantile is used rather than the maximum value,
 
-% -------------------
 \begin{equation}
   \label{eq:2}
-  q_{n} = \int _{0} ^{K_{n}^{B}} p_{n}(B_{n})dB_{n}
+  q_{n} = \int _{0} ^{K_{n}^{B}} p_{n}(B_{n})dB_{n},
 \end{equation}
-% -------------------
 
 where $p_{n}(B_{n})$ is the time sampled distribution of backup power
 and $q_{n} = 0.99$. With this choice, the backup system will be able
 to cover the demand 99\% of the time. The remaining 1\% is assumed to
-be cover by unmodeled system components like storages or demand side
-management. In accordance, the transmission capacity $\mathcal{K}^{T}$
-is defined so that the demand is met 99\% of the time. Since
-transmission can be positive and negative, the larger of the absolute
-value of the 0.5\% and the 99.5\% quantile is used rather than the
-99\% quantile,
+be covered by unmodelled balancing initiatives, e.g. demand side
+management. Given the nodal values $\mathcal{K}^{B}$ is calculated by
+summation,
 
-% -------------------
 \begin{equation}
   \label{eq:4}
-  \mathcal{K}^{T} = \sum_{l} \mathcal{K}^{T}_{l} 
+  \mathcal{K}^{B} = \sum_{n} \mathcal{K}^{B}_{n} .
 \end{equation}
-% -------------------
 
-with
+In accordance, the transmission capacity $\mathcal{K}^{T}$ is defined
+so that the demand is met 99\% of the time. Transmission can be
+positive and negative, but since links are assumed bidirectional, only
+the magnitude (not the sign) of the flow is to be considered. Hence
 
-% -------------------
+\begin{equation}
+  \label{eq:2}
+  q_{n} = \int _{0} ^{K_{n}^{T}} p_{l}(|F_{l}|)dB_{n},
+\end{equation}
+
+where $p_{l}(|F_{l}|)$ is the time sampled distribution of absolute
+flows and $q_{n} = 0.99$. Since the link length varies,
+$\mathcal{K}^{T}$ is not calculated directly by summation, but instead
+as a weighted sum,
+
 \begin{equation}
   \label{eq:4}
-  \mathcal{K}_{l}^{T} = \max \{-Q_{0.5\%} , Q_{99\%} \}
+  \mathcal{K}^{T} = \sum_{l} \mathcal{K}^{T}_{l} L_{l},
 \end{equation}
-% -------------------
 
-and 
+where $L_{l}$ denotes the length of link $l$.
 
-% -------------------
-\begin{equation}
-  \label{eq:4}
-  x = \int_{-\infty}^{Q_{x}} p_{n}(F_{l}) dF_{l} .
-\end{equation}
 % -------------------
 
 Cost assumptions for the elements of an energy system vary greatly
