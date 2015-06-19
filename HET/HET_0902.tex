@@ -74,10 +74,10 @@
   inefficient use of the resources, resulting in high system costs. A
   heterogeneous distribution of renewable assets maximising the
   overall capacity factor results in smaller investments in renewable
-  capacities, but higher costs of transmission. A gradient descent
-  routine is used to find optimal distributions of production
-  capacities minimising backup, transmission and renewable capacity
-  costs simultaneously, resulting in lower costs of electricity.
+  capacities, but higher costs of transmission. A local search routine
+  is used to find optimal distributions of production capacities
+  minimising backup, transmission and renewable capacity costs
+  simultaneously, resulting in lower costs of electricity.
 \end{abstract}
 
 \begin{keyword}
@@ -149,11 +149,11 @@ factors for the European countries for onshore wind, offshore wind and
 solar PV are listed in \cref{tab:capacity-factors}. The capacity
 factors were calculated using the Renewable Energy Atlas \cite{REA}
 (REA). The VRES layout at country level was chosen as a homogeneous
-distribution across the 50\% best sites. For wind conversion, the
-power curve of the Vestas V90 3.0MW turbine was assumed. For solar
-conversion, the Scheuten P6-54 solar PV panel oriented south and tiled
-from horizontal to a degree equal to the latitude of installation was
-applied.
+distribution across the 50\% best sites. For wind conversion, a multi
+turbine corrected power curve for the Vestas V90 3.0MW turbine was
+assumed. For solar conversion, the Scheuten P6-54 solar PV panel
+oriented south and tiled from horizontal to a degree equal to the
+latitude of installation was applied.
 
 \input{capacityFactors.tex}
 
@@ -326,16 +326,16 @@ squared flows \cite{Magnus}.
     \text{Step 2: \hspace{15pt}} & \underset{\mathbf{F}}{\text{min}}
     & & \sum_{l} F_{l}^{2} \\
     & \text{s.t.}
-    & & \sum_{n} P_{n} = 0 \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
+    & & \mathbf{P} = \mathbf{P}^{*} \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
     & \text{s.t.}
     & & F_{l}^{-} \leq F_{l} \leq F_{l}^{+} \\
-    & \text{s.t.}
-    & & G_{n}^{B} = G_{n}^{B}_{*} ,
+    %& \text{s.t.}
+    %& & G_{n}^{B} = G_{n}^{B*} ,
   \end{aligned}
 \end{equation}
 % -------------------
 
-where $G_{n}^{B}_{*}$ denote the values found in step 1.
+where $\mathbf{P}^{*}$ is the injection pattern found in step 1.
 
 %\footnote{This is only strictly true for unconstained
   %flow. However, even when flow constraints are present, the minimal
@@ -410,11 +410,14 @@ where $L_{l}$ denotes the length of link $l$.
 % -------------------
 
 Cost assumptions for the elements of an energy system vary greatly
-across the literature \cite{Sensitivity}. In this study, the cost assumption published by
-\cite{Rolando} have been adapted, see \cref{tab:cost-assumptions}. The cost
-assumptions are in the low end for VRES which reflects the expectation
-that the cost of VRES will go down in the future as the penetration
-increases \cite{Fraunhofer}.
+across the literature \cite{Sensitivity}. In this study, cost
+assumption published by \cite{Rolando} have been adapted with a single
+modification. The cost of solar has been reduced by 50\% in accordance
+with near future solar PV panel price projections \cite{irena}. The
+resulting estimates are listed in \cref{tab:cost-assumptions}. In
+general, the cost assumptions are in the low end for VRES which
+reflects the expectation that the cost of VRES will go down in the
+future as the penetration increases \cite{Fraunhofer}.
 
 \input{costInfo.tex}
 
@@ -461,8 +464,10 @@ investment \cite{Short1995},
         t}}{\paren{1+r}^{t}}} .
 \end{equation}
 
-A life time of 30 year was assumed for all elements. See
-\cite{Sensitivity} for more details on the cost calculation.
+Life times of 25 years for solar PV and onshore wind, 20 years for
+offshore wind, 30 years for CCGT plants and 40 years for transmission
+infrastructure were assumed. See \cite{Sensitivity} for more details
+on the cost calculation.
 
 \subsection{Heuristic layouts}
 \label{sec:heuristic-layouts}
@@ -559,10 +564,12 @@ wind and solar PV only layouts.
 The optimization objective is minimization of the LCOE with respect to
 the 60 variables
 $\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$.  A number of optimization
-algorithms were tested of which gradient descent
-(GD) %described in \cref{sec:cuckoo-search},
-was found to be most effective. All optimized layouts have been obtained
-using an GD routine. These layouts will be denoted GD layouts.
+algorithms were tested of which a custom local search algorithm
+implementation denoted Greedy Axial Search
+(GAS) %described in \cref{sec:cuckoo-search},
+was found to be most effective. All optimized layouts have been
+obtained using the GAS routine. These layouts will be denoted GAS
+layouts.
 
 \section{Results}
 \label{sec:results}
@@ -591,47 +598,47 @@ the higher LCOE for solar PV compared to onshore wind.
 
 \begin{figure*}[p]
   \centering
-  \includegraphics[width = 2 \columnwidth]{data}
+  \includegraphics[width = 2 \columnwidth]{dataSync}
   \caption{Overview of the key variables and the associated LCOE as a
     function of $\alpha$ for the $\beta$ (solid line) and $\nu_{max}$ (dotted
-    line) layouts. The GD layouts are plotted as dots. Heterogeneity
+    line) layouts. The GAS layouts are plotted as dots. Heterogeneity
     factors of K = 1 (blue), K = 2 (yellow) and K = 3 (green) are
     shown.}
   \label{fig:overview}
 \end{figure*}
 
-The cost components for the optimal $\beta$, $\nu_{max}$ and GD layouts are
+The cost components for the optimal $\beta$, $\nu_{max}$ and GAS layouts are
 shown in \cref{fig:cost}. From this figure it is clear that the VRES
 cost is dominating, which explains the wind monopole for the $\beta$ and
-$\nu_{max}$ layouts. The GD layouts include a small solar component,
-decreasing with increasing K values. The GD layouts are noticeably
+$\nu_{max}$ layouts. The GAS layouts include a small solar component,
+decreasing with increasing K values. The GAS layouts are noticeably
 cheaper than both the $\beta$ and the $\nu_{max}$ layouts, primarily due a
 decrease in transmission costs.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costVE50}
-  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and GD layouts
+  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and GAS layouts
     for K = 1 (left), 2 (middle) and 3 (right).}
   \label{fig:cost}
 \end{figure}
 
-The optimal $\beta$, $\nu_{max}$ and GD layouts are shown in
+The optimal $\beta$, $\nu_{max}$ and GAS layouts are shown in
 \cref{fig:optLayouts}. Note that for $K=1$, the $\beta$ and the
 $\nu_{max}$ layouts are both equal to the homogeneous layout. From
-\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the GD
-layouts are quite similar. These figures also explain why the GD
+\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the GAS
+layouts are quite similar. These figures also explain why the GAS
 routine is able to include a solar component at a competitive cost;
-unlike the $\beta$ and $\nu_{max}$ layout definitions, the GD routine has
+unlike the $\beta$ and $\nu_{max}$ layout definitions, the GAS routine has
 the freedom to assign solar only to countries with poor wind
-resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the GD
+resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the GAS
 routine reallocates some of the wind resources%, e.g. from Latvia (LV)
 %to Portugal (PT), 
 to counteract power flows, see \cref{fig:links}.
 
 %The $\beta$ layouts are shown in \cref{fig:betaOpt} and the $\nu_{max}$ layouts in \cref{fig:cfMaxOpt}. In
 %both cases, $\alpha = 1$ correspond to the cost optimal mix. The optimal
-%$GD$ layouts are shown in \cref{fig:agdOpt}.
+%$GAS$ layouts are shown in \cref{fig:agdOpt}.
 
 \begin{figure*}[p]
   \centering
@@ -646,8 +653,8 @@ to counteract power flows, see \cref{fig:links}.
     \label{fig:cfMaxOpt}    
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = \chromowidth, center]{csLayouts}
-    \caption{GD optimized layouts.}
+    \includegraphics[width = \chromowidth, center]{gasLayouts}
+    \caption{GAS optimized layouts.}
     \label{fig:agdOpt}    
   \end{subfigure}
   \caption{Optimal layouts. In each sub figure, three sets of bars
@@ -656,30 +663,30 @@ to counteract power flows, see \cref{fig:links}.
   \label{fig:optLayouts}
 \end{figure*}
 
- \begin{figure*}[p]
-   \centering
-   \begin{subfigure}{2\columnwidth}
-     \includegraphics[width = 0.75 \columnwidth, center]{cfMaxK=3LINKS}
-     \caption{Link usage for the $\nu_{max}$ layout constrained by K = 3.}
-     \label{fig:linksCfMax}    
-   \end{subfigure}
-   \begin{subfigure}{2\columnwidth}
-     \includegraphics[width = 0.75 \columnwidth, center]{seqK=3localizedLINKS}
-     \caption{Link usage for the GD layout constrained by K = 3.}
-     \label{fig:linksTransAgd}    
-   \end{subfigure}
-   \caption{Overview of link usage. AC links are shown in black while
-     HVDC links are shown in red. Link capacities are indicated
-     relative to the highest flow (110 GW between Great Britain and
-     France in \cref{fig:linksCfMax}). In the GD layout, resources
-     are allocated in a way that tends to decrease the load on
-     especially the HVDC links. This tendency can be attributed to the
-     fact that the cost of HVDC links is significantly higher than the
-     cost of AC links. An exception is Great Britain where $\nu^{W}$ is
-     so high that the resulting low cost of wind energy outweighs the
-     cost of the HVDC connections.}
-   \label{fig:links}
- \end{figure*}
+ % \begin{figure*}[p]
+ %   \centering
+ %   \begin{subfigure}{2\columnwidth}
+ %     \includegraphics[width = 0.75 \columnwidth, center]{cfMaxK=3LINKS}
+ %     \caption{Link usage for the $\nu_{max}$ layout constrained by K = 3.}
+ %     \label{fig:linksCfMax}    
+ %   \end{subfigure}
+ %   \begin{subfigure}{2\columnwidth}
+ %     \includegraphics[width = 0.75 \columnwidth, center]{seqK=3localizedLINKS}
+ %     \caption{Link usage for the GAS layout constrained by K = 3.}
+ %     \label{fig:linksTransAgd}    
+ %   \end{subfigure}
+ %   \caption{Overview of link usage. AC links are shown in black while
+ %     HVDC links are shown in red. Link capacities are indicated
+ %     relative to the highest flow (110 GW between Great Britain and
+ %     France in \cref{fig:linksCfMax}). In the GAS layout, resources
+ %     are allocated in a way that tends to decrease the load on
+ %     especially the HVDC links. This tendency can be attributed to the
+ %     fact that the cost of HVDC links is significantly higher than the
+ %     cost of AC links. An exception is Great Britain where $\nu^{W}$ is
+ %     so high that the resulting low cost of wind energy outweighs the
+ %     cost of the HVDC connections.}
+ %   \label{fig:links}
+ % \end{figure*}
 
 \section{Sensitivity analysis}
 \label{sec:sensitivity-analysis}
@@ -764,7 +771,7 @@ to counteract power flows, see \cref{fig:links}.
 \label{sec:reduced-solar-cost}
 
 For the $\beta$ as well as the $\nu_{max}$ layouts, the optimal
-$\alpha$ values are 1. Even for the GD layouts, only a minor solar
+$\alpha$ values are 1. Even for the GAS layouts, only a minor solar
 component is present. As mentioned previously, this tendency is a
 consequence of the higher LCOE for solar PV compared to onshore
 wind. In this section, the sensitivity of the optimum to the the solar
@@ -775,10 +782,10 @@ the solar cost is reduced by factors of 2 and 4 respectively.
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth]{solarAnalysis}
-  \caption{LCOE for different scalings of the solar cost. Shown are
-    cost reductions by a factor of 2 (left) and 4 (right). From the
-    figure, it is clear that for solar PV to become cost competitive
-    to onshore wind, the cost must drop by a factor of $\approx$ 2.}
+  \caption{LCOE for different magnitudes of the solar cost
+    reduction. Shown are cost reductions by 0\% (top left), 25\% (top
+    right), 50\% (bottom left) and 75\% (bottom right). The 0\%
+    scenario serves as the reference scenario.}
   \label{fig:red-solar}
 \end{figure*}
 
@@ -805,7 +812,7 @@ backup requirements. The exact $\alpha$ values are listed in
       & K = 1 & K = 2 & K = 3 \\ \midrule
       $\beta$ & 0.87 & 0.87 & 0.93 \\ 
       $\nu_{max}$ & 0.87 & 0.87 & 0.87 \\ 
-      GD & 0.80 & 0.87 & 0.90 \\ \bottomrule
+      GAS & 0.80 & 0.87 & 0.90 \\ \bottomrule
     \end{tabular}
     \vspace{10pt}
   \end{subtable}
@@ -816,7 +823,7 @@ backup requirements. The exact $\alpha$ values are listed in
     & K = 1 & K = 2 & K = 3 \\ \midrule
     $\beta$ & 0.67 & 0.67 & 0.67 \\ 
     $\nu_{max}$ & 0.67 & 0.67 & 0.73 \\ 
-    GD & 0.69 & 0.75 & 0.78 \\ \bottomrule
+    GAS & 0.69 & 0.75 & 0.78 \\ \bottomrule
   \end{tabular}
 \end{subtable}
 \end{table}
@@ -867,7 +874,7 @@ Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costOffshoreVE50}
-  \caption{Cost details for the GD optimal layouts for K = 1 (left),
+  \caption{Cost details for the GAS optimal layouts for K = 1 (left),
     2 (middle) and 3 (right) for offshore shares of 0\%, 25\% and 50\%.}
   \label{fig:cost-offshore}
 \end{figure}
@@ -883,13 +890,13 @@ is high. The introduction of an offshore component thus tends to
 smooth out the wind production time series. %As a side effect, opposite
 %of what one might have expected, solar becomes less favourable as
 %illustrated by \cref{fig:cost-offshore}. 
-The GD optimized layouts for
+The GAS optimized layouts for
 an offshore share of 50\% are shown in \cref{fig:layout-offshore}.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth, center]{offshoreLayouts}
-  \caption{GD layouts constrained by K = 1 (left), 2 (middle) and 3
+  \caption{GAS layouts constrained by K = 1 (left), 2 (middle) and 3
     (right) for an offshore share of 50\% for Denmark, Germany, Great
     Britain, Ireland, the Netherlands, France, Belgium, Norway and
     Sweden.}
