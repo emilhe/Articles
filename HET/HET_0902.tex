@@ -560,7 +560,7 @@ expression for the solar only layout is obtained by the substitution
 $W \to S$. Examples for $\beta$ = 1 are shown in \cref{fig:examples}. In
 the layout illustrations, each bar represents a country $n$. The
 height of the bar is $\gamma_{n}$ while the mix $\alpha_{n}$ between onshore
-wind (dark blue) and solar (yellow) is expressed through the bar
+wind (dark blue) and solar (gold) is expressed through the bar
 colouring. $\beta$ layouts for any value of $\alpha$ can be constructed as a
 linear combination of the wind and solar only layouts with
 
@@ -995,34 +995,31 @@ an offshore share of 50\% are shown in \cref{fig:layout-offshore}.
 \label{sec:four}
 %*************************************************************************
 
-The dependence on the countrywise layout of VRES of a number of key
+The dependence on the country wise layout of VRES of a number of key
 parameters along with the resulting LCOE has been investigated. It was
-found that the backup and transmission costs are significant, but the main
-costs are associated with the VRES capacities. The VRES capacity costs
-can be lowered by allocating more resources to countries with high
-capacity factors. At a heterogeneity factor of $K = 2$, meaning that
-each country installs VRES capacities covering a minimum of 50\% and
-maximum of 200\% of their mean load, the LCOE can be lowered by almost
-
-% REWRITE THIS PART
-
-5\% by choosing the heuristic CF layout which maximises the
+found that the backup and transmission costs are significant, but the
+main costs are associated with the VRES capacities. The VRES capacity
+costs can be lowered by allocating more resources to countries with
+high capacity factors. At a heterogeneity factor of $K = 2$, meaning
+that each country installs VRES capacities covering a minimum of 50\%
+and maximum of 200\% of their mean load, the LCOE can be lowered by
+more than 8\% by choosing the heuristic CF layout which maximises the
 overall capacity factor. Further reduction of the cost can be achieved
-by reducing backup and/or transmission costs. Using a gradient descent
-routine, a such layout was found to reduce the LCOE by an additional
-2\%. While the additional cost reduction of 2\% relies heavily on the
-current network structure, the primary cost reduction is of a more
-general nature. 
+by optimization. Using a local search routine a such layout was found
+to reduce the LCOE by an additional 5\%. While the additional cost
+reduction of 5\% relies the system structure, the primary cost
+reduction is of a more general nature. It can be attributed to the
+general tendency for the heterogeneous layouts to shift wind
+capacities towards the North Sea countries. Since the wind resource
+quality is better than for the central and southern countries, the
+reallocation results in lower costs.
 
-It can be attributed to the general tendency for the
-heterogeneous layouts to shift wind capacities towards the North Sea
-countries. Since the wind resource quality is better than for the
-central and southern countries, the reallocation results in lower
-costs.
-
-% REWRITE THIS PART
-
-Comments on reduced solar cost ...
+In the past onshore wind has been the predominant VRES. However, the
+cost of solar PV has dropped rapidly in recent years, and solar PV has
+already reached grid parity in some markets \cite{solarGridParity}. If
+the decreasing price tendency continues much longer, the cost optimal
+mix might very well end up around $\alpha = 0.6$ indicating almost equal
+amounts of wind and solar PV installations.
 
 % A cost reduction of 7\% compared to the homogeneously might seem
 % minor, but since the cost of a ?? is on the ??? scale, 7\% is
@@ -1066,13 +1063,11 @@ for expansion larger. The number of suitable onshore sites are final,
 and when they are exhausted, offshore wind might pose the best
 alternative.
 
-% REWRITE THIS PART 
-
 In conclusion, it was found that a heterogeneous layout with wind
 resources shifted towards the North Sea countries decreases the LCOE
-by around 5\% compared to the homogeneous layout at the optimal mix. An
-additional reduction by 2\% was possible by taking also transmission
-and backup costs into account. \newline
+by around 8\% compared to the homogeneous layout at the optimal
+mix. An additional reduction of 5\% was possible by explicit
+optimization. \newline
 
 The effect of integrating one or more storage elements in the
 electricity system has not been considered in this paper. Promising
