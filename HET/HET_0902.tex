@@ -100,8 +100,8 @@ The ambitious renewable targets set by the European leaders
 significantly in the years to come. Electrification of transportation
 and other sectors will play a major role in the transition
 \cite{Williams12,ecf2050}. At present, the leading renewable
-technologies are wind, solar PV and hydro, of which only wind and
-solar PV have potential for large-scale expansion. For this reason,
+technologies are wind, solar PV and hydro of which only wind and
+solar PV have potential for large scale expansion. For this reason,
 only wind and solar PV are modelled explicitly. Since wind and
 solar PV are both variable renewable energy resources (VRES), backup
 generation is needed if power outages are to be avoided. Backup
@@ -150,10 +150,10 @@ solar PV are listed in \cref{tab:capacity-factors}. The capacity
 factors were calculated using the Renewable Energy Atlas \cite{REA}
 (REA). The VRES layout at country level was chosen as a homogeneous
 distribution across the 50\% best sites. For wind conversion, a multi
-turbine corrected power curve for the Vestas V90 3.0MW turbine was
-assumed. For solar conversion, the Scheuten P6-54 solar PV panel
-oriented south and tiled from horizontal to a degree equal to the
-latitude of installation was applied.
+turbine corrected power curve for the Vestas V90 3.0 MW turbine at 80
+meter hub height was assumed. For solar conversion, the Solar First
+Series 4 PV panel oriented south and tiled from horizontal to a
+degree equal to the latitude of installation was applied.
 
 \begin{table*}[t!]
   \caption{Capacity factors $\text{CF}_n^w$, $\text{CF}_n^{\tilde{w}}$ and  $\text{CF}_n^s$ for onshore wind, offshore wind and solar PV for the European countries.}
@@ -250,7 +250,7 @@ each node $n$ the generation from VRES,
 
 % -------------------
 \begin{equation}
-  G^{R}_{n}(t) = G_{n}^{W} + G_{n}^{S},
+  G^{R}_{n}(t) = G_{n}^{W}(t) + G_{n}^{S}(t),
 \end{equation} 
 % -------------------
 
@@ -281,10 +281,10 @@ The nodal difference between VRES generation and load
 %-------------------
 
 is called the mismatch. To avoid power outages, the demand must be
-matched at all times. Since storage is not considered, any power
+met at all times. Since storage is not considered, any power
 deficits must be covered by backup generation. Dispatchable
 resources are not modelled explicitly, but are considered a part of
-the backup generation. If $\Delta_{n}(t) \geq 0$, excess energy can be
+the backup generation. If $\Delta_{n}(t) \geq 0$, excess energy must be
 curtailed $C_{n}(t)$, while if $\Delta_{n}(t) < 0$ backup generation
 $G^{B}_{n}(t)$ is needed.
 % -------------------
@@ -321,7 +321,7 @@ generation,
   \label{eq:step1}
   \begin{aligned}
     \text{Step 1: \hspace{15pt}}& \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
-    & & \sum_{n} \frac{\paren{G_{n}^{B}}^{2}}{L_{n}} \\
+    & & \sum_{n} \frac{\paren{B_{n}^{B}}^{2}}{L_{n}} \\
     & \text{s.t.}
     & & \sum_{n} P_{n} = 0 \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
     & \text{s.t.}
@@ -331,10 +331,13 @@ generation,
 % -------------------
 
 where $F_{l}$ is the flow in link $l$ and $F_{l}^{\pm}$ denote any
-flow constraints. While \cref{eq:step1} fixes \textbf{P}, the problem
-remains degenerate in \textbf{F}. As an example, if \textbf{F'} is a
-solution, any solution \textbf{F''} obtained by adding a circular flow
-to \textbf{F'} will also be a solution. The degeneracy is removed by a
+flow constraints. By minimising $B_{n}^{2}$ (divided by $L_{n}$)
+rather than $G_{n}^{B}$, the particular solution where all nodes are
+curtailing/generating backup synchronously (relative to $L_{n}$) is
+obtained. While \cref{eq:step1} fixes \textbf{P}, the problem remains
+degenerate in \textbf{F}. As an example, if \textbf{F'} is a solution,
+any solution \textbf{F''} obtained by adding a circular flow to
+\textbf{F'} will also be a solution. The degeneracy is removed by a
 second optimization step. To ensure that \textbf{F} resembles a
 physical flow, the objective is chosen as minimization of the sum of
 squared flows \cite{Magnus}.
@@ -368,11 +371,11 @@ based on a few key parameters. Besides the cost of the VRES
 capacities, $\mathcal{K^{W}}$ and $\mathcal{K^S}$, costs for the
 backup system and the transmission network are included. The backup
 system cost is split into two components, the cost of backup capacity
-$\mathcal{K}^{B}$ (including maintance) and the cost of backup energy
-$E^{B}$. The backup capacity cost covers expenses related to
-construction and to keeping the power plants online while the backup
-energy cost accounts for actual fuel costs. Expressed in units of
-the average yearly load, the backup energy is given by
+$\mathcal{K}^{B}$ and the cost of backup energy $E^{B}$. The backup
+capacity cost covers expenses related to construction and to keeping
+the power plants online while the backup energy cost accounts for
+actual fuel costs. Expressed in units of the average yearly load, the
+backup energy is given by
 
 % -------------------
 \begin{equation}
@@ -390,15 +393,15 @@ coupled to the particular data set used. To decrease the coupling, the
 
 \begin{equation}
   \label{eq:2}
-  q_{n} = \int _{0} ^{K_{n}^{B}} p_{n}(B_{n})dB_{n},
+  q_{n} = \int _{0} ^{K_{n}^{B}} p_{n}(G^{B}_{n})dG^{B}_{n},
 \end{equation}
 
-where $p_{n}(B_{n})$ is the time sampled distribution of backup power
-and $q_{n} = 0.99$. With this choice, the backup system will be able
-to cover the demand 99\% of the time. The remaining 1\% is assumed to
-be covered by unmodelled balancing initiatives, e.g. demand side
-management. Given the nodal values $\mathcal{K}^{B}$ is calculated by
-summation,
+where $p_{n}(G^{B}_{n})$ is the time sampled distribution of backup
+generation and $q_{n} = 0.99$. With this choice, the backup system
+will be able to cover the demand 99\% of the time. The remaining 1\%
+is assumed to be covered by unmodelled balancing initiatives,
+e.g. demand side management. Given the nodal values $\mathcal{K}^{B}$
+is calculated by summation,
 
 \begin{equation}
   \label{eq:4}
@@ -412,7 +415,7 @@ the magnitude (not the sign) of the flow is to be considered. Hence
 
 \begin{equation}
   \label{eq:2}
-  q_{n} = \int _{0} ^{K_{n}^{T}} p_{l}(|F_{l}|)dB_{n},
+  q_{n} = \int _{0} ^{K_{n}^{T}} p_{l}(|F_{l}|)dF_{l},
 \end{equation}
 
 where $p_{l}(|F_{l}|)$ is the time sampled distribution of absolute
@@ -432,10 +435,10 @@ where $L_{l}$ denotes the length of link $l$.
 \subsection{Cost modelling}
 \label{sec:cost-modelling}
 
-Cost assumptions for the elements of an energy system vary greatly
-across the literature \cite{Sensitivity}. In this study, cost
+Cost assumptions for the elements of an electricity system vary
+greatly across the literature \cite{Sensitivity}. In this study, cost
 assumption published by \cite{Rolando} have been adapted with a single
-modification. The cost of solar has been reduced by 50\% in accordance
+modification. The CapEx of solar has been reduced by 50\% in accordance
 with near future solar PV panel price projections \cite{irena}. The
 resulting estimates are listed in \cref{tab:cost-assumptions}. In
 general, the cost assumptions are in the low end for VRES which
@@ -447,7 +450,7 @@ future as the penetration increases \cite{Fraunhofer}.
   \caption{Cost assumptions for different assets.}
   \label{tab:cost-assumptions}
   \begin{tabular}{lrrr}  \toprule
-    Asset & CapEx & Fixed OpEx & Variable OpEx\\
+    \textbf{Asset} & \textbf{CapEx }& \textbf{OpEx$_{\text{fixed}}$} & \textbf{OpEx$_{\text{variable}}$}\\
     & [€/W] & [€/kW/y] & [€/MWh]\\ \midrule
     CCGT & 0.90 & 4.5 & 56.0\\
     Solar PV & 0.75 & 8.5 & 0.0\\
@@ -507,9 +510,9 @@ on the cost calculation.
 
 Because extreme events in terms of backup capacity (all countries have
 a large energy deficit) and transmission capacity (some countries have
-a energy deficit while others have excess production) are generally
+an energy deficit while others have excess production) are generally
 not overlapping, scaling down $\mathcal{K}^{T}$ with some fraction
-$\beta$ tends to lowert the LCOE since $\mathcal{K}^{B}$ is not increased
+$\beta$ tends to lower the LCOE since $\mathcal{K}^{B}$ is not increased
 accordingly. This point is illustrated in
 \cref{fig:transmission-lcoe}.
 
@@ -525,16 +528,16 @@ accordingly. This point is illustrated in
 $\beta = 1$ and $\beta = 0$ are practically equal. However, in the
 intermediate region a significant drop in the LCOE is observed. The
 optimal value of $\beta$ depends of the electricity system being analysed
-and on the specific LCOE definition. Obtaining the lowest possible
-LCOE would thus require system individual
-optimization. To avoid the additional complexity associated with a
-such optimization and to to define the LCOE function in a consistent
-way, the LCOE will consistently be calculated using the synchronized
-export scheme at $\beta=1$, but with only 50\% of the
-$\mathcal{K}^{T}$ cost. The approximation is shown as a dotted line in
-\cref{fig:transmission-lcoe}. While the approximation is not perfect,
-the inaccuracy associated with the approximation is negligible
-compared to the uncertainty of the cost estimates.
+and on the specific LCOE definition (in the present case the optimum
+is around $\beta= \frac{1}{3}$). Obtaining the lowest possible LCOE would
+thus require system individual optimization. To avoid the additional
+complexity associated with a such optimization and to define the
+LCOE function in a consistent way, the LCOE will consistently be
+calculated using the synchronized export scheme at $\beta=1$, but with
+only 50\% of the $\mathcal{K}^{T}$ cost. The approximation is shown as
+a dotted line in \cref{fig:transmission-lcoe}. While the approximation
+is not perfect, the inaccuracy associated with the approximation is
+negligible compared to the uncertainty of the cost estimates.
 
 \subsection{Heuristic layouts}
 \label{sec:heuristic-layouts}
@@ -544,15 +547,15 @@ assign the resources homogeneously (relative to the mean load of the
 node) so that $\gamma_{n} = \gamma$ (and $\alpha_{n} = \alpha$). However this assignment
 might not be ideal since the capacity factors vary significantly
 between the nodes. Having this point in mind, an intuitive way to
-proceed would be to assign resources proportional to $\nu$. To
-generalise the idea, $\nu$ is raised to an exponent $\beta$ as suggested by
+proceed would be to assign resources proportional to the CF. To
+generalise the idea, the CF is raised to an exponent $\beta$ as suggested by
 \cite{Rolando}. For a wind only layout, the nodal $\gamma$ values are given by
 
 \begin{equation}
   \label{eq:8}
-  \gamma_{n}^{W} = \gamma \paren{\nu^{W}_{n}}^{\beta} \frac{\langle L_{EU}
+  \gamma_{n}^{W} = \gamma \paren{\text{CF}^{W}_{n}}^{\beta} \frac{\langle L_{EU}
     \rangle}{\sum_{m} \langle L_{m}
-    \rangle \paren{\nu^{W}_{m}}^{\beta}}
+    \rangle \paren{\text{CF}^{W}_{m}}^{\beta}}
 \end{equation}
 
 where $\gamma$ is the overall penetration assumed to be 1. An equivalent
@@ -682,16 +685,16 @@ solar than for onshore wind even though the CapEx is lower for solar.
   \label{fig:overview}
 \end{figure*}
 
-The component wise costs for the optimal $\beta$, CF and GAS layouts
-are shown in \cref{fig:cost}. From this figure it is clear that the
-VRES cost is dominating. Compared to the $\beta$ and CF layouts, the
-GAS layouts include a slightly larger solar component. The
-magnitude of the solar component for the GAS layouts drops with
-increasing K value. As the heterogeneity constraints are loosened wind
-becomes more favourable since it becomes possible to allocate more
-resources to the sites with a very high CF. A similar effect is
-present for solar, but it is less dominant since the best CF for solar
-(0.20, Spain) is much smaller than for wind (0.37 for Denmark).
+The component wise costs for the optimal $\beta$, CF and GAS layouts are
+shown in \cref{fig:cost}. From this figure it is clear that the VRES
+cost is dominating. Compared to the $\beta$ and CF layouts, the GAS
+layouts include a slightly larger solar component. The magnitude of
+the solar component for the GAS layouts drops with increasing K
+value. As the heterogeneity constraints are loosened wind becomes more
+favourable since it becomes possible to allocate more resources to the
+sites with a very high CF. A similar effect is present for solar, but
+it is less dominant since the best CF for solar (0.20, Spain) is much
+smaller than for wind (0.37, Denmark).
 
 \begin{figure}[h!]
   \centering
@@ -855,38 +858,41 @@ onshore wind. The cost of solar has dropped rapidly in the recent
 years and this tendency might very well continue. To shred some light
 on the consequences of further price reductions, the sensitivity of
 the optimal mix to reductions in the solar cost is examined. In
-\cref{fi g:red-solar}, the LCOE as a function of $\alpha$ is shown (similar
+\cref{fig:red-solar}, the LCOE as a function of $\alpha$ is shown (similar
 to the lower left of \cref{fig:overview}) when the solar cost is
-reduced by 25\%, 50\% and 75\% respectively.
+reduced by 0\%, 25\%, 50\% and 75\% respectively. The 0\% scenario is
+included as a reference.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2\columnwidth]{solarAnalysis}
   \caption{LCOE for different magnitudes of the solar cost
     reduction. Shown are cost reductions by 0\% (top left), 25\% (top
-    right), 50\% (bottom left) and 75\% (bottom right). The 0\%
-    scenario serves as the reference scenario.}
+    right), 50\% (bottom left) and 75\% (bottom right).}
   \label{fig:red-solar}
 \end{figure*}
 
 A reduction of the solar cost by 25\% does not change the picture
 much. The optimal mix is shifted from above 0.8 to below 0.8 and the
-cost drops slightly. As the solar cost is reduced by 50\% the cost of
-pure solar ($\alpha=0$) becomes comparable to the cost of pure wind
-($\alpha=1$). The optimal mix drops to around 0.6 and the LCOE is reduced
-by 4.80 \euro{}
-compared to the reference scenario (GAS layouts at K = 3). Reducing
-the cost of solar by 75\% changes the curve shapes completely as solar
-is now much cheaper than wind. With values in the 0.2 to 0.6 range,
-the optimal mix now depends strongly on the choice of layout
-strategy. An additional significant drop in cost is observed and for
-the GAS optimized layouts at K = 3 the 50 EUR barrier is breached.
+cost drops by around 2\euro{}
+(cost comparisons numbers are calculated for the GAS layouts at K =
+2).  As the solar cost is reduced by 50\% the cost of pure solar
+($\alpha=0$) becomes comparable to the cost of pure wind ($\alpha=1$). The
+optimal mix drops to around 0.6 and the LCOE is reduced by more than
+5\euro{}
+compared to the reference scenario. Reducing the cost of solar by 75\%
+changes the curve shapes completely as solar is now much cheaper than
+wind. With values in the 0.2 to 0.6 range, the optimal mix now depends
+strongly on the choice of layout strategy. A price drop of more than
+10\euro{}
+is observed and for the GAS optimized layout at K = 3 the
+50\euro{{} barrier is breached.
 
 % The
 %exact optimal mix $\alpha$ values are listed in \cref{tab:solar-alpha}.
 
-% DROP VALUES: 1.82 at 25\%, 4.80 at 50\%, 9.09 at 75\% (comared to
-% reference scennario, GAS optimised layouts at K = 3.
+% DROP VALUES: 2.23 at 25\%, 5.51 at 50\%, 10.41 at 75\% (comared to
+% reference scennario, GAS optimised layouts at K = 2.
 
 % \begin{table}[h!]
 %   \centering
@@ -921,14 +927,14 @@ the GAS optimized layouts at K = 3 the 50 EUR barrier is breached.
 
 So far, wind has been assumed to be onshore only. By January 2014, the
 total European onshore wind capacity was 120.8GW, while the offshore
-capacity was 8.0GW \cite{EWEA}. While these numbers confirm the onshore
-only assumption to be reasonable, the increasing share of offshore
-wind raises the question, how the LCOE will be affected by the
-introduction of an offshore component. The immediate expectation would
-be a significant increase in the LCOE since the cost of offshore wind
-is more than 100\% higher compared to onshore wind due to foundation
-expenses and increased maintenance costs. On the other hand the
-capacity factors for offshore sites are generally higher than for
+capacity was 8.0GW \cite{EWEA}. While these numbers confirm the
+onshore only assumption to be reasonable, the increasing share of
+offshore wind raises the question, how the LCOE will be affected by
+the introduction of an offshore component. The immediate expectation
+would be a significant increase in the LCOE since the expenditures for
+offshore wind are more than 100\% higher than for onshore wind due to
+foundation expenses and increased maintenance costs. On the other hand
+the capacity factors for offshore sites are generally higher than for
 onshore sites - but nowhere near 100\%.
 
 It would be possible to introduce offshore wind on equal footing with
@@ -968,7 +974,7 @@ Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
 
 From \cref{fig:cost-offshore} it is clear that the introduction of an
 offshore component increases the LCOE. However, the increase in LCOE
-is not dramatic. While the cost of wind energy increases
+is not dramatic. While the cost of wind increases
 significantly, the cost of backup and transmission decreases
 slightly. The decrease is a consequence of the difference in the
 temporal production pattern from onshore to offshore wind. In some
@@ -1007,11 +1013,11 @@ more than 8\% by choosing the heuristic CF layout which maximises the
 overall capacity factor. Further reduction of the cost can be achieved
 by optimization. Using a local search routine a such layout was found
 to reduce the LCOE by an additional 5\%. While the additional cost
-reduction of 5\% relies the system structure, the primary cost
+reduction of 5\% is obtained by fine tuning, the primary cost
 reduction is of a more general nature. It can be attributed to the
 general tendency for the heterogeneous layouts to shift wind
 capacities towards the North Sea countries. Since the wind resource
-quality is better than for the central and southern countries, the
+quality is better than for the central and southern countries, this
 reallocation results in lower costs.
 
 In the past onshore wind has been the predominant VRES. However, the
@@ -1061,7 +1067,7 @@ there are other incentives for offshore wind. The opposition from
 residents is usually lower than for onshore wind, and the potential
 for expansion larger. The number of suitable onshore sites are final,
 and when they are exhausted, offshore wind might pose the best
-alternative.
+alternative. 
 
 In conclusion, it was found that a heterogeneous layout with wind
 resources shifted towards the North Sea countries decreases the LCOE
