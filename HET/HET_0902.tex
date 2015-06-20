@@ -136,11 +136,11 @@ quality. %On average, a solar photovoltaic (PV) installation in
 % Spain will be more productive than an equivalent installation in
 % Ireland. On the other hand, a wind farm located in Ireland will be
 % productive than an equivalent installation in Spain.
-The resource quality is quantified through the capacity factor $\nu$ defined as
+The resource quality is quantified through the capacity factor defined as
 
 \begin{equation}
   \label{eq:1}
-  \nu = \frac{\mbox{Average production}}{\mbox{Rated capacity}} .
+  \mbox{CF} = \frac{\mbox{Average production}}{\mbox{Rated capacity}} .
 \end{equation}
 
 The capacity factor is a number between 0 and 1, where 0 means no
@@ -155,7 +155,27 @@ assumed. For solar conversion, the Scheuten P6-54 solar PV panel
 oriented south and tiled from horizontal to a degree equal to the
 latitude of installation was applied.
 
-\input{capacityFactors.tex}
+\begin{table*}[t!]
+  \caption{Capacity factors $\text{CF}_n^w$, $\text{CF}_n^{\tilde{w}}$ and  $\text{CF}_n^s$ for onshore wind, offshore wind and solar PV for the European countries.}
+  \label{tab:capacity-factors}
+  \begin{adjustbox}{center}
+    \begin{tabular}{lccclccclccc}  \toprule
+      & $\text{\textbf{CF}}_n^w$ & $\text{\textbf{CF}}_n^{\tilde{w}}$ & $\text{\textbf{CF}}_n^s$ &  & $\text{\textbf{CF}}_n^w$ &
+      $\text{\textbf{CF}}_n^{\tilde{w}}$ & $\text{\textbf{CF}}_n^s$ &  & $\text{\textbf{CF}}_n^w$ & $\text{\textbf{CF}}_n^{\tilde{w}}$ &
+      $\text{\textbf{CF}}_n^s$\\ \midrule
+      AT & 0.13 & - & 0.16 & DE & 0.20 & 0.44 & 0.14 & NO & 0.25 & 0.36 & 0.13\\
+      BE & 0.22 & 0.40 & 0.14 & GB & 0.32 & 0.44 & 0.13 & PL & 0.17 & 0.34 & 0.14\\
+      BA & 0.13 & - & 0.18 & GR & 0.14 & 0.34 & 0.19 & PT & 0.18 & 0.20 & 0.20\\
+      BG & 0.12 & 0.19 & 0.18 & HU & 0.12 & - & 0.17 & RO & 0.11 & 0.24 & 0.18\\
+      HR & 0.17 & 0.23 & 0.18 & IE & 0.35 & 0.38 & 0.11 & RS & 0.09 & - & 0.18\\
+      CZ & 0.15 & - & 0.16 & IT & 0.13 & 0.17 & 0.19 & SK & 0.12 & - & 0.16\\
+      DK & 0.37 & 0.45 & 0.13 & LV & 0.23 & 0.34 & 0.13 & SI & 0.07 & - & 0.16\\
+      EE & 0.26 & 0.32 & 0.13 & LT & 0.20 & 0.32 & 0.13 & ES & 0.15 & 0.21 & 0.20\\
+      FI & 0.18 & 0.33 & 0.11 & LU & 0.19 & - & 0.14 & SE & 0.21 & 0.32 & 0.13\\
+      FR & 0.20 & 0.34 & 0.17 & NL & 0.27 & 0.43 & 0.13 & CH & 0.13 & - & 0.18\\ \bottomrule
+    \end{tabular}
+  \end{adjustbox}
+\end{table*}
 
 %Wind turbines produce when it is windy, solar
 %PV when it is sunny. Backup is thus needed at windless
@@ -181,7 +201,7 @@ properties superior to the homogeneous layouts, in particular a lower
 cost of electricity.
 
 %\textcolor{orange}{Two previous papers \cite{Rombauts11,Roques09} have applied
-%Optimal Portfolio Theory to explore heterogeneous distributions of
+%Optimal Layout Theory to explore heterogeneous distributions of
 %wind resources. They have found that there is a significant decrease
 %in the overall risk, or standard deviation, when increasing the
 %aggregation region, suggesting that there are benefits in establishing
@@ -194,7 +214,7 @@ cost of electricity.
 
 % MAYBE MOVE THIS TO SOMEWHERE ELSE?
 
-% The $\beta$ and $\nu_{max}$ layouts are derived directly from the capacity
+% The $\beta$ and CF layouts are derived directly from the capacity
 % factor. They do not take the temporal production pattern into
 % account. By choosing VRES with different temporal patterns, it is
 % possible to reduce the backup needs. For homogeneous layouts, the
@@ -409,6 +429,9 @@ where $L_{l}$ denotes the length of link $l$.
 
 % -------------------
 
+\subsection{Cost modelling}
+\label{sec:cost-modelling}
+
 Cost assumptions for the elements of an energy system vary greatly
 across the literature \cite{Sensitivity}. In this study, cost
 assumption published by \cite{Rolando} have been adapted with a single
@@ -419,7 +442,20 @@ general, the cost assumptions are in the low end for VRES which
 reflects the expectation that the cost of VRES will go down in the
 future as the penetration increases \cite{Fraunhofer}.
 
-\input{costInfo.tex}
+\begin{table}[h!]
+  \centering
+  \caption{Cost assumptions for different assets.}
+  \label{tab:cost-assumptions}
+  \begin{tabular}{lrrr}  \toprule
+    Asset & CapEx & Fixed OpEx & Variable OpEx\\
+    & [€/W] & [€/kW/y] & [€/MWh]\\ \midrule
+    CCGT & 0.90 & 4.5 & 56.0\\
+    Solar PV & 0.75 & 8.5 & 0.0\\
+    Offshore wind & 2.00 & 55.0 & 0.0\\
+    Onshore wind & 1.00 & 15.0 & 0.0\\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 From the VRES penetration, the mixing factor and the mean load, the
 effective production of each node can be calculated. Dividing by the
@@ -468,6 +504,37 @@ Life times of 25 years for solar PV and onshore wind, 20 years for
 offshore wind, 30 years for CCGT plants and 40 years for transmission
 infrastructure were assumed. See \cite{Sensitivity} for more details
 on the cost calculation.
+
+Because extreme events in terms of backup capacity (all countries have
+a large energy deficit) and transmission capacity (some countries have
+a energy deficit while others have excess production) are generally
+not overlapping, scaling down $\mathcal{K}^{T}$ with some fraction
+$\beta$ tends to lowert the LCOE since $\mathcal{K}^{B}$ is not increased
+accordingly. This point is illustrated in
+\cref{fig:transmission-lcoe}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width = \columnwidth]{constrainedSync}
+  \caption{Non VRES LCOE components for different values of $\beta$. The
+    dotted line indicates the approximated LCOE (see text).}
+  \label{fig:transmission-lcoe}
+\end{figure}
+
+\Cref{fig:transmission-lcoe} reveals that the LCOE values at
+$\beta = 1$ and $\beta = 0$ are practically equal. However, in the
+intermediate region a significant drop in the LCOE is observed. The
+optimal value of $\beta$ depends of the electricity system being analysed
+and on the specific LCOE definition. Obtaining the lowest possible
+LCOE would thus require system individual
+optimization. To avoid the additional complexity associated with a
+such optimization and to to define the LCOE function in a consistent
+way, the LCOE will consistently be calculated using the synchronized
+export scheme at $\beta=1$, but with only 50\% of the
+$\mathcal{K}^{T}$ cost. The approximation is shown as a dotted line in
+\cref{fig:transmission-lcoe}. While the approximation is not perfect,
+the inaccuracy associated with the approximation is negligible
+compared to the uncertainty of the cost estimates.
 
 \subsection{Heuristic layouts}
 \label{sec:heuristic-layouts}
@@ -536,7 +603,7 @@ cases, the capacity factor is maximised by assigning $\gamma_{n}$ = K to
 the countries with the highest capacity factor for wind/solar PV and
 $\gamma_{n} = \frac{1}{\text{K}}$ to the remaining countries, except for a
 single in-between country. Examples for K = 2 are shown in
-\cref{fig:examples}. Similar to the $\beta$ layouts, $\nu_{max}$ layouts for
+\cref{fig:examples}. Similar to the $\beta$ layouts, CF layouts for
 arbitrary $\alpha$ values can be constructed as linear combinations of the
 wind and solar PV only layouts.
 
@@ -549,12 +616,12 @@ wind and solar PV only layouts.
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
     \includegraphics[width = \chromowidth, center]{k=2cfMax}
-    \caption{Examples of $\nu_{max}$ layouts constrained by K = 2 .}
+    \caption{Examples of CF layouts constrained by K = 2 .}
     \label{fig:cfMaxExamples}    
   \end{subfigure}
-  \caption{Examples of heuristic layouts. In each sub figure, two sets of bars
-    corresponding to the $\alpha = 1$ and the $\alpha = 0$ layouts respectively
-    are shown.}
+  \caption{Examples of heuristic layouts. In each sub figure, two sets
+    of bars corresponding to the $\alpha = 1$ and the $\alpha = 0$ layouts are
+    shown.}
   \label{fig:examples}
 \end{figure*}
 
@@ -571,6 +638,8 @@ was found to be most effective. All optimized layouts have been
 obtained using the GAS routine. These layouts will be denoted GAS
 layouts.
 
+\FloatBarrier
+
 \section{Results}
 \label{sec:results}
 
@@ -579,64 +648,73 @@ backup energy and backup capacity, the optimal $\alpha$ value is around
 0.9, which is slightly higher than the values found by
 \cite{Heide2010,Heide2011}. The difference can be attributed to the
 different data sets used for wind and solar PV. For transmission
-capacity, the minimum is around $\alpha = 0.4$, indicating a high share of
-solar PV. While the wind correlation length is around $\approx$ 1000
-km \cite{Widen2011} and thus smaller than Europe, the occurrence of
-sun light is highly correlated for the European countries.
-%\cite{Timo}. 
-Therefore, a high wind share causes more power to flow
-between the countries.
+capacity, the curves are quite similar for the $\beta$ layouts with a
+minimum around $\alpha = 0.5$. For the CF layouts a larger increase in
+$\mathcal{K}^{T}$ is observed as K is incremented. This observation is
+in qualitative agreement with intuition since the CF layouts are
+generally more extreme than the $\beta$ layouts (see
+e.g. \cref{fig:optLayouts}).
 
-The main variable of interest, the LCOE, shows a very clear
-tendency. The more wind, the lower the cost. The tendency is a
-consequence of the significantly higher LCOE for solar PV compared to
-onshore wind. The CapEx is 50\% higher and the capacity factor, on
-average, around 40\% lower. Even though the cost of backup energy,
-backup capacity and transmission capacity is lowered by the
-introduction of a small solar component, the savings do not compensate
-the higher LCOE for solar PV compared to onshore wind.
+%, indicating a high share of
+%solar PV. While the wind correlation length is around $\approx$ 1000
+%km \cite{Widen2011} and thus smaller than Europe, the occurrence of
+%sun light is highly correlated for the European countries.
+%\cite{Timo}. 
+%Therefore, a high wind share causes more power to flow
+%between the countries.
+
+The main variable of interest, the LCOE, has a maximum at $\alpha = 0$. It
+drops steadily as $\alpha$ is increased until around
+$\alpha = 0.8$ where the minimum is located. The high cost at
+$\alpha = 0$ is caused by a combination of high backup energy/capacity
+costs and the fact that the CF of solar is generally lower than for
+onshore wind. The cost of producing one unit of energy is thus higher for
+solar than for onshore wind even though the CapEx is lower for solar.
 
 \begin{figure*}[p]
   \centering
   \includegraphics[width = 2 \columnwidth]{dataSync}
   \caption{Overview of the key variables and the associated LCOE as a
-    function of $\alpha$ for the $\beta$ (solid line) and $\nu_{max}$ (dotted
+    function of $\alpha$ for the $\beta$ (solid line) and CF (dotted
     line) layouts. The GAS layouts are plotted as dots. Heterogeneity
     factors of K = 1 (blue), K = 2 (yellow) and K = 3 (green) are
     shown.}
   \label{fig:overview}
 \end{figure*}
 
-The cost components for the optimal $\beta$, $\nu_{max}$ and GAS layouts are
-shown in \cref{fig:cost}. From this figure it is clear that the VRES
-cost is dominating, which explains the wind monopole for the $\beta$ and
-$\nu_{max}$ layouts. The GAS layouts include a small solar component,
-decreasing with increasing K values. The GAS layouts are noticeably
-cheaper than both the $\beta$ and the $\nu_{max}$ layouts, primarily due a
-decrease in transmission costs.
+The component wise costs for the optimal $\beta$, CF and GAS layouts
+are shown in \cref{fig:cost}. From this figure it is clear that the
+VRES cost is dominating. Compared to the $\beta$ and CF layouts, the
+GAS layouts include a slightly larger solar component. The
+magnitude of the solar component for the GAS layouts drops with
+increasing K value. As the heterogeneity constraints are loosened wind
+becomes more favourable since it becomes possible to allocate more
+resources to the sites with a very high CF. A similar effect is
+present for solar, but it is less dominant since the best CF for solar
+(0.20, Spain) is much smaller than for wind (0.37 for Denmark).
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costVE50}
-  \caption{Cost details for the optimal $\beta$, $\nu_{max}$ and GAS layouts
+  \caption{Component wise LCOE for the optimal $\beta$, CF and GAS layouts
     for K = 1 (left), 2 (middle) and 3 (right).}
   \label{fig:cost}
 \end{figure}
 
-The optimal $\beta$, $\nu_{max}$ and GAS layouts are shown in
+The optimal $\beta$, CF and GAS layouts are shown in
 \cref{fig:optLayouts}. Note that for $K=1$, the $\beta$ and the
-$\nu_{max}$ layouts are both equal to the homogeneous layout. From
-\cref{fig:cfMaxOpt,fig:agdOpt} we see that the $\nu_{max}$ and the GAS
+CF layouts are both equal to the homogeneous layout. From
+\cref{fig:cfMaxOpt,fig:agdOpt} we see that the CF and the GAS
 layouts are quite similar. These figures also explain why the GAS
 routine is able to include a solar component at a competitive cost;
-unlike the $\beta$ and $\nu_{max}$ layout definitions, the GAS routine has
+unlike the $\beta$ and CF layout definitions, the GAS routine has
 the freedom to assign solar only to countries with poor wind
-resources, e.g. Serbia (RS) and Slovenia (SI). In addition, the GAS
-routine reallocates some of the wind resources%, e.g. from Latvia (LV)
+resources, e.g. Serbia (RS) and Slovenia (SI). % In addition, the GAS
+%routine reallocates some of the wind resources%, e.g. from Latvia (LV)
 %to Portugal (PT), 
-to counteract power flows, see \cref{fig:links}.
+%to counteract power flows, see \cref{fig:links}.
 
-%The $\beta$ layouts are shown in \cref{fig:betaOpt} and the $\nu_{max}$ layouts in \cref{fig:cfMaxOpt}. In
+%The $\beta$ layouts are shown in \cref{fig:betaOpt} and the CF layouts in \cref{fig:cfMaxOpt}. In
 %both cases, $\alpha = 1$ correspond to the cost optimal mix. The optimal
 %$GAS$ layouts are shown in \cref{fig:agdOpt}.
 
@@ -644,12 +722,12 @@ to counteract power flows, see \cref{fig:links}.
   \centering
   \begin{subfigure}{2\columnwidth}
     \includegraphics[width = \chromowidth, center]{betaLayouts}
-    \caption{Optimal $\beta$ layouts (optimal mix at $\alpha = 1$).}
+    \caption{Optimal $\beta$ layouts (optimal mix at $\alpha = 0.84$).}
     \label{fig:betaOpt}    
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
     \includegraphics[width = \chromowidth, center]{cfMaxLayouts}
-    \caption{Optimal $\nu_{max}$ layouts (optimal mix at $\alpha = 1$).}
+    \caption{Optimal CF layouts (optimal mix at $\alpha = 0.84$).}
     \label{fig:cfMaxOpt}    
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
@@ -667,7 +745,7 @@ to counteract power flows, see \cref{fig:links}.
  %   \centering
  %   \begin{subfigure}{2\columnwidth}
  %     \includegraphics[width = 0.75 \columnwidth, center]{cfMaxK=3LINKS}
- %     \caption{Link usage for the $\nu_{max}$ layout constrained by K = 3.}
+ %     \caption{Link usage for the CF layout constrained by K = 3.}
  %     \label{fig:linksCfMax}    
  %   \end{subfigure}
  %   \begin{subfigure}{2\columnwidth}
@@ -714,14 +792,14 @@ to counteract power flows, see \cref{fig:links}.
 %  \centering
 %  \includegraphics[width = \columnwidth]{costTransVE50}
 %  \caption{Cost details for the optimal layouts for K = 1 (left), 2
-%    (middle) and 3 (right) for $\beta$, $\nu_{max}$ and CS (transmission excluded).}
+%    (middle) and 3 (right) for $\beta$, CF and CS (transmission excluded).}
 %  \label{fig:cost-no-transmission}
 %\end{figure}
 %
 %It is clear that the optimization succeeds in decreasing the cost of
 %all, but the transmission component. However, for K = 2 and K = 3, the
 %associated increase in transmission cost is so large that the CS
-%layouts end up being more expensive than the $\nu_{max}$ layouts at
+%layouts end up being more expensive than the CF layouts at
 %$\alpha = 1$. The difference between the CS layouts with transmission
 %included/excluded is noticeable, but the CS solution obtained without
 %transmission is still fairly good. For convergence analysis, parameter
@@ -770,14 +848,16 @@ to counteract power flows, see \cref{fig:links}.
 \subsection{Reduced solar cost}
 \label{sec:reduced-solar-cost}
 
-For the $\beta$ as well as the $\nu_{max}$ layouts, the optimal
-$\alpha$ values are 1. Even for the GAS layouts, only a minor solar
-component is present. As mentioned previously, this tendency is a
-consequence of the higher LCOE for solar PV compared to onshore
-wind. In this section, the sensitivity of the optimum to the the solar
-cost is explored. In \cref{fig:red-solar}, the LCOE as a function of
-$\alpha$ is shown (similar to the lower left of \cref{fig:overview}) when
-the solar cost is reduced by factors of 2 and 4 respectively.
+For the $\beta$ as well as the CF layouts, the optimal $\alpha$ values are
+0.84. As mentioned previously, wind domination is partly a consequence
+of the higher cost of energy production for solar PV compared to
+onshore wind. The cost of solar has dropped rapidly in the recent
+years and this tendency might very well continue. To shred some light
+on the consequences of further price reductions, the sensitivity of
+the optimal mix to reductions in the solar cost is examined. In
+\cref{fi g:red-solar}, the LCOE as a function of $\alpha$ is shown (similar
+to the lower left of \cref{fig:overview}) when the solar cost is
+reduced by 25\%, 50\% and 75\% respectively.
 
 \begin{figure*}[p]
   \centering
@@ -789,71 +869,78 @@ the solar cost is reduced by factors of 2 and 4 respectively.
   \label{fig:red-solar}
 \end{figure*}
 
-A reduction of the solar cost by a factor of 2 shifts the optimal mix
-from 1 to around 0.9 similar to the optimum for backup energy and
-backup capacity. The shift indicates that the LCOE for solar PV is
-becoming competitive to onshore wind. At a cost reduction of a factor
-of 4, the optimal mix is shifted further to around 0.7, indicating
-that the LCOE for solar PV is now lower than for onshore wind. The
-favouring of wind even when the LCOE of solar PV is lower is a
-consequence of the strong diurnal pattern of solar PV leading to high
-backup requirements. The exact $\alpha$ values are listed in
-\cref{tab:solar-alpha}.
+A reduction of the solar cost by 25\% does not change the picture
+much. The optimal mix is shifted from above 0.8 to below 0.8 and the
+cost drops slightly. As the solar cost is reduced by 50\% the cost of
+pure solar ($\alpha=0$) becomes comparable to the cost of pure wind
+($\alpha=1$). The optimal mix drops to around 0.6 and the LCOE is reduced
+by 4.80 \euro{}
+compared to the reference scenario (GAS layouts at K = 3). Reducing
+the cost of solar by 75\% changes the curve shapes completely as solar
+is now much cheaper than wind. With values in the 0.2 to 0.6 range,
+the optimal mix now depends strongly on the choice of layout
+strategy. An additional significant drop in cost is observed and for
+the GAS optimized layouts at K = 3 the 50 EUR barrier is breached.
 
-\begin{table}[h!]
-  \centering
-  \caption{Alpha values for optimal layouts for different scalings of
-    the solar cost.}
-  \label{tab:solar-alpha}
-  \begin{subtable}{\columnwidth}
-    \centering
-    \caption{Cost reductions by a factor of 2.} 
-    \begin{tabular}[h!]{l c c c}\toprule
-      & K = 1 & K = 2 & K = 3 \\ \midrule
-      $\beta$ & 0.87 & 0.87 & 0.93 \\ 
-      $\nu_{max}$ & 0.87 & 0.87 & 0.87 \\ 
-      GAS & 0.80 & 0.87 & 0.90 \\ \bottomrule
-    \end{tabular}
-    \vspace{10pt}
-  \end{subtable}
-  \begin{subtable}{\columnwidth}
-    \centering
-    \caption{Cost reductions by a factor of 4.} 
-  \begin{tabular}[h!]{l c c c}\toprule
-    & K = 1 & K = 2 & K = 3 \\ \midrule
-    $\beta$ & 0.67 & 0.67 & 0.67 \\ 
-    $\nu_{max}$ & 0.67 & 0.67 & 0.73 \\ 
-    GAS & 0.69 & 0.75 & 0.78 \\ \bottomrule
-  \end{tabular}
-\end{subtable}
-\end{table}
+% The
+%exact optimal mix $\alpha$ values are listed in \cref{tab:solar-alpha}.
+
+% DROP VALUES: 1.82 at 25\%, 4.80 at 50\%, 9.09 at 75\% (comared to
+% reference scennario, GAS optimised layouts at K = 3.
+
+% \begin{table}[h!]
+%   \centering
+%   \caption{Alpha values for optimal layouts for different scalings of
+%     the solar cost.}
+%   \label{tab:solar-alpha}
+%   \begin{subtable}{\columnwidth}
+%     \centering
+%     \caption{Cost reductions by a factor of 2.} 
+%     \begin{tabular}[h!]{l c c c}\toprule
+%       & K = 1 & K = 2 & K = 3 \\ \midrule
+%       $\beta$ & 0.87 & 0.87 & 0.93 \\ 
+%       CF & 0.87 & 0.87 & 0.87 \\ 
+%       GAS & 0.80 & 0.87 & 0.90 \\ \bottomrule
+%     \end{tabular}
+%     \vspace{10pt}
+%   \end{subtable}
+%   \begin{subtable}{\columnwidth}
+%     \centering
+%     \caption{Cost reductions by a factor of 4.} 
+%   \begin{tabular}[h!]{l c c c}\toprule
+%     & K = 1 & K = 2 & K = 3 \\ \midrule
+%     $\beta$ & 0.67 & 0.67 & 0.67 \\ 
+%     CF & 0.67 & 0.67 & 0.73 \\ 
+%     GAS & 0.69 & 0.75 & 0.78 \\ \bottomrule
+%   \end{tabular}
+% \end{subtable}
+% \end{table}
 
 \subsection{Offshore wind}
 \label{sec:offshore-wind}
 
-In the main discussion, wind was assumed to be onshore only. By
-January 2014, the total European onshore wind capacity was 120.8GW,
-while the offshore capacity was 8.0GW \cite{EWEA}. While these numbers
-confirm the onshore-only assumption to be reasonable at present, the
-increasing share of offshore wind raises the question how the LCOE
-will be affected by the introduction of an offshore component. The
-immediate expectation is a significant increase in the LCOE since the
-cost of offshore wind is more than 100\% higher compared to onshore
-wind due to foundation expenses along with increased maintenance
-costs. On the other hand, capacity factors for offshore sites are
-generally significantly higher than for onshore sites as indicated by
-\cref{tab:capacity-factors}.
+So far, wind has been assumed to be onshore only. By January 2014, the
+total European onshore wind capacity was 120.8GW, while the offshore
+capacity was 8.0GW \cite{EWEA}. While these numbers confirm the onshore
+only assumption to be reasonable, the increasing share of offshore
+wind raises the question, how the LCOE will be affected by the
+introduction of an offshore component. The immediate expectation would
+be a significant increase in the LCOE since the cost of offshore wind
+is more than 100\% higher compared to onshore wind due to foundation
+expenses and increased maintenance costs. On the other hand the
+capacity factors for offshore sites are generally higher than for
+onshore sites - but nowhere near 100\%.
 
 It would be possible to introduce offshore wind on equal footing with
 onshore wind and solar PV. However, since offshore wind is much more
 expensive, an optimized layout would pose a 0\% offshore component,
 which is not an interesting nor surprising result. Instead, a fixed
 offshore component is introduced by splitting the wind component into
-an onshore $\gamma^{W}$ and an offshore $\tilde{\gamma}^{W}$ component,
+an onshore $\gamma^{W}$ and an offshore $\gamma^{\tilde{W}}$ component,
 
 \begin{equation}
   \label{eq:11}
-  \gamma^{W} \to \gamma^{W} + \tilde{\gamma}^{W}, 
+  \gamma^{W} = \gamma^{\text{W}} + \gamma^{\text{$\tilde{W}$}}, 
 \end{equation}
 
 for countries with suitable offshore regions. Explicitly these are:
@@ -865,7 +952,7 @@ the total wind power generation,
 
 \begin{equation}
   \label{eq:12}
-  \text{offshore share = }\frac{\tilde{\gamma}^W}{\gamma^{W} + \tilde{\gamma}^W}.
+  \text{offshore share = }\frac{\gamma^{\tilde{W}}}{\gamma^{W}}.
 \end{equation}
 
 Cost details for optimized layouts with fixed offshore shares of 0\%, 25\% and
@@ -893,7 +980,7 @@ smooth out the wind production time series. %As a side effect, opposite
 The GAS optimized layouts for
 an offshore share of 50\% are shown in \cref{fig:layout-offshore}.
 
-\begin{figure*}[p]
+\begin{figure*}[t!]
   \centering
   \includegraphics[width = 2\columnwidth, center]{offshoreLayouts}
   \caption{GAS layouts constrained by K = 1 (left), 2 (middle) and 3
@@ -916,17 +1003,26 @@ can be lowered by allocating more resources to countries with high
 capacity factors. At a heterogeneity factor of $K = 2$, meaning that
 each country installs VRES capacities covering a minimum of 50\% and
 maximum of 200\% of their mean load, the LCOE can be lowered by almost
-5\% by choosing the heuristic $\nu_{max}$ layout which maximises the
+
+% REWRITE THIS PART
+
+5\% by choosing the heuristic CF layout which maximises the
 overall capacity factor. Further reduction of the cost can be achieved
 by reducing backup and/or transmission costs. Using a gradient descent
 routine, a such layout was found to reduce the LCOE by an additional
 2\%. While the additional cost reduction of 2\% relies heavily on the
 current network structure, the primary cost reduction is of a more
-general nature. It can be attributed to the general tendency for the
+general nature. 
+
+It can be attributed to the general tendency for the
 heterogeneous layouts to shift wind capacities towards the North Sea
 countries. Since the wind resource quality is better than for the
 central and southern countries, the reallocation results in lower
 costs.
+
+% REWRITE THIS PART
+
+Comments on reduced solar cost ...
 
 % A cost reduction of 7\% compared to the homogeneously might seem
 % minor, but since the cost of a ?? is on the ??? scale, 7\% is
@@ -944,18 +1040,18 @@ costs.
 %onshore wind in the North Sea countries might very well pose a
 %challenge too.
 
-The cost optimal layouts considered in the main analysis are almost
-exclusively based on onshore wind. The reason is that onshore wind is
-significantly cheaper than solar, partly due to lower capital
-expenses, partly due to higher capacity factor. It was found that the
-cost of solar must decrease by a factor of $\approx$ 2 for a
-significant solar component to become profitable. Besides lowering the
-capital expenses, the solar cost could also be lowered by increasing
-the capacity factor. Based on data from \cite{REA}, the capacity factor can
-be increased by $\approx$ 40\% by applying dual axis tracking compared
-to the fixed position installation assumed in
-\cref{tab:capacity-factors}. In addition, studies on increasing the
-energy conversion efficiency are still being conducted.
+% The cost optimal layouts considered in the main analysis are almost
+% exclusively based on onshore wind. The reason is that onshore wind is
+% significantly cheaper than solar, partly due to lower capital
+% expenses, partly due to higher capacity factor. It was found that the
+% cost of solar must decrease by a factor of $\approx$ 2 for a
+% significant solar component to become profitable. Besides lowering the
+% capital expenses, the solar cost could also be lowered by increasing
+% the capacity factor. Based on data from \cite{REA}, the capacity factor can
+% be increased by $\approx$ 40\% by applying dual axis tracking compared
+% to the fixed position installation assumed in
+% \cref{tab:capacity-factors}. In addition, studies on increasing the
+% energy conversion efficiency are still being conducted.
 
 The main analysis considered onshore wind only, but the effect of
 introducing an offshore component was also discussed. Foundation
@@ -969,6 +1065,8 @@ residents is usually lower than for onshore wind, and the potential
 for expansion larger. The number of suitable onshore sites are final,
 and when they are exhausted, offshore wind might pose the best
 alternative.
+
+% REWRITE THIS PART 
 
 In conclusion, it was found that a heterogeneous layout with wind
 resources shifted towards the North Sea countries decreases the LCOE
@@ -1000,7 +1098,7 @@ various types of storage.
 % $\sigma_\text{EU}$. These improvements lead to an overall reduction in
 % the cost of electricity generated by the system.
 
-% Optimal portfolio theory helps analyse the space of heterogeneous
+% Optimal layout theory helps analyse the space of heterogeneous
 % layouts. By mixing wind- and solar-only layouts that lie along the
 % Pareto front, we find configurations that further reduce the risk
 % ($\sigma_\text{EU}$) while increasing the return
@@ -1256,9 +1354,9 @@ various types of storage.
 % potentially better, solutions are less likely to be found due to the
 % initial biasing. Starting from random populations, the stable points
 % obtained for K = 1, 2, 3 were all found to be very similar to the
-% $\nu_{max}$ solutions. This indicates that the $\nu_{max}$ solution is
+% CF solutions. This indicates that the CF solution is
 % probably close to the global optimum. Therefore, the final
-% optimizations have been performed biased by the $\nu_{max}$ solution
+% optimizations have been performed biased by the CF solution
 % effectively decreasing the number of required function evaluations by
 % almost an order of magnitude. With these approximations, the
 % computation time is decreased from $\approx$ 1.5 years to less than
@@ -1281,7 +1379,7 @@ various types of storage.
 % can either contribute or detract to the overall performance of a
 % layout. A single place can have a high capacity factor, but carry a
 % large risk in the form of standard deviation. This is a well known
-% problem in finance, where a portfolio of investments must be chosen
+% problem in finance, where a layout of investments must be chosen
 % so as to maximise the returns while minimising risk. In this case,
 % returns can be seen as a layout-wide capacity factor, $\nu_\rm{EU}$
 %\begin{equation}
@@ -1291,14 +1389,14 @@ various types of storage.
 % as defined in (\ref{eq:stdev}). A geographical dispersion of VRES
 % capacities can help reduce the total standard deviation, as wind is
 % generally uncorrelated beyond 500 km.  Figure 5.2 is a
-% representation of the portfolio of wind capacities in Europe. Each
+% representation of the layout of wind capacities in Europe. Each
 % of the gray dots represents a randomly assigned set of wind
 % capacities $\bs \gamma^W$. The homogeneous layout can be seen near the
 % centre of the cloud, with a low risk but a low return (capacity
 % factor). As the layout begins to favour locations with a higher
 % $\nu_n^W$ via the factor $\beta$, the return of the system increases,
-% without a large decrease in the risk of the investment. Portfolio
-% theory allows us to define a Pareto front of optimal portfolios,
+% without a large decrease in the risk of the investment. Layout
+% theory allows us to define a Pareto front of optimal layouts,
 % where we must choose between a lower risk and a higher return. This
 % front is sketched via the squares in Figure 5.2.  A similar set of
 % Pareto-optimal layouts can be found for the solar resources. The
@@ -1307,10 +1405,10 @@ various types of storage.
 % parameter $\alpha$. Figure 5.3 shows these interpolations, redrawing the
 % homogeneous and proportional layouts we have previously discussed
 % and adding several interpolations of new layouts coming from
-% portfolio theory. We choose one of these interpolations as a
+% layout theory. We choose one of these interpolations as a
 % \textbf{ Pareto-optimal layout}. The lines connecting these points
-% run from $\alpha = 0$ in the solar-only portfolio (bottom right) to
-% $\alpha = 1$ in the wind-only portfolio (top right). It is clear that
+% run from $\alpha = 0$ in the solar-only layout (bottom right) to
+% $\alpha = 1$ in the wind-only layout (top right). It is clear that
 % moving from a pure-solar to pure-wind only increases the capacity
 % factor, but there seems to be a minimum risk point close to
 % $\alpha = 1$. This hints at a synergy between wind and solar resources,
