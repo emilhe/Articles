@@ -1,0 +1,176 @@
+\begin{thebibliography}{10}
+
+\bibitem{eu2050}
+{European Commission}.
+\newblock {A roadmap for moving to a competitive low carbon economy in 2050}.
+\newblock Technical report, EC, March 2011.
+
+\bibitem{Williams12}
+James~H. Williams, Andrew DeBenedictis, Rebecca Ghanadan, Amber Mahone, Jack
+  Moore, William~R. Morrow, Snuller Price, and Margaret~S. Torn.
+\newblock {The Technology Path to Deep Greenhouse Gas Emissions Cuts by 2050:
+  The Pivotal Role of Electricity}.
+\newblock {\em Science}, 335:53--59, 2012.
+\newblock {http://dx.doi.org/10.1126/science.1208365}.
+
+\bibitem{ecf2050}
+{McKinsey \& Company}, {KEMA}, {The Energy Futures Lab at Imperial College
+  London}, {Oxford Economics}, and {ECF}.
+\newblock {Roadmap 2050 -- A practical guide to a prosperous, low-carbon
+  Europe}.
+\newblock Technical report, {European Climate Foundation},
+  {http://www.roadmap2050.eu/}, April 2010.
+\newblock {Online, accessed June 2012}.
+
+\bibitem{Heide2010}
+{Heide, D.}, {von Bremen, L.}, {Greiner, M.}, {Hoffmann, C.}, {Speckmann, M.},
+  and {Bofinger, S.}
+\newblock Seasonal optimal mix of wind and solar power in a future, highly
+  renewable {Europe}.
+\newblock {\em Renewable {En}ergy}, 35(11):2483--2489, 2010.
+
+\bibitem{Heide2011}
+{Heide, D.}, {Greiner, M.}, {Von Bremen, L.}, and {Hoffmann, C.}
+\newblock Reduced storage and balancing needs in a fully renewable {E}uropean
+  power system with excess wind and solar power generation.
+\newblock {\em Renewable Energy}, 36(9):2515--2523, 2011.
+
+\bibitem{rolando2014}
+Rolando~A. {Rodriguez}, Sarah {Becker}, Gorm~Bruun {Andresen}, Dominik {Heide},
+  and Martin {Greiner}.
+\newblock {Transmission needs across a fully renewable European power system}.
+\newblock {\em Renewable Energy}, 63:467--476, March 2014.
+
+\bibitem{sarah}
+Sarah {Becker}, Rolando~A. {Rodr\'iguez}, Gorm~B. {Andresen}, Stefan {Schramm},
+  and Martin {Greiner}.
+\newblock {Transmission grid extensions during the build-up of a fully
+  renewable pan-European electricity supply}.
+\newblock {\em Energy}, 64:404--418, January 2014.
+
+\bibitem{Schaber}
+{Schaber, K.}, {Steinke, F.}, and {Hamacher, T.}
+\newblock Transmission grid extensions for the integration of variable
+  renewable energies in {E}urope: Who benefits where?
+\newblock {\em Energy Policy}, 43:123 -- 135, 2012.
+
+\bibitem{Schaber2}
+{Schaber, K.}, {Steinke, F.}, {M{\"u}hlich, P.}, and {Hamacher, T.}
+\newblock Parametric study of variable renewable energy integration in
+  {E}urope: Advantages and costs of transmission grid extensions.
+\newblock {\em Energy Policy}, 42:498--508, 2012.
+
+\bibitem{REA}
+Gorm~Bruun Andresen, Anders~Aspegren Søndergaard, and Martin Greiner.
+\newblock Validation of danish wind time series from a new global renewable
+  energy atlas for energy system analysis.
+\newblock {\em Energy}, 2015.
+
+\bibitem{Widen2011}
+J.~Wid{e}n.
+\newblock Correlations between large-scale solar and wind power in a future
+  scenario for sweden.
+\newblock {\em IEEE Transactions on Sustainable Energy}, 2(2):177--184, 2011.
+
+\bibitem{Rolando2015}
+RolandoA. Rodriguez, Magnus Dahl, Sarah Becker, and Martin Greiner.
+\newblock Localized vs. synchronized exports across a highly renewable
+  pan-european transmission network.
+\newblock {\em Energy, Sustainability and Society}, 5(1), 2015.
+
+\bibitem{Magnus}
+Magnus Dahl.
+\newblock Power-flow modeling in complex renewable electricity networks.
+\newblock Master's thesis, Aarhus University, 2015.
+
+\bibitem{Sensitivity}
+Rolando~A. Rodriguez, Sarah Becker, and Martin Greiner.
+\newblock Cost-optimal design of a simplified, highly renewable pan-european
+  electricity system.
+\newblock {\em Energy}, 83:658 -- 668, 2015.
+
+\bibitem{Rolando}
+Rolando~A. Rodriguez.
+\newblock {\em Weather driven power transmission in a highly renewable European
+  electricity network}.
+\newblock PhD thesis, Aarhus University, 2014.
+
+\bibitem{irena}
+Zuzana Dobrotkova, Al~Goodrich, Miller Mackay, Cedric Philibert, Giorgio
+  Simbolotti, and Professor~XI Wenhua.
+\newblock Renewable energy technologies: Cost analysis series, solar
+  photovoltaics.
+\newblock Technical Report 4/5, The International Renewable Energy Agency,
+  2012.
+
+\bibitem{Fraunhofer}
+{Kost, C.}, {Schlegl, T.}, {Thomsen, J.}, {Nold, S.}, and {Mayer, J.}
+\newblock Levelized cost of electricity: renewable energies.
+\newblock Technical report, Fraunhofer {I}nstitute for solar energy systems
+  {ISE}, 2012.
+\newblock {Online, retrieved October 2013}.
+
+\bibitem{McKinsey}
+{McKinsey}.
+\newblock {RoadMap 2050: A Practical Guide to a Prosperous, Low-Carbon Europe}.
+\newblock Technical report, {European Climate Foundation}, 2010.
+\newblock {Online, retrieved October 2013}.
+
+\bibitem{Short1995}
+W.~Short, D.~Packey, and T.~Holt.
+\newblock A manual for the economic evalua- tion of energy efficiency and
+  renewable energy technologies.
+\newblock Technical report, National Renewable Energy Laboratory, 1995.
+
+\bibitem{Rodriguez2013}
+{Rodriguez, R.A.}, {Becker, S.}, {Andresen, G.}, {Heide, D.}, and {Greiner, M.}
+\newblock Transmission needs across a fully renewable {E}uropean power system.
+\newblock {\em Renewable Energy}, 63:467--476, 2014.
+
+\bibitem{nelder}
+J.~A. Nelder and R.~Mead.
+\newblock A simplex method for function minimization.
+\newblock {\em The Computer Journal}, 7(4):308--313, 1965.
+
+\bibitem{sa}
+S.~Kirkpatrick, C.~D. Gelatt, and M.~P. Vecchi.
+\newblock Optimization by simulated annealing.
+\newblock {\em Science}, 220(4598):671--680, 1983.
+
+\bibitem{ga}
+David~E. Goldberg.
+\newblock {\em Genetic Algorithms in Search, Optimization and Machine
+  Learning}.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1st
+  edition, 1989.
+
+\bibitem{cs}
+Xin-She Yang and Suash Deb.
+\newblock Cuckoo search via lévy flights.
+\newblock In {\em NaBIC}, pages 210--214. IEEE, 2009.
+
+\bibitem{emil}
+Emil~Haldrup Eriksen.
+\newblock Optimal heterogeneity in a highly renewable pan-european electricity
+  system based on wind, solar, hydro and biomass resources.
+\newblock Master's thesis, Aarhus University, 2015.
+
+\bibitem{iset}
+Stefan Bofinger, Lüder von Bremen, Kaspar Knoor, Katharina Lesch, Kurt Rohrig,
+  Yves-Marie Saint-Drenan, and Markus Speckmann.
+\newblock Raum-zeitliche erzeugungsmuster von wind- und solarenergie in der
+  ucte-region und deren einfluss auf elektrische transportnetze.
+\newblock Technical report, Institut für Solare Energieversorgungstechnik,
+  2008.
+
+\bibitem{EWEA}
+G.~Corbetta, I.~Pineda, and J.~Wilkes.
+\newblock Wind in power 2014 european statistics.
+\newblock Technical report, The European Wind Association, 2015.
+
+\bibitem{solarGridParity}
+Vishal Shah, Jerimiah Booream-Phelps, and Susie Min.
+\newblock 2014 outlook: Let the second gold rush begin.
+\newblock Technical report, Deutsche Bank Markets Research, 2014.
+
+\end{thebibliography}
