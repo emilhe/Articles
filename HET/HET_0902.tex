@@ -43,6 +43,28 @@
 \setlength{\parindent}{0pt}
 \usepackage[toc,nonumberlist]{glossaries}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%% Glossary setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\newacronym{vres}{VRES}{Variable Renewable Energy Sources}
+\newacronym{rea}{REA}{Renewable Energy Atlas}
+\newacronym{ncep}{NCEP}{American National Centers for Environmental
+  Prediction}
+\newacronym{cfsr}{CFSR}{Climate Forecast System Reanalysis}
+
+\newacronym{ac}{AC}{Alternating Current}
+\newacronym{dc}{DC}{Direct Current}
+\newacronym{lcoe}{LCOE}{Levelised Cost of Electricity}
+%\newacronym{tfsc}{TFSC}{Thin-Film Solar Cell}
+\newacronym{hvdc}{HVDC}{High Voltage Direct Current}
+\newacronym{iset}{IWES}{Fraunhofer-Institut für Windenergie und Energiesystemtechnik}
+
+\newacronym{ga}{GA}{Genetic Algorithm}
+\newacronym{gas}{GAS}{Greedy Axial Search}
+\newacronym{cs}{CS}{Cuckoo Search}
+\newacronym{de}{DE}{Differential Evolution}
+
 \newacronym{CapEx}{CapEx}{capital expenditures}
 \newacronym{OpEx}{OpEx}{operational expenditures}
 
@@ -112,20 +134,17 @@ of which only wind and solar PV have the potential for large scale
 expansion. For this reason, wind and solar PV
 are focussed upon here.
 
-Since wind and solar PV are both variable renewable energy resources
-(VRES), backup generation is needed if the electrical demand is to be met at all times. Backup generation introduces additional system costs, which
-must be kept at a minimum.
+Since wind and solar PV are both \gls{vres}, backup generation is needed if the electrical demand is to be met at all times. Backup
+generation introduces additional system costs, which must be kept at a minimum.
 
-The backup requirements depend on the mismatch between VRES generation
-and load. Using the degrees of freedom associated with the choice of
-the capacity distributions of VRES, it is possible to smooth out the
-aggregated temporal generation pattern or even shape it towards the
-load pattern. As a result, the mismatch (and thus the backup
-requirements) is lowered.  To decrease the dimensionality of the
-problem, renewable assets are often assigned proportional to the mean
-load of a country in accordance with a homogeneous wind-to-solar mixing
-factor. This approach is demonstrated in \cite{Heide2010,Heide2011},
-where optimal wind-to-solar mixes for Europe are found that minimise balancing and storage costs.
+The backup requirements depend on the mismatch between \gls{vres} generation and load. Using
+the degrees of freedom associated with the choice of the capacity distributions of \gls{vres}, it is
+possible to smooth out the aggregated temporal generation pattern or even shape it towards the
+load pattern. As a result, the mismatch (and thus the backup requirements) is lowered.  To
+decrease the dimensionality of the problem, renewable assets are often assigned proportional to
+the mean load of a country in accordance with a homogeneous wind-to-solar mixing factor. This
+approach is demonstrated in \cite{Heide2010,Heide2011}, where optimal wind-to-solar mixes for
+Europe are found that minimise balancing and storage costs.
 
 Further reductions in backup requirements are possible by extending
 the transmission network to enable more energy exchange between the
@@ -136,12 +155,12 @@ advantages and costs of grid extensions can be found in
 % PUT IN 2050 report stuff here?
 
 In this paper the assumptions of a homogeneous spatial distribution of
-VRES and a homogeneous wind-to-solar mixing factor are lifted and the
-cost-optimal siting of VRES capacities around Europe is explored.
+\gls{vres} and a homogeneous wind-to-solar mixing factor are lifted and the
+cost-optimal siting of \gls{vres} capacities around Europe is explored.
 
-The distribution of VRES plants is determined by at least two considerations.
+The distribution of \gls{vres} plants is determined by at least two considerations.
 The first consideration is the geographical
-variation of the VRES
+variation of the \gls{vres}
 quality. %On average, a solar photovoltaic (PV) installation in
 % Spain will be more productive than an equivalent installation in
 % Ireland. On the other hand, a wind farm located in Ireland will be
@@ -161,20 +180,18 @@ solar PV are listed in \cref{tab:capacity-factors}.
 %PV when it is sunny. Backup is thus needed at windless
 %nights.
 
-The second consideration is the geographical variation of the temporal
-generation pattern for a given VRES type. This effect is particularly
-important for wind since Europe is large compared to the correlation
-length of wind % of $\approx$ 1000 km
-\cite{Widen2011}, and therefore
-benefits from smoothing effects across the continent. Similar to the
-optimal wind/solar mixes found in \cite{Heide2010,Heide2011}, optimal
-layouts of each VRES can be derived that, for example, reduce
-balancing or transmission needs.
+The second consideration is the geographical variation of the temporal generation pattern for a
+given \gls{vres} type. This effect is particularly important for wind since Europe is large
+compared to the correlation length of wind % of $\approx$ 1000 km
+\cite{Widen2011}, and wind therefore benefits from smoothing effects across the
+continent. Similar to the optimal wind/solar mixes found in \cite{Heide2010,Heide2011}, optimal
+layouts of each \gls{vres} can be derived that, for example, reduce balancing or transmission
+needs.
 
 With these points in mind, the optimal heterogeneous spatial layouts
 of wind and solar PV across Europe is investigated and compared to the
 homogeneous layouts. The main point of comparison is the average cost
-of electricity, which is composed of the transmission, backup and VRES
+of electricity, which is composed of the transmission, backup and \gls{vres}
 costs.  Different approaches to cope with the resulting large number
 of degrees of freedom are considered ranging from heuristic layouts
 constructed from resource quality knowledge to layouts obtained
@@ -202,7 +219,7 @@ and non-linear formulation of the optimisation problem considered here.
 
 % The $\beta$ and CF layouts are derived directly from the capacity
 % factor. They do not take the temporal production pattern into
-% account. By choosing VRES with different temporal patterns, it is
+% account. By choosing \gls{vres} with different temporal patterns, it is
 % possible to reduce the backup needs. For homogeneous layouts, the
 % dimensionality of the problem is two (one if $\gamma$ is fixed), and the
 % optimum is trivially found. In the heterogeneous case, the
@@ -229,22 +246,27 @@ discussion on the results and an outlook on future research.
 
 \subsection{Renewable resource assessment}
 
-Hourly time series for the generation of onshore wind, offshore wind
-and solar PV for each European country were calculated using the
-Renewable Energy Atlas \cite{REA} (REA). The REA time series are based
-on a weather data set called CFSR (Climate Forecast System Reanalysis)
-from NCEP (American National Centers for Environmental Prediction)
-\cite{Saha}. The data set covers the period from January 1979 to December 2010
-and is available globally at an hourly temporal resolution and a
-spatial resolution of $0.31^\circ \times 0.31^\circ$. The resulting capacity factors for each country and each technology are listed in \cref{tab:capacity-factors}.
+Hourly time series for the generation of onshore wind, offshore wind and solar PV for each
+European country were calculated using the \gls{rea}. The \gls{rea} time series are based on a
+weather data set called \gls{cfsr} from \gls{ncep} \cite{Saha}. The data set covers the period
+from January 1979 to December 2010 and is available globally at an hourly temporal resolution
+and a spatial resolution of $0.31^\circ \times 0.31^\circ$.
+The resulting capacity factors for each country and each technology are listed in
+\cref{tab:capacity-factors}.
 
-The VRES layout in each country level was chosen as a homogeneous
-distribution across the 50\% of REA grid points in the country with
-the best capacity factors. For wind conversion, a multi turbine
+The countrywise capacity factors depends strongly on the distribution of \gls{vres} across each
+country. While the highest capacity factor would obtained by allocating all \gls{vres} to the
+best location, this is usually not possible due to space limitations and political
+concerns. However, since the capacity factor has a huge impact on the energy production costs,
+a homogeneous distribution is not realistic either. As intermediate solution, the \gls{vres}
+layout was chosen as a homogeneous distribution across the 50\% best grid points in the each
+country.
+
+For wind conversion, a multi turbine
 corrected power curve for the Vestas V90 3.0~MW turbine at 80 meter
-hub height was assumed. For solar conversion, the Solar First Series 4
+hub height was assumed \cite{REA}. For solar conversion, the Solar First Series 4
 PV panel oriented south and tilted from horizontal to a degree equal
-to the latitude of installation was applied.
+to the latitude of installation was applied \cite{?}. % TODO: Add reference
 
 \begin{table*}[t!]
   \caption{Capacity factors $\text{CF}_n^w$, $\text{CF}_n^{\tilde{w}}$ and  $\text{CF}_n^s$ for onshore wind, offshore wind and solar PV for the European countries.}
@@ -276,7 +298,7 @@ The European electricity network is modelled using a simplified
 determined from historical data, while wind and solar generation data
 are calculated using a combination of weather data and physical models
 \cite{REA}. Initially, wind is assumed to be onshore only. For each
-node $n$ the generation from VRES,
+node $n$ the generation from \gls{vres},
 
 % -------------------
 \begin{equation}
@@ -294,7 +316,7 @@ the node,
 \end{equation}
 % -------------------
 
-while the mixing parameter $\alpha$ fixes the ratio between wind and solar,
+while the mixing parameter $\alpha$ fixes wind-to-solar ratio,
 %-------------------
 \begin{align}
   \mean{G^{W}_{n}} &=  \alpha_{n} \mean{G_{n}^{R}}  , \\
@@ -302,7 +324,7 @@ while the mixing parameter $\alpha$ fixes the ratio between wind and solar,
 \end{align}
 %-------------------
 
-The nodal difference between VRES generation and load
+The nodal difference between \gls{vres} generation and load
 
 %-------------------
 \begin{equation}
@@ -351,7 +373,7 @@ generation for each time step,
   \label{eq:step1}
   \begin{aligned}
     \text{Step 1: \hspace{15pt}}& \underset{\mathbf{P}, \mathbf{F}}{\text{min}}
-    & & \sum_{n} \frac{\paren{G_{n}^{B}(t)}^{2}}{\mean{L_{n}}} \\
+    & & \sum_{n} \frac{\paren{B_{n}(t)}^{2}}{\mean{L_{n}}} \\
     & \text{s.t.}
     & & \sum_{n} P_{n} (t) = 0 \\ %F_{l}^{-} \leq F_{l} \leq F_{l}^{+}
     & \text{s.t.}
@@ -399,7 +421,7 @@ where $\mathbf{P}^{*}$ is the injection pattern found in step 1.
 \subsection{Key metrics}
 
 Inspired by \cite{Sensitivity}, the energy system cost is calculated
-based on a few key parameters. Besides the cost of the VRES
+based on a few key parameters. Besides the cost of the \gls{vres}
 capacities, $\mathcal{K^{W}}$ and $\mathcal{K^S}$, costs for the
 backup system and the transmission network are included. The backup
 system cost is split into two components, the cost of backup capacity
@@ -460,9 +482,7 @@ as a weighted sum,
   \mathcal{K}^{T} = \sum_{l} \mathcal{K}^{T}_{l} d_{l},
 \end{equation}
 
-where $d_{l}$ denotes the length of link $l$. For simplicity, the link
-lengths are taken as the distance between neighbouring country
-capitals. % Maybe cite Rolando here?
+where $d_{l}$ denotes the length of link $l$. 
 
 In this paper $E^{B}$ will be expressed in units of average annual
 load, $\mathcal{K}^{B}$ in units of average hourly load and
@@ -478,8 +498,8 @@ single modification. The cost of solar has been reduced by 50\% in
 accordance with near future solar PV panel price projections
 \cite{irena}. The resulting estimates are listed in
 \cref{tab:cost-assumptions}. In general, the cost assumptions are in
-the low end for VRES which reflects the expectation that the cost of
-VRES will go down in the future as the penetration increases
+the low end for \gls{vres} which reflects the expectation that the cost of
+\gls{vres} will go down in the future as the penetration increases
 \cite{Fraunhofer}.  Backup generation is priced based on the cost of Combined Cycle Gas Turbines (CCGTs).
 
 \begin{table}[h!]
@@ -499,7 +519,7 @@ VRES will go down in the future as the penetration increases
   \end{tabular}
 \end{table}
 
-From the VRES penetration, the mixing factor and the mean load, the
+From the \gls{vres} penetration, the mixing factor and the mean load, the
 effective generation of each node can be calculated. Dividing by the
 associated capacity factor, the capacity is obtained. Except for
 transmission capacity, the present value of each element can be
@@ -512,26 +532,21 @@ calculated directly as
 \end{equation}
 % -------------------
 
-where $r$ is the return rate assumed to be 4\%. The transmission
-capacity cannot be translated directly into cost as the cost depends
-on the length and the type of the link. Link lengths have been
-estimated as the distance between the country capitals. Link costs are
-assumed to be 400\euro{}
+where $r$
+is the return rate assumed to be 4\%. The transmission capacity cannot be translated directly
+into cost as the cost depends on the length and the type of the link. Link lengths have been
+estimated as the distance between the country capitals. Link costs are assumed to be 400\euro{}
 per km per MW for AC links and 1,500\euro{}
-per km per MW for HVDC links. For HVDC links, an additional cost of
-150,000\euro{} per MW
-per converter station (one at each end) is added
-\cite{McKinsey, Schaber, Schaber2}. The layout of AC and DC links has
-been constructed by \cite{rolando2014} from ENTSO-E data, se
-e.g. figure 1 in \cite{Sensitivity}.
+per km per MW for HVDC links. For HVDC links, an additional cost of 150,000\euro{}
+per MW per converter station (one at each end) is added \cite{McKinsey, Schaber, Schaber2}. The
+layout of AC and HVDC links has been constructed by \cite{rolando2014} from ENTSO-E data.
 
 %The layout of AC and DC lines
 %was determined according to the existing European network reported by
 %ENTSO-E for the year 2011 \cite{ENTSOEcaps} and new predicted lines
 %until 2014 \cite{NorNed, BritNed}.
 
-To allow for comparison of different energy systems, the levelised
-cost of electricity (LCOE) is a convenient measure. The LCOE is the
+To allow for comparison of different energy systems, the \gls{lcoe} is a convenient measure. The \gls{lcoe} is the
 cost that every unit of energy produced during the lifetime of the
 project must have to match the present value of investment
 \cite{Short1995},
@@ -542,8 +557,8 @@ project must have to match the present value of investment
         t}}{\paren{1+r}^{t}}} .
 \end{equation}
 
-Since the life time of the system elements differs, the LCOE is
-evaluated separately for each system element. The LCOE for the
+Since the life time of the system elements differs, the \gls{lcoe} is
+evaluated separately for each system element. The \gls{lcoe} for the
 complete system is calculation by summation. Life times of 25 years
 for solar PV and onshore wind, 20 years for offshore wind, 30 years
 for CCGT plants and 40 years for transmission infrastructure were
@@ -554,7 +569,7 @@ Because extreme events in terms of backup capacity (all countries have
 a large energy deficit) and transmission capacity (some countries have
 an energy deficit while others have excess generation) are generally
 not overlapping, scaling down $\mathcal{K}^{T}$ with some fraction
-$\zeta$ tends to lower the LCOE since $\mathcal{K}^{B}$ is not increased
+$\zeta$ tends to lower the \gls{lcoe} since $\mathcal{K}^{B}$ is not increased
 accordingly. This point is illustrated in
 \cref{fig:transmission-lcoe}. The benefits of transmission have
 previously been studied by \cite{Rodriguez2013}.
@@ -562,23 +577,23 @@ previously been studied by \cite{Rodriguez2013}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{constrainedSync-new}
-  \caption{LCOE components for different values of $\zeta$. The dashed
-    line indicates the approximated LCOE (see text). The calculations
+  \caption{\gls{lcoe} components for different values of $\zeta$. The dashed
+    line indicates the approximated \gls{lcoe} (see text). The calculations
     were performed using a homogeneous layout with
     $\alpha_{EU} = 0.84$ (cost optimal mix) and the synchronised export
     scheme.}
   \label{fig:transmission-lcoe}
 \end{figure}
 
-\Cref{fig:transmission-lcoe} reveals that the LCOE is generally
+\Cref{fig:transmission-lcoe} reveals that the \gls{lcoe} is generally
 decreased by the presence of a transmission grid. However, the lowest
-LCOE is not obtained by installing the full $\mathcal{K}^{T}$
+\gls{lcoe} is not obtained by installing the full $\mathcal{K}^{T}$
 ($\zeta = 1$). The cost optimal value of $\zeta$ depends of the electricity
-system being analysed and on the specific LCOE definition (in the
+system being analysed and on the specific \gls{lcoe} definition (in the
 present case the optimum is around $\zeta= 0.5$). Obtaining the lowest
-possible LCOE would thus require system individual optimisation. To
+possible \gls{lcoe} would thus require system individual optimisation. To
 avoid the additional complexity associated with such an optimisation
-and to define the LCOE function in a consistent way, the LCOE will
+and to define the \gls{lcoe} function in a consistent way, the \gls{lcoe} will
 consistently be calculated using the synchronised export scheme at
 $\zeta=1$, but with only 50\% of the $\mathcal{K}^{T}$ cost. The
 approximation is shown as a dashed line in
@@ -635,7 +650,7 @@ and
 
 For practical reasons, it is not possible to realise extremely
 heterogeneous layouts. On the one hand the geographical potentials for
-VRES installations in countries with good renewable resources may be a limiting factor; on the
+\gls{vres} installations in countries with good renewable resources may be a limiting factor; on the
 other hand countries with poor renewable resources may not want to become too dependent on imports.
 To constrain heterogeneity, the heterogeneity
 factor K is introduced by requiring
@@ -693,7 +708,7 @@ wind and solar PV only layouts.
 \subsection{Optimised layouts}
 \label{sec:optimized-layouts}
 
-The optimisation objective is minimisation of the LCOE with respect to
+The optimisation objective is minimisation of the \gls{lcoe} with respect to
 the 60 variables
 $\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$ for the $N=30$ countries.  A number of optimisation
 algorithms were tested including the Nelder-Mead method \cite{nelder},
@@ -719,15 +734,14 @@ $\alpha_{EU} = 0.9$, which is slightly higher than the values found by
 \cite{Heide2010,Heide2011}.
 % It does NOT make sense to say that the backup optimal mix for the
 % GAS layout is 0.8; we only have a point, not a curve!
-The difference can be attributed to differences between the REA data
-used in this paper and the ISET data \cite{iset} used by
-\cite{Heide2010,Heide2011}. For transmission capacity, the curves are
-quite similar for the $\beta$ layouts with a minimum around
-$\alpha_{EU} = 0.5$. For the CF layouts a larger increase in
-$\mathcal{K}^{T}$ is observed as K is increased. This observation is
-in qualitative agreement with intuition since the CF layouts are
-generally more extreme than the $\beta$ layouts (see
-e.g. \cref{fig:optLayouts}).
+The difference can be attributed to differences between the \gls{rea} data used in this paper
+and the \gls{iset} (former ISET) data \cite{iset} used by \cite{Heide2010,Heide2011}. For
+transmission capacity, the curves are quite similar for the $\beta$
+layouts with a minimum around $\alpha_{EU} = 0.5$.
+For the CF layouts a larger increase in $\mathcal{K}^{T}$
+is observed as K is increased. This observation is in qualitative agreement with intuition
+since the CF layouts are generally more extreme than the $\beta$
+layouts. % (see e.g. \cref{fig:optLayouts}).
 
 %, indicating a high share of
 %solar PV. While the wind correlation length is around $\approx$ 1000
@@ -737,7 +751,7 @@ e.g. \cref{fig:optLayouts}).
 %Therefore, a high wind share causes more power to flow
 %between the countries.
 
-The main parameter of interest, the LCOE, has a maximum at
+The main parameter of interest, the \gls{lcoe}, has a maximum at
 $\alpha_{EU} = 0$. For the $\beta$ and CF layouts it drops steadily as
 $\alpha_{EU}$ is increased until around $\alpha_{EU} = 0.84$ where the minimum
 is located. The GAS optimised layouts are also to be found in the wind
@@ -748,19 +762,26 @@ lower than for onshore wind. The cost of producing one unit of energy
 is thus higher for solar than for onshore wind even though the
 \gls{CapEx} is lower for solar.
 
-To assess the validity of the LCOE approximation proposed in
-\cref{sec:cost-modelling}, the non approximated LCOE for the GAS
+To assess the validity of the \gls{lcoe} approximation proposed in
+\cref{sec:cost-modelling}, the non approximated \gls{lcoe} for the GAS
 optimised layouts is plotted in \cref{fig:overview} (hexagons). To
-obtain these points the LCOE was evaluated with optimised values of
-$\zeta$ (0.43, 0.44 and 0.45 for K = 1, 2 and 3 respectively). From the
-comparison it is clear that the approximation is generally
-underestimating the LCOE, and the approximation becomes worse as K is
-increased. At $K=2$ the approximated LCOE is off by 1.3\%.
+obtain these points the \gls{lcoe} was evaluated with optimised values of
+$\zeta$ (0.43, 0.44 and 0.45 for K = 1, 2 and 3 respectively).
+
+From the comparison it is clear that the approximation generally works well. The \gls{lcoe} is
+underestimated sligtly, and the error tends to increase with $K$.
+At $K=2$ the approximated \gls{lcoe} is off by 1.3\%.
+
+
+%From the
+%comparison it is clear that the approximation is generally
+%underestimating the \gls{lcoe}, and the approximation becomes worse as K is
+%increased. At $K=2$ the approximated \gls{lcoe} is off by 1.3\%.
 
 \begin{figure*}[t!]
   \centering
   \includegraphics[width = 2\columnwidth]{dataSync-new}
-  \caption{Overview of the key parameters and the associated LCOE as a
+  \caption{Overview of the key parameters and the associated \gls{lcoe} as a
     function of $\alpha_{EU}$. The $\beta$ %(solid line)
     and CF %(dashed line)
     layouts are shown as solid and dashed lines respectively. The GAS
@@ -769,38 +790,34 @@ increased. At $K=2$ the approximated LCOE is off by 1.3\%.
   \label{fig:overview}
 \end{figure*}
 
-The componentwise costs for the optimal $\beta$, CF and GAS layouts are
-shown in \cref{fig:cost}. From this figure it is clear that the VRES
-cost is dominating. Compared to the $\beta$ and CF layouts, the GAS
-layouts include a slightly larger solar component. The magnitude of
-the solar component for the GAS layouts drops with increasing K
-value. As the heterogeneity constraints are loosened wind becomes more
-favourable since it becomes possible to allocate more resources to the
-sites with a very high CF. A similar effect is present for solar, but
-it is less dominant since the best CF for solar (0.20, Spain) is much
-smaller than for wind (0.37, Denmark).
+The componentwise costs for the optimal $\beta$,
+CF and GAS layouts are shown in \cref{fig:cost}. From this figure it is clear that the
+\gls{vres} cost is dominating. Compared to the $\beta$
+and CF layouts, the GAS layouts include a slightly larger solar component. The magnitude of the
+solar component for the GAS layouts drops with increasing K value. As the heterogeneity
+constraints are loosened wind becomes more favourable since it becomes possible to allocate
+more resources to the sites with a very high CF. A similar effect is present for solar, but it
+is less dominant since the difference between the higest and lowest CF for solar (0.20, Spain
+vs. 0.11, Finland) is much smaller than for wind (0.37, Denmark vs. 0.07, Slovenia).
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{costVE50}
-  \caption{Componentwise LCOE for the optimal $\beta$, CF and GAS layouts
+  \caption{Componentwise \gls{lcoe} for the optimal $\beta$, CF and GAS layouts
     for K = 1 (left), 2 (middle) and 3 (right). The unlabelled bar
     represents the homogeneous layout without transmission.}
   \label{fig:cost}
 \end{figure}
 
-\Cref{fig:optLayouts} confirms that the cost of transmission increases
-with increasing heterogeneity. To quantify what happens, the link
-usage for the homogeneous layout and the GAS layout for K = 2 is
-visualised in \cref{fig:links}. Comparing \cref{fig:links-homo} and
-\cref{fig:links-k2} it is clear that the flow does not increase
-homogeneously across the network. The primarily increase is on links
-connected countries with severe excess generation, e.g. Great Britain,
-Ireland, the Netherlands, Norway and Denmark (see
-\cref{fig:optLayouts}). However, additional flows are also induced on
-links connected to Germany and France, which act as transit
-countries. The capacity of links connecting south and central European
-countries remains practically unchanged.
+\Cref{fig:optLayouts} confirms that the cost of transmission increases with increasing
+heterogeneity. To quantify what happens, the link usage for the homogeneous layout and the GAS
+layout for K = 2 is visualised in \cref{fig:links}. Comparing \cref{fig:links-homo} and
+\cref{fig:links-k2} it is clear that the flow does not increase homogeneously across the
+network. The primarily increase is on links connected countries with severe excess generation,
+e.g. Great Britain, Ireland, the Netherlands, Norway and Denmark. %(see \cref{fig:optLayouts}).
+However, additional flows are also induced on links connected to Germany and France, which act
+as transit countries. The capacity of links connecting south and central European countries
+remains practically unchanged.
 
 \begin{figure*}[t!]
   \centering
@@ -946,14 +963,14 @@ compared to onshore wind. The cost of solar has dropped rapidly in the
 recent years and this tendency might very well continue. To shed some
 light on the consequences of further price reductions, the sensitivity
 of the optimal mix to reductions in the solar cost has been
-examined. \Cref{fig:red-solar} illustrates the change in LCOE for the
+examined. \Cref{fig:red-solar} illustrates the change in \gls{lcoe} for the
 GAS optimised layouts when the solar cost is reduced by 25\%, 50\% and
 75\% respectively. The 0\% scenario is included as a reference.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width = \columnwidth]{solarAnalysis-new}
-  \caption{LCOE of the GAS optimised layouts when the solar cost is
+  \caption{\gls{lcoe} of the GAS optimised layouts when the solar cost is
     reduced by 25\% (triangle), 50\% (square) and 75\% (diamond). The
     0\% scenario (circle) is included as a reference. Different
     constraints are shown: K = 1 (blue), 2 (yellow) and 3 (green).}
@@ -962,15 +979,15 @@ GAS optimised layouts when the solar cost is reduced by 25\%, 50\% and
 
 A reduction of the solar cost by 25\% does not change the picture
 much. The optimal mix is shifted from above 0.75 to below 0.75 and the
-LCOE drops by around 2\euro{} (cost comparison numbers are calculated
+\gls{lcoe} drops by around 2\euro{} (cost comparison numbers are calculated
 for the GAS layouts at K = 2).  As the solar cost is reduced by 50\%
 the cost at $\alpha_{EU} = 0$ (pure solar) becomes comparable to the
 cost at $\alpha_{EU} = 1$ (pure wind). The optimal mix drops to around
-0.6 and the LCOE is reduced by almost 6\euro{} compared to the
+0.6 and the \gls{lcoe} is reduced by almost 6\euro{} compared to the
 reference scenario. Reducing the cost of solar by 75\%, solar becomes
 much cheaper than wind, and the optimal mix is shifted below
 $\alpha_{EU} = 0.5$ indicating solar domination. Compared to the
-reference scenario, the LCOE dropped by more than 10\euro. However, it
+reference scenario, the \gls{lcoe} dropped by more than 10\euro. However, it
 should be noted that such large cost reductions for PV may not be
 plausible. Much of the recent cost reduction  has come from reduced material costs; the remaining costs come from the installation, where it is not so easy to economise.
 
@@ -1025,9 +1042,9 @@ total European onshore wind capacity was 120.8GW, while the offshore
 capacity was 8.0GW \cite{EWEA}. %While these numbers confirm the
 %onshore only assumption to be reasonable,
 The increasing share of offshore wind raises the question, how the
-LCOE will be affected by the introduction of an offshore
+\gls{lcoe} will be affected by the introduction of an offshore
 component. The immediate expectation would be a significant increase
-in the LCOE since the expenditures for offshore wind are more than
+in the \gls{lcoe} since the expenditures for offshore wind are more than
 100\% higher than for onshore wind due to foundation expenses and
 increased maintenance costs. On the other hand the capacity factors
 for offshore sites are generally higher than for onshore sites.
@@ -1069,7 +1086,7 @@ included as a reference.
 \end{figure}
 
 From \cref{fig:cost-offshore} it is clear that the introduction of an
-offshore component increases the LCOE. However, the increase in LCOE
+offshore component increases the \gls{lcoe}. However, the increase in \gls{lcoe}
 is not dramatic. While the cost of wind increases
 significantly, the cost of backup and transmission decreases
 slightly. The decrease is a consequence of the difference in the
@@ -1096,24 +1113,24 @@ The GAS optimised layouts for an offshore share of 50\% are shown in
 \label{sec:four}
 %*************************************************************************
 
-The cost-optimal distribution of VRES around Europe has been
-investigated for the case where the mean VRES generation equals the
+The cost-optimal distribution of \gls{vres} around Europe has been
+investigated for the case where the mean \gls{vres} generation equals the
 mean load ($\gamma_{EU} = 1$). It was found that although the costs of
 backup generation and transmission are significant, the main costs are
-associated with the VRES capacities. The VRES capacity costs can be
+associated with the \gls{vres} capacities. The \gls{vres} capacity costs can be
 lowered by allocating more resources to countries with high capacity
 factors and by preferring onshore wind over solar PV. Allowing each
-country to install VRES capacities covering a minimum of 50\% and a
-maximum of 200\% of their mean load, the LCOE can be lowered by more
+country to install \gls{vres} capacities covering a minimum of 50\% and a
+maximum of 200\% of their mean load, the \gls{lcoe} can be lowered by more
 than 8\% by choosing the heuristic CF layout which maximises the
-overall capacity factor. An additional 5\% reduction of the LCOE was
+overall capacity factor. An additional 5\% reduction of the \gls{lcoe} was
 achieved by explicit optimisation. This cost reduction can be
 attributed to the general tendency for the heterogeneous layouts to
 shift wind capacities towards the North Sea countries. Since the wind
 resource quality is better than for the central and southern
 countries, this reallocation results in lower costs.
 
-In the past onshore wind has been the predominant VRES and the
+In the past onshore wind has been the predominant \gls{vres} and the
 cost-optimal mixes presented here are also dominated by onshore wind,
 based on current cost projections.  However, the cost of solar PV has
 dropped more rapidly than expected in recent years, and solar PV has
@@ -1169,13 +1186,13 @@ reality, up to 17\% of Europe's electricity supply is already provided
 by hydroelectric plants, most of which are flexible, some of which
 have storage capacity and all of which produce electricity at very low
 marginal cost. Incorporating hydroelectricity in the modelling would
-reduce the LCOE further. Similarly non-hydro storage may present cost
+reduce the \gls{lcoe} further. Similarly non-hydro storage may present cost
 savings for high renewable penetrations.
 
 In addition, a full assessment of the geographical resource potentials
-in each country for each VRES technology would allow further
+in each country for each \gls{vres} technology would allow further
 heterogeneity beyond the $K=2,3$ limits considered here, which would
-also result in a lower LCOE.
+also result in a lower \gls{lcoe}.
 
 
 %Even moderate amounts of
@@ -1184,7 +1201,7 @@ also result in a lower LCOE.
 %For small amounts of storage, the optimal mix will most likely be
 %lowered, as the day-night cycle solar makes it
 
-% An exploration of layouts of VRES capacities over Europe shows that
+% An exploration of layouts of \gls{vres} capacities over Europe shows that
 % heterogeneous layouts are capable of significantly increasing the
 % overall capacity factor $\nu_\text{EU}$ of renewables, while reducing
 % the standard deviation $\sigma_\text{EU}$ of their generation. By scaling
@@ -1232,7 +1249,7 @@ also result in a lower LCOE.
 % %\subsection{Cuckoo search}
 % %\label{sec:cuckoo-search}
 % %
-% % A European VRES layout is determined by the vectors
+% % A European \gls{vres} layout is determined by the vectors
 % % $\boldsymbol \gamma$ and $\boldsymbol \alpha$, each with dimensionality
 % % $n$ equal to the number of nodes. For notational convenience, a
 % % complete solution vector $\boldsymbol x$ is constructed as
@@ -1251,8 +1268,8 @@ also result in a lower LCOE.
 % is constructed as
 % $x_{1} = \gamma_{1}, ..., x_{N} =\gamma_{N}, x_{N+1} = \alpha_{1}, ...,
 % x_{2N} = \alpha_{N}$.
-% The optimization objective is global minimization of the LCOE as a
-% function of $\boldsymbol x$. The LCOE is a complicated function of the
+% The optimization objective is global minimization of the \gls{lcoe} as a
+% function of $\boldsymbol x$. The \gls{lcoe} is a complicated function of the
 % layout $\boldsymbol x$ for which derivative information is not
 % available. With 30 countries, the dimensionality of the problem is 60,
 % and the search space thus large.
@@ -1488,7 +1505,7 @@ also result in a lower LCOE.
 % \nu_\rm{EU} = \sum_n \nu_n^W \frac{\gamma_n^W \mean{L_n}}{\mean{L_\rm{EU}}} + \sum_n \nu_n^S %\frac{\gamma_n^S \mean{L_n}}{\mean{L_\rm{EU}}}
 %\end{equation}
 %while the risk can be related to the layout-wide standard deviation,
-% as defined in (\ref{eq:stdev}). A geographical dispersion of VRES
+% as defined in (\ref{eq:stdev}). A geographical dispersion of \gls{vres}
 % capacities can help reduce the total standard deviation, as wind is
 % generally uncorrelated beyond 500 km.  Figure 5.2 is a
 % representation of the layout of wind capacities in Europe. Each
