@@ -1,7 +1,7 @@
 \documentclass[a4paper, 5p, sort&compress]{elsarticle}%5p for double column
 %
 \usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsfonts,mathtools}
 \usepackage[english]{babel}
 \usepackage{fontenc}
@@ -42,6 +42,11 @@
 \usepackage{subcaption}
 \setlength{\parindent}{0pt}
 \usepackage[toc,nonumberlist]{glossaries}
+\usepackage{float}
+\newfloat{algorithm}{H}{lop}
+\floatname{algorithm}{Algorithm}
+%\newfloat{algorithm*}{t}{lop}
+%\floatname{algorithm*}{Algorithm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %%%%%%%%%%%%%%%%% Glossary setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -565,42 +570,6 @@ for CCGT plants and 40 years for transmission infrastructure were
 assumed. See \cite{Sensitivity} for more details on the cost
 calculation.
 
-Because extreme events in terms of backup capacity (all countries have
-a large energy deficit) and transmission capacity (some countries have
-an energy deficit while others have excess generation) are generally
-not overlapping, scaling down $\mathcal{K}^{T}$ with some fraction
-$\zeta$ tends to lower the \gls{lcoe} since $\mathcal{K}^{B}$ is not increased
-accordingly. This point is illustrated in
-\cref{fig:transmission-lcoe}. The benefits of transmission have
-previously been studied by \cite{Rodriguez2013}.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width = \columnwidth]{constrainedSync-new}
-  \caption{\gls{lcoe} components for different values of $\zeta$. The dashed
-    line indicates the approximated \gls{lcoe} (see text). The calculations
-    were performed using a homogeneous layout with
-    $\alpha_{EU} = 0.84$ (cost optimal mix) and the synchronised export
-    scheme.}
-  \label{fig:transmission-lcoe}
-\end{figure}
-
-\Cref{fig:transmission-lcoe} reveals that the \gls{lcoe} is generally
-decreased by the presence of a transmission grid. However, the lowest
-\gls{lcoe} is not obtained by installing the full $\mathcal{K}^{T}$
-($\zeta = 1$). The cost optimal value of $\zeta$ depends of the electricity
-system being analysed and on the specific \gls{lcoe} definition (in the
-present case the optimum is around $\zeta= 0.5$). Obtaining the lowest
-possible \gls{lcoe} would thus require system individual optimisation. To
-avoid the additional complexity associated with such an optimisation
-and to define the \gls{lcoe} function in a consistent way, the \gls{lcoe} will
-consistently be calculated using the synchronised export scheme at
-$\zeta=1$, but with only 50\% of the $\mathcal{K}^{T}$ cost. The
-approximation is shown as a dashed line in
-\cref{fig:transmission-lcoe}. While the approximation is not perfect,
-the inaccuracy associated with the approximation is small
-compared to the uncertainty of the cost estimates.
-
 \subsection{Heuristic $\beta$ layouts}
 \label{sec:beta-layout}
 
@@ -660,13 +629,18 @@ factor K is introduced by requiring
   \frac{1}{\text{K}} \leq \gamma_{n} \leq \text{K} .
 \end{equation}
 
-With this definition, K = 1 corresponds to a homogeneous layout while
-K = $\infty$ represents unconstrained heterogeneity.
-
+With this definition, K = 1 corresponds to a homogeneous layout while K = $\infty$
+represents unconstrained heterogeneity. For the $\beta$
+layouts, each value of K translates into an $\alpha$
+dependent value of $\beta$.
+For a given value of $\alpha$,
+the corresponding $\beta$
+value is found by increasing $\beta$
+until some country violates \cref{eq:k-factor}. At the optimal mix ($\alpha = 0.84$)
+$K= 1, 2, 3$ correspond to $\beta = 0.00, 0.93, 1.58$.
 
 \subsection{Heuristic CF layout}
 \label{sec:CF-layout}
-
 
 Although the capacity factor of a $\beta$ layout is higher than the
 capacity factor of the homogeneous layout (for $\beta$ $>$ 0), it is
@@ -678,7 +652,7 @@ $\gamma_{n} = \frac{1}{\text{K}}$ to the remaining countries, except for a
 single in-between country which is fixed by the constraint
 
 \begin{equation}
-  \label{eq:5}
+  \label{eq:norm}
   \sum_{n} \gamma_{n} \mean{L_{n}} = \mean{L_{EU}}.
 \end{equation}
 
@@ -708,20 +682,81 @@ wind and solar PV only layouts.
 \subsection{Optimised layouts}
 \label{sec:optimized-layouts}
 
-The optimisation objective is minimisation of the \gls{lcoe} with respect to
-the 60 variables
-$\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$ for the $N=30$ countries.  A number of optimisation
-algorithms were tested including the Nelder-Mead method \cite{nelder},
-simulated annealing \cite{sa}, genetic algorithms \cite{ga} and cuckoo
-search \cite{cs}. However, a custom local search algorithm
-implementation denoted Greedy Axial Search (GAS) %, described
-%in\cref{sec:greedy-axial-search},
-was found to be most effective \cite{emil}. All optimised layouts have
-been obtained using the GAS routine. These layouts will be denoted GAS
-layouts. To decrease computation time, optimisations were performed
-using a one year slice of the 32 year data set.
+The optimisation objective is minimisation of the \gls{lcoe} with respect to the 60 variables
+$\gamma_{1}, ..., \gamma_{N}, \alpha_{1}, ..., \alpha_{N}$
+for the $N=30$
+countries.  A number of optimisation algorithms were tested including the Nelder-Mead method
+\cite{nelder}, simulated annealing \cite{sa}, genetic algorithms \cite{ga} and cuckoo search
+\cite{cs}. It was found that the continous enforcement of the normalisation criteria
+\cref{eq:norm} generally decreased the performance of the tested algorithms, and for that
+reason an algorithm was developed to adress this problem. While being a classical greedy
+algorithm in the sense that the locally optimal choice is always taken, the renormalisation
+problem was curcumvented by moving only along the axial directions. The algorithm has been
+denoted Greedy Axial Search (GAS), and it is decribed in detail in \cref{sec:appendix}. All
+optimised layouts have been obtained using the GAS routine. These layouts will be denoted GAS
+layouts. To decrease computation time, optimisations were performed using a one year slice of
+the 32 year data set. The slice was chosen as the one that statistically resembles the complete
+data set the most.
 
-%\FloatBarrier
+% Note, tables DOES NOT belong here. Just moved for layout reasons :)
+\begin{table*}[t!]
+  \centering
+  \caption{Componentwise \gls{lcoe} for the optimal $\beta$, CF and GAS layouts along with the
+    homogeneous layout without transmission. The $K$ values are expressed through the index
+    notation, e.g. $K = i$ for $\beta_{i}$. All costs are listed in \euro.}
+  \label{tab:cost}
+  \begin{tabular}{ccrrrrrrrrr}
+    \toprule
+    \textbf{Parameter} & \textbf{No transmission} & $\boldsymbol\beta\mathbf{_{1}}$ & $\mathbf{CF_{1}}$ & $\mathbf{GAS_{1}}$ & $\boldsymbol\beta\mathbf{_{2}}$ & $\mathbf{CF_{2}}$& $\mathbf{GAS_{2}}$ & $\boldsymbol\beta\mathbf{_{3}}$ & $\mathbf{CF_{3}}$ & $\mathbf{GAS_{3}}$ \\
+    \midrule
+    $\mathcal{K}^{W}$ & 42.79 & 42.79 & 42.79 & 29.80 & 39.83 & 36.52 & 29.20 & 38.18 & 32.79 & 28.53 \\ % Onshore wind
+    $\mathcal{K}^{S}$ & 6.91 & 6.91 & 6.91 & 10.59 & 6.75 & 6.25 & 8.24 & 6.66 & 5.92 & 6.72 \\ % Solar
+    $\mathcal{K}^{B}$ & 6.92 & 4.88 & 4.88 & 5.40 & 4.89 & 4.93 & 5.19 & 4.91 & 5.00 & 5.11 \\ % Backup
+    $E^{B}$ & 16.70 & 10.69 & 10.69 & 12.94 & 10.68 & 10.71 & 11.54 & 10.71 & 10.84 & 10.89 \\ % Fuel
+    $\mathcal{K}^{T}$ & 0.00 & 2.95 & 2.95 & 3.43 & 3.12 & 4.09 & 4.54 & 3.42 & 5.26 & 5.65 \\ % Transmission    
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\subsection{Approximate LCOE}
+\label{sec:approximate-lcoe}
+
+
+Because extreme events in terms of backup capacity (all countries have
+a large energy deficit) and transmission capacity (some countries have
+an energy deficit while others have excess generation) are generally
+not overlapping, scaling down $\mathcal{K}^{T}$ with some fraction
+$\zeta$ tends to lower the \gls{lcoe} since $\mathcal{K}^{B}$ is not increased
+accordingly. This point is illustrated in
+\cref{fig:transmission-lcoe}. The benefits of transmission have
+previously been studied by \cite{Rodriguez2013}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width = \columnwidth]{constrainedSync-new}
+  \caption{Non \gls{vres} components of the \gls{lcoe} for different values of $\zeta$.
+    The dashed line indicates the approximated \gls{lcoe} (see text). The calculations were
+    performed using a homogeneous layout with $\alpha_{EU} = 0.84$
+    (cost optimal mix) and the synchronised export scheme.}
+  % Solar cost is 6.91, wind cost is 42.79 (combined is 49.70) 
+  \label{fig:transmission-lcoe}
+\end{figure}
+
+\Cref{fig:transmission-lcoe} reveals that the \gls{lcoe} is generally decreased by the presence
+of a transmission grid. However, the lowest \gls{lcoe} is not obtained by installing the full
+$\mathcal{K}^{T}$
+($\zeta = 1$).
+The cost optimal value of $\zeta$
+depends of the electricity system being analysed and on the specific \gls{lcoe} definition (in
+the present case the optimum is around $\zeta= 0.5$).
+Obtaining the lowest possible \gls{lcoe} would thus require system individual optimisation. To
+avoid the additional complexity associated with such an optimisation and to define the
+\gls{lcoe} function in a consistent way, the \gls{lcoe} will consistently be calculated using
+the synchronised export scheme at $\zeta=1$,
+but with only 50\% of the $\mathcal{K}^{T}$
+cost. The approximation is shown as a dashed line in \cref{fig:transmission-lcoe}. While the
+approximation is not perfect, the inaccuracy associated with the approximation is small
+compared to the uncertainty of the cost estimates.
 
 \section{Results}
 \label{sec:results}
@@ -839,38 +874,58 @@ remains practically unchanged.
   \label{fig:links}
 \end{figure*}
 
-The optimal $\beta$, CF and GAS layouts are shown in
-\cref{fig:optLayouts}. Note that for $K=1$, the $\beta$ and the
-CF layouts are both equal to the homogeneous layout. From
-\cref{fig:cfMaxOpt,fig:agdOpt} we see that the CF and the GAS
-layouts are quite similar. These figures also explain why the GAS
-routine is able to include a solar component at a competitive cost;
-unlike the $\beta$ and CF layout definitions, the GAS routine has
-the freedom to assign solar only to countries with poor wind
-resources, e.g. Serbia (RS) and Slovenia (SI).
+The $\beta$
+and CF layouts for $K=2$
+are compared to the homogeneous layout in \cref{fig:k=2layouts} while the GAS layouts are shown
+in \cref{fig:optLayouts}. %Note that for $K=1$, the $\beta$ and the CF layouts are both equal to
+                          %the homogeneous layout.
+These figures also explain why the GAS routine is able to include a solar component at a
+competitive cost; unlike the $\beta$
+and CF layout definitions, the GAS routine has the freedom to assign solar only to countries
+with poor wind resources, e.g. Serbia (RS) and Slovenia (SI).
 
-% Add more discussion here!!
+% TODO: Add more discussion here!!
 
 \begin{figure*}[p!]
   \centering
   \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = \chromowidth, center]{k=1-layouts}
-    \caption{Optimal layouts constrained by K = 1.}
+    \includegraphics[width = \chromowidth, center]{chromosome_homogeneous}
+    \caption{Homogeneous layout.}
     \label{fig:betaOpt}
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = \chromowidth, center]{k=2-layouts}
-    \caption{Optimal layouts constrained by K = 2.}
+    \includegraphics[width = \chromowidth, center]{chromosome_k=2beta}
+    \caption{$\beta$ layout constrained by $K = 2$.}
     \label{fig:cfMaxOpt}
   \end{subfigure}
   \begin{subfigure}{2\columnwidth}
-    \includegraphics[width = \chromowidth, center]{k=3-layouts}
-    \caption{Optimal layouts constrained by K = 3.}
+    \includegraphics[width = \chromowidth, center]{chromosome_k=2cfMax}
+    \caption{CF layout constrained by $K = 2$.}
     \label{fig:agdOpt}
   \end{subfigure}
-  \caption{Optimal layouts. In each sub figure, three sets of bars
-    corresponding to the $\beta$ layout (left), the CF layout (centre) and
-    the GAS optimised layout (right) are shown.}
+  \caption{Comparison of the homogeneous layout (a) with the $\beta$
+    and CF layouts constrained by $K = 2$ (b, c). }
+  \label{fig:k=2layouts}
+\end{figure*}
+
+\begin{figure*}[p!]
+  \centering
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{chromosome_k=1gas}
+    \caption{GAS layout constrained by K = 1.}
+    \label{fig:betaOpt}
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{chromosome_k=2gas}
+    \caption{GAS layout constrained by K = 2.}
+    \label{fig:cfMaxOpt}
+  \end{subfigure}
+  \begin{subfigure}{2\columnwidth}
+    \includegraphics[width = \chromowidth, center]{chromosome_k=3gas}
+    \caption{GAS layout constrained by K = 3.}
+    \label{fig:agdOpt}
+  \end{subfigure}
+  \caption{GAS optimised layouts for different k values.}
   \label{fig:optLayouts}
 \end{figure*}
 
@@ -1238,299 +1293,77 @@ also result in a lower \gls{lcoe}.
 \bibliographystyle{unsrt}%model3-num-names}
 \bibliography{references}
 
-% \clearpage
+\appendix
 
-%\appendix
+\renewcommand{\thesection}{Appendix \Roman{section}}
+\section{Greedy Axial Search}
+\label{sec:greedy-axial-search}
 
-%\renewcommand{\thesection}{Appendix \Roman{section}}
-%\section{Greedy Axial Search}
-%\label{sec:greedy-axial-search}
+When a solution is renormalised, all $\gamma$ values are scaled either up
+or down. Therefore, it is possible that some $\gamma$ values end up outside
+the boundaries. Applying the box method and doing another rescaling
+would normally cause an infinite loop, but if the troublesome $\gamma$
+values are fixed at the boundary and the rescaling is only applied to
+the remaining free $\gamma$ values, the infinite loop is avoided. In
+general this approach is problematic since it can change the direction
+of the search. However, in one particular case, that does not
+matter. Consider a step up/down in $\gamma$ along axis $i$. In this case
+all other $\gamma$ values are scaled down/up. Keeping $\gamma_{i}$ fixed while
+applying the renormalisation procedure as described above, the
+feasibility of moving up/down \textit{along axis $i$} can be
+determined. This is the underlying principle of \gls{gas}.
 
-% %\subsection{Cuckoo search}
-% %\label{sec:cuckoo-search}
-% %
-% % A European \gls{vres} layout is determined by the vectors
-% % $\boldsymbol \gamma$ and $\boldsymbol \alpha$, each with dimensionality
-% % $n$ equal to the number of nodes. For notational convenience, a
-% % complete solution vector $\boldsymbol x$ is constructed as
-% % $x_{1} = \gamma_{1}, ..., x_{n} = \gamma_{n}, x_{n+1} = \alpha_{1}, ...,
-% % x_{2n} = \alpha_{n}$.
-% % The entries of the solution vector must fulfil the constraints
+As any greedy algorithm, the \gls{gas} algorithm works by taking the
+locally optimal choice. Hence the feasibility for each direction is
+evaluated, but only the best choice is accepted. This process is
+repeated until a convergence criteria is fulfilled. At this point the
+step size is reduced and the iterative optimisation procedure repeated
+until the step size drops below some tolerance. The algorithm
+structure is sketched in \cref{gasAlgo}.
 
-% % \begin{align}
-% %   \frac{1}{K} &\leq \gamma_{i} \leq K, \label{eq:kLimits}  \\
-% %   0 &\leq \alpha_{i} \leq 1, \label{eq:aLimits} \\
-% %   \sum_{i} \gamma_{i} \langle L_{i} \rangle &= \langle L_{EU} \rangle
-% %   . \label{eq:yLimits}
-% % \end{align}
+The \textit{StepUp} and \textit{StepDown} subroutines generate new
+solutions by stepping a solution (first argument) up/down along
+dimension $i$ (second argument) with some step size (third argument)
+after which the solution is renormalized as described above. Compared
+to \cref{gasAlgo} a few tricks have been implemented to improve
+performance (e.g. if the step up along dimension $i$ turned out to be
+favourable, the step down solution is not evaluated). Performance
+tweaks were left out for clarity. Values of \textit{maxStepSize} =
+$1$, \textit{minStepSize} = $5 \cdot 10^{-3}$ and \textit{tolerance} =
+$10^{-3}$ were found to be appropriate.
 
-% For notational convenience, a complete layout vector $\boldsymbol x$
-% is constructed as
-% $x_{1} = \gamma_{1}, ..., x_{N} =\gamma_{N}, x_{N+1} = \alpha_{1}, ...,
-% x_{2N} = \alpha_{N}$.
-% The optimization objective is global minimization of the \gls{lcoe} as a
-% function of $\boldsymbol x$. The \gls{lcoe} is a complicated function of the
-% layout $\boldsymbol x$ for which derivative information is not
-% available. With 30 countries, the dimensionality of the problem is 60,
-% and the search space thus large.
-
-% Efficient global optimization within a large search space is a problem
-% which has been successfully addressed by a number of Nature inspired
-% meta heuristic algorithms. By imitating the best features in nature,
-% these algorithms achieve a unique balance between intensification
-% (search around the current best
-% solution\footnote{In this section, the terms \textit{layout} and
-%   \textit{solution} are used interchangeably.})
-% and diversification (exploration of the search space). Typical
-% examples are genetic algorithms \cite{Goldberg1989} and particle swarm
-% optimization \cite{Kennedy95}. In this paper, a recent addition
-% \cite{YangDeb} to the family, cuckoo search (CS), has been applied.
-
-% %Cuckoo birds practice an aggressive breeding behaviour where the female
-% %cuckoos lay their eggs in the nests of other birds. If the host bird
-% %discovers the alien egg, the egg is thrown away, or the nest is
-% %abandoned. To avoid this fate, some cuckoo species have specialized in
-% %mimicking the visual appearance of the egg of the host species
-% %cite{Payne2005}.
-% In the CS algorithm, the cuckoo eggs represent solutions. The nest is
-% simply a container holding one or more eggs. For simplicity, each nest
-% will hold only one egg. The actual implementation differs slightly
-% across the literature\cite{YangDeb,Walton,Tuba}, but most
-% implementations follow a common structure:
-
-% \begin{enumerate}
-% \item Initially, each of the $X$
-%   nests are populated by an egg selected randomly from within the
-%   solution space.
-% \item A fraction $p$ of the eggs are discovered by the host bird and
-%   abandoned.
-% \item New eggs are generated and dropped into the nests. The receiving
-%   nest rejects the worse of the two eggs.
-% \item Step 2 and 3 are repeated until a user defined termination
-%   criteria is fulfilled.
-% \end{enumerate}
-
-% %Inspired by the flight pattern of fruit flies\cite{Reynolds}, new eggs
-% New eggs are generated by Lévy flights. A Lévy flight is a random walk with the
-% Markov property. The step size is drawn from a Lévy
-% $\alpha$-stable distribution%\footnote{The original author and
-%   %others\cite{YangDeb,Walton,Tuba} use a symmetric Lévy distribution
-%   %($\beta = 0$). However, it was found that the algorithmic performance,
-%   %at least for the problem at hand, was increased significantly by
-%   %changing to an asymmetric distribution.}
-% with scale parameter $c = 1$, location parameter $\mu = 0$, stability
-% parameter $\alpha = 1/2$ and skewness parameter $\beta = 1$. The large tail
-% causes occasional jumps ensuring efficient diversification. The Lévy
-% distribution was generated using a general method for generation of
-% Lévy $\alpha$-stable distributions\cite{Weron1994}.
-
-% % The Lévy flight was simulated using Mantegna's
-% % algorithm\cite{Mantegna}.
-
-% % In a Lévy flight, the
-% % following state $\boldsymbol x (t+1)$ depends only on the current
-% % state $\boldsymbol x(t)$,
-
-% % \begin{equation}
-% %   \boldsymbol x (t+1) = \boldsymbol x(t) + \alpha \mbox{Lévy}(\lambda)
-% % \end{equation}
-
-% % where $\alpha$ is a problem dependent scaling parameter. A Lévy flight is a
-% % random walk with the step size drawn from the heavy-tailed Lévy
-% % distribution
-
-% % \begin{equation}
-% %   \label{eq:3}
-% %   \mbox{Lévy}(\lambda) \sim u = t^{-\lambda}, \mbox{ } (1 < \lambda \leq 3)
-% % \end{equation}
-
-% % which has infinite variance and infinite mean. The large tails causes
-% % occasional jumps and thus ensures efficient exploration of the
-% % solution space.
-
-% \begin{algorithm*}[t]
-%   \caption{Pseudo code for the cuckoo search implementation. The
-%     \textit{Evaluate} function evaluates egg costs. By passing an
-%     array of eggs to the \textit{Evaluate} function, rather than
-%     evaluation the eggs one by one, parallel evaluation is
-%     possible. The \textit{Sort} function sorts the eggs by cost in
-%     ascending order.}
-%   \label{csAlgo}
-%   \begin{algorithmic}
-%     \Function{CuckooSearch}{}
-%     \State \textit{nests} $\gets$ $X$ eggs selected randomly from within the
-%     solution space
-%     \State Evaluate(\textit{nests})
-%     \State Sort(\textit{nests})
-%     \State \textit{bestNest} $\gets$ \textit{nests[0]}
-%     \State \textit{generation} $\gets$ 0
-%     \While{termination criteria not fulfilled}
-%     \For{index \textit{i} of bad nests}
-%     \State \textit{nests[i]}$\gets$ levy flight starting from \textit{nests[i]}
-%     \EndFor
-%     \For{index \textit{i} of good nests}
-%     \State \textit{trailEggs[i]}$\gets$ levy flight starting from \textit{nests[i]}
-%     % \State \textit{j} $\gets$ index of a random good nest
-%     % \If{\textit{i} == \textit{j}}
-%     % \State \textit{trailEggs[i]} $\gets$ levy flight starting from \textit{nests[i]}
-%     % \Else
-%     % \State \textit{trailEggs[i]} $\gets$ interpolation between
-%     % \textit{nests[i]} and \textit{nests[j]}
-%     % \EndIf
-%     \EndFor
-%     \State Evaluate(\textit{nests})
-%     \State Evaluate(\textit{trailEggs})
-%     \For{index \textit{i} of trailEggs}
-%     \State \textit{j} $\gets$ index of a random nest
-%     \If {cost of \textit{nest[j]} $>$ cost of \textit{trailEggs[i]}}
-%     \State \textit{nest[j]} $\gets$ \textit{trailEggs[i]}
-%     \EndIf
-%     \EndFor
-%     \State Sort(\textit{nests})
-%     \State \textit{bestNest} $\gets$ \textit{nests[0]}
-%     \State \textit{generation} $\gets$ \textit{generation} + 1
-%     \EndWhile
-%     \State \Return \textit{bestNest}
-%     \EndFunction
-%   \end{algorithmic}
-% \end{algorithm*}
-
-% % The only major
-% % difference is fixation of the scaling parameter $\alpha$ which was found to
-% % improve performance significantly.
-
-% In the CS implementation used in this paper, the nests are split into
-% \textit{bad nests} (the to-be-abandoned $p$ fraction) and
-% \textit{good nests} (the remaining $1-p$ fraction). The eggs in the
-% bad nests are replaced immediately by new ones generated by Lévy
-% flights starting from the old eggs. New trail eggs are generated by
-% Lévy flights starting from the eggs in the good nests. Each trail egg
-% is dropped into a random nest, and the receiving nest rejects the
-% worse of the two eggs. A value of $p$ around $0.75$ gave the best
-% performance. Mimicking of the host egg, approximated by the current
-% best egg $\boldsymbol x_{best}$, is modelled by biasing the Lévy
-% flight towards $\boldsymbol x_{best}$. In practice, the step size is
-% scaled by a factor of
-% $\paren{\boldsymbol x_{best}- \boldsymbol x_{i}}$. The Lévy flight
-% thus takes the form
-
-% \begin{equation}
-%   \label{eq:1}
-%   \boldsymbol x \to \boldsymbol x + A \paren{\boldsymbol x_{best}- \boldsymbol x} \mbox{Lévy}(z)
-% \end{equation}
-
-% where $A$ denotes a problem specific scaling parameter. For most
-% problems (the current included), a value $A \approx 1$ is appropriate. It is
-% possible that a solution generated by Lévy flight is outside the
-% search space defined by \cref{eq:k-factor} and the implicit constraint
-% $0 \leq \alpha_{n} \leq 1$. In this case, any invalid value is shifted to
-% the nearest boundary value. %: A value of $\alpha_{n} = 1.1$ is changed to
-% %$\alpha_{n} = 1.0$ while a value of $\gamma_{n} = \frac{1}{K+2}$ is changed to
-% %$\gamma_{n} = \frac{1}{K}$.
-
-% % The interpolation was performed as a simple linear interpolation
-% % between two solutions $\boldsymbol x_{i}$ and $\boldsymbol x_{j}$
-% %
-% % \begin{equation}
-% %   \label{eq:1}
-% %   \boldsymbol (\boldsymbol x_{i},\boldsymbol x_{j}) \to \boldsymbol x_{i} +
-% %   B \paren{\boldsymbol x_{j}- \boldsymbol x_{i}}
-% % \end{equation}
-% %
-% % where $\boldsymbol x_{i}$ denotes the better of the two solutions. In
-% % accordance with \cite{Walton}, $B$ was fixed at the golden ratio. The
-% % interpolated solution is thus closer to the better of the two
-% % solutions.
-
-% When a solution is generated, the solution is renormalized by a linear
-% scaling of the $\gamma$ values such that
-
-% \begin{equation}
-%   \label{eq:10}
-%   \sum_{n} \gamma_{n} \langle L_{n} \rangle = \langle L_{EU} \rangle
-% \end{equation}
-
-% is fulfilled. If the renormalized solution violates
-% \cref{eq:k-factor}, it is rejected and a new one generated. This
-% procedure is repeated until a valid solution is found.
-
-% The termination criteria was chosen as a fixed number of
-% iterations. In each iteration, $X$ function evaluations are performed,
-% each requiring a loop through the 32 year dataset solving a quadratic
-% optimization problem at each time step. Therefore, a single function
-% evaluation takes around 15 minutes on a standard laptop anno 2015. To
-% decrease computation time, a single model year was used rather than
-% the full 32 year data set.
-
-% Starting from a completely random population, it was found that around
-% 50,000 function evaluations were required to reach a stable
-% solution%\footnote{Non-biased optimizations and parameter tuning were
-%   %performed excluding transmission costs to decrease computation time,
-%   %see \cref{sec:incl-transm-optim} for details.}.
-% It is possible to decrease the required number of function evaluations
-% by planting a best-guess solution in the initial population. The
-% drawback of this approach is the biasing of the search. Other,
-% potentially better, solutions are less likely to be found due to the
-% initial biasing. Starting from random populations, the stable points
-% obtained for K = 1, 2, 3 were all found to be very similar to the
-% CF solutions. This indicates that the CF solution is
-% probably close to the global optimum. Therefore, the final
-% optimizations have been performed biased by the CF solution
-% effectively decreasing the number of required function evaluations by
-% almost an order of magnitude. With these approximations, the
-% computation time is decreased from $\approx$ 1.5 years to less than
-% two days.
-
-% For the problem at hand, the performance of the CS algorithm turned
-% out to be relatively insensitive to changes in $A$, $p$ and
-% $X$. Values of $A$ between 1 and 50 resulted in similar performance,
-% while larger values of $A$ caused a drop in performance, probably due
-% to the average step size becoming too large. Likewise, values of $p$
-% between 0.65 and 0.85 resulted in similar performance, while values
-% outside this interval caused drops in performance. For $X$, the best
-% performance was observed around a value of 50. Values below 25 and
-% above 100 caused the algorithm to get stuck in local minima.
-
-% In building a layout where locations with high capacity factors were
-% preferred to locations with low ones, one could have expected a
-% larger reduction in the need for backup energy and power
-% ($E^B$,\,$\mathcal K^B$). However, correlations between resources
-% can either contribute or detract to the overall performance of a
-% layout. A single place can have a high capacity factor, but carry a
-% large risk in the form of standard deviation. This is a well known
-% problem in finance, where a layout of investments must be chosen
-% so as to maximise the returns while minimising risk. In this case,
-% returns can be seen as a layout-wide capacity factor, $\nu_\rm{EU}$
-%\begin{equation}
-% \nu_\rm{EU} = \sum_n \nu_n^W \frac{\gamma_n^W \mean{L_n}}{\mean{L_\rm{EU}}} + \sum_n \nu_n^S %\frac{\gamma_n^S \mean{L_n}}{\mean{L_\rm{EU}}}
-%\end{equation}
-%while the risk can be related to the layout-wide standard deviation,
-% as defined in (\ref{eq:stdev}). A geographical dispersion of \gls{vres}
-% capacities can help reduce the total standard deviation, as wind is
-% generally uncorrelated beyond 500 km.  Figure 5.2 is a
-% representation of the layout of wind capacities in Europe. Each
-% of the gray dots represents a randomly assigned set of wind
-% capacities $\bs \gamma^W$. The homogeneous layout can be seen near the
-% centre of the cloud, with a low risk but a low return (capacity
-% factor). As the layout begins to favour locations with a higher
-% $\nu_n^W$ via the factor $\beta$, the return of the system increases,
-% without a large decrease in the risk of the investment. Layout
-% theory allows us to define a Pareto front of optimal layouts,
-% where we must choose between a lower risk and a higher return. This
-% front is sketched via the squares in Figure 5.2.  A similar set of
-% Pareto-optimal layouts can be found for the solar resources. The
-% optimal wind capacities $\bs \gamma^W$ coming from Figure 5.2 can be
-% combined with the optimal solar capacities $\bs \gamma^S$ via the mixing
-% parameter $\alpha$. Figure 5.3 shows these interpolations, redrawing the
-% homogeneous and proportional layouts we have previously discussed
-% and adding several interpolations of new layouts coming from
-% layout theory. We choose one of these interpolations as a
-% \textbf{ Pareto-optimal layout}. The lines connecting these points
-% run from $\alpha = 0$ in the solar-only layout (bottom right) to
-% $\alpha = 1$ in the wind-only layout (top right). It is clear that
-% moving from a pure-solar to pure-wind only increases the capacity
-% factor, but there seems to be a minimum risk point close to
-% $\alpha = 1$. This hints at a synergy between wind and solar resources,
-% reinforcing the results in Figure 5.1 of an optimal value of $\alpha$.
+\begin{algorithm*}
+  \caption{Pseudo code for the greedy axial search implementation. The
+    \textit{Evaluate} function evaluates solution costs. By passing an
+    array of solutions to the \textit{Evaluate} function, rather than
+    evaluation the solutions one by one, parallel evaluation is
+    possible. The \textit{Sort} function sorts the solutions by cost
+    in ascending order.}
+  \label{gasAlgo}
+  \begin{algorithmic}
+    \Function{GreedyAxialSearch}{}
+    \State \textit{best} $\gets$ solution selected randomly from within the
+    solution space
+    \State\textit{deltaCost} $\gets$ $\infty$
+    \State\textit{stepSize} $\gets$ maxStepSize
+    \While{\textit{stepSize} $>$ \textit{minStepSize}}
+    \While{\textit{deltaCost} $>$ \textit{tolerance}}
+    \For{index \textit{i} = 0 to 2N} 
+    \State \textit{trailSolutions[i]}$\gets$ StepUp(\textit{best},\textit{i},\textit{stepSize})
+    \State \textit{trailSolutions[i+2N]}$\gets$ StepDown(\textit{best},\textit{i},\textit{stepSize})
+    \EndFor
+    \State Evaluate(\textit{trailSolutions})
+    \State Sort(\textit{trailSolutions})
+    \State \textit{deltaCost} $\gets$ cost of \textit{best} minus cost of \textit{trailSolutions[0]}
+    \If {\textit{deltaCost} $>$ 0}
+    \State \textit{best} $\gets$ \textit{trailSolutions[0]}
+    \EndIf
+    \EndWhile
+    \State \textit{stepSize} $\gets$ \textit{stepSize}/2
+    \EndWhile
+    \State \Return \textit{best}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm*}
 
 \end{document}
